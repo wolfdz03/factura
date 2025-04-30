@@ -1,2 +1,4 @@
-yarn run lint -- --fix
-yarn run format
+#!/bin/sh
+
+turbo run lint -- --fix
+yarn format

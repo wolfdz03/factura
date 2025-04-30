@@ -2,6 +2,7 @@
   "name": "invoicely",
   "version": "0.0.1",
   "private": true,
+  
   "engines": {
     "node": ">=18"
   },
@@ -15,6 +16,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types"
   },
