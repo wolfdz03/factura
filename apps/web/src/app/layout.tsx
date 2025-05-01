@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono, JetBrains_Mono } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 import type { Metadata } from "next";
 import { cn } from "@/lib/utils";
 import "./globals.css";
@@ -41,10 +42,15 @@ export default function RootLayout({
           geistMono.variable,
           jetBrainsMono.variable,
           "antialiased",
-          "dark",
         )}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          storageKey="invoicely-theme"
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
