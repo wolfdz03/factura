@@ -2,11 +2,10 @@
   "name": "invoicely",
   "version": "0.0.1",
   "private": true,
-  
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
-  "packageManager": "yarn@1.22.22",
+  "packageManager": "yarn@4.9.1",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -21,6 +20,8 @@
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
+    "@invoicely/eslint-config": "workspace:*",
+    "@invoicely/typescript-config": "workspace:*",
     "@types/node": "^22.15.3",
     "husky": "^9.1.7",
     "prettier": "^3.5.3",

@@ -1,9 +1,29 @@
 {
   "name": "@invoicely/ui",
-  "version": "1.0.0",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
   "description": "a ui package for invoicely",
-  "main": "index.js",
   "repository": "https://github.com/legions-developer/invoicely",
   "license": "MIT",
-  "private": true
+  "scripts": {
+    "lint": "eslint . --max-warnings 0"
+  },
+  "exports": {
+    "./globals.css": "./src/styles/globals.css",
+    "./postcss.config": "./postcss.config.mjs",
+    "./lib/*": "./src/lib/*.ts",
+    "./components/*": "./src/components/*.tsx",
+    "./hooks/*": "./src/hooks/*.ts"
+  },
+  "devDependencies": {
+    "@invoicely/eslint-config": "workspace:*",
+    "@invoicely/typescript-config": "workspace:*",
+    "@turbo/gen": "^2.5.0",
+    "@types/node": "^22.15.3",
+    "@types/react": "19.1.0",
+    "@types/react-dom": "19.1.1",
+    "eslint": "^9.25.0",
+    "typescript": "5.8.2"
+  }
 }
