@@ -1,5 +1,5 @@
 {
-  "name": "utilities",
+  "name": "@invoicely/utilities",
   "private": true,
   "version": "1.0.0",
   "description": "a package for utilities related to invocely project",
