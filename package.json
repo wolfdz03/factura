@@ -11,10 +11,12 @@
     "packages/*"
   ],
   "scripts": {
+    "reset-repo": "git clean -Xdf",
     "prepare": "husky",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "start": "turbo run start",
+    "production": "turbo run build && turbo run start",
     "lint": "turbo run lint",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
