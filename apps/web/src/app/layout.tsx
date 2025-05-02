@@ -1,4 +1,9 @@
-import { Geist, Geist_Mono, JetBrains_Mono } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  JetBrains_Mono,
+  Instrument_Serif,
+} from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import type { Metadata } from "next";
 import { cn } from "@/lib/utils";
@@ -23,6 +28,13 @@ const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
+// Instrument Serif
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  subsets: ["latin"],
+  weight: ["400"],
+});
+
 export const metadata: Metadata = {
   title: "Invoicely | Invoice Generator",
   description:
@@ -41,6 +53,7 @@ export default function RootLayout({
           geistSans.variable,
           geistMono.variable,
           jetBrainsMono.variable,
+          instrumentSerif.variable,
           "antialiased",
         )}
       >
