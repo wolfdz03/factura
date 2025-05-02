@@ -132,5 +132,5 @@ body {
 }
 
 .top-light-shadow {
-  @apply shadow-[inset_0px_1.5px_rgba(255,255,255,0.15)];
+  @apply shadow-[inset_0px_2px_0px_rgba(255,255,255,0.15)];
 }

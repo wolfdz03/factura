@@ -39,6 +39,9 @@ export const metadata: Metadata = {
   title: "Invoicely | Invoice Generator",
   description:
     "Invoicely is a simple and easy to use invoice generator ~ Proudly OSS",
+  icons: {
+    icon: "/official/invoicely-logo.png",
+  },
 };
 
 export default function RootLayout({
