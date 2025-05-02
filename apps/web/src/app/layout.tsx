@@ -3,7 +3,8 @@ import {
   Geist_Mono,
   JetBrains_Mono,
   Instrument_Serif,
-  Instrument_Sans
+  Instrument_Sans,
+  Urbanist,
 } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import type { Metadata } from "next";
@@ -43,6 +44,12 @@ const instrumentSans = Instrument_Sans({
   weight: ["400", "500", "600", "700"],
 });
 
+// Urbanist
+const urbanist = Urbanist({
+  variable: "--font-urbanist",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: "Invoicely | Invoice Generator",
   description:
@@ -66,6 +73,7 @@ export default function RootLayout({
           jetBrainsMono.variable,
           instrumentSerif.variable,
           instrumentSans.variable,
+          urbanist.variable,
           "antialiased",
         )}
       >
