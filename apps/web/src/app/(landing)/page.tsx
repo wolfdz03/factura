@@ -18,7 +18,7 @@ export default function Home() {
           The easiest way to create and send invoices
         </p>
         <div className="mt-4 flex gap-2">
-          <Button variant="destructive">Get Started</Button>
+          <Button>Get Started</Button>
           <Button
             variant="secondary"
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
