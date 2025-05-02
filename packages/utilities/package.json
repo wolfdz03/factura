@@ -3,12 +3,6 @@
   "private": true,
   "version": "1.0.0",
   "description": "a package for utilities related to invocely project",
-  "main": "./src/index.tsx",
-  "types": "./src/index.tsx",
-  "exports": {
-    ".": "./src/index.tsx",
-    "./*": "./src/*.tsx"
-  },
   "repository": "https://github.com/legions-developer/invoicely",
   "author": "legions-developer",
   "license": "MIT",
