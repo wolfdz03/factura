@@ -5,7 +5,7 @@ import React from "react";
 const LogoIcon = ({ className }: { className?: string }) => {
   return (
     <Image
-      className={cn("h-12 w-12", className)}
+      className={cn("h-12 w-12 object-contain", className)}
       src="/official/logo-icon.png"
       alt="logo"
       width={500}

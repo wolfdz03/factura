@@ -13,3 +13,7 @@
 .instrument-serif {
   font-family: var(--font-instrument-serif);
 }
+
+.instrument-sans {
+  font-family: var(--font-instrument-sans);
+}
