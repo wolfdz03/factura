@@ -27,7 +27,7 @@ const Page = () => {
           <InvoiceForm form={form} />
         </ResizablePanel>
         <ResizablePanel minSize={50} defaultSize={50}>
-          <InvoicePreview id="form-pdf-preview" data={form.getValues()} />
+          <InvoicePreview form={form} />
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

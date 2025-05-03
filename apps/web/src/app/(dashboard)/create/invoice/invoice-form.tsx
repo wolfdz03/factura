@@ -1,19 +1,17 @@
 "use client";
 
 import { ZodCreateInvoiceSchema, createInvoiceSchemaDefaultValues } from "@/zod-schemas/invoice/create-invoice";
-import { Accordion, AccordionItem } from "@/components/ui/accordion";
-import { FormInput } from "@/components/ui/form/form-input";
-import { Form } from "@/components/ui/form/form";
-import { Button } from "@/components/ui/button";
-import { UseFormReturn } from "react-hook-form";
-
 import InvoiceFieldKeyStringValuesSection from "./invoiceHelpers/invoice-field-key-string-value-section";
 import InvoiceFieldKeyNumberValuesSection from "./invoiceHelpers/invoice-field-key-number-value-section";
 import { InvoiceAccordionContent, InvoiceAccordionTrigger } from "./invoiceHelpers/invoice-accordions";
 import InvoiceItemsSection from "./invoiceHelpers/invoice-items-section";
 import { FormImageInput } from "@/components/ui/form/form-image-input";
+import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { FormTextarea } from "@/components/ui/form/form-textarea";
+import { FormInput } from "@/components/ui/form/form-input";
 import FormRow from "@/components/ui/form/form-row";
+import { Form } from "@/components/ui/form/form";
+import { UseFormReturn } from "react-hook-form";
 import React from "react";
 
 interface InvoiceFormProps {
@@ -21,16 +19,10 @@ interface InvoiceFormProps {
 }
 
 const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
-  const onSubmit = (data: ZodCreateInvoiceSchema) => {
-    console.log("SubmittedFormValues", data);
-  };
-
-  console.log("FormValues", form.getValues());
-
   return (
     <div className="scroll-bar-hidden flex h-full flex-col overflow-y-scroll">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form className="space-y-8">
           <Accordion type="single" collapsible defaultValue="invoice-items" className="w-full divide-y border-b">
             {/* Company Details */}
             <AccordionItem value="company-details">
@@ -182,9 +174,6 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
               </InvoiceAccordionContent>
             </AccordionItem>
           </Accordion>
-          <Button type="submit" className="w-full">
-            Submit Invoice
-          </Button>
         </form>
       </Form>
     </div>
