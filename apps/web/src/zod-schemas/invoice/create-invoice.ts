@@ -13,6 +13,9 @@ export const createInvoiceSchema = z.object({
       signature: z
         .string({ invalid_type_error: "Signature must be a string" })
         .url({ message: "Signature must be a valid URL" }),
+      name: z.string({ invalid_type_error: "Company name must be a string" }).min(1, {
+        message: "Company name cannot be empty",
+      }),
       address: z.object(
         {
           label: z
@@ -179,6 +182,7 @@ export type ZodCreateInvoiceSchema = z.infer<typeof createInvoiceSchema>;
 
 export const createInvoiceSchemaDefaultValues: ZodCreateInvoiceSchema = {
   companyDetails: {
+    name: "",
     logo: "",
     signature: "",
     address: {

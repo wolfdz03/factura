@@ -43,6 +43,13 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                   <FormImageInput label="Company Logo" name="companyDetails.logo" reactform={form} />
                   <FormImageInput label="Company Signature" name="companyDetails.signature" reactform={form} />
                 </div>
+                <FormInput
+                  name="companyDetails.name"
+                  label="Company Name"
+                  reactform={form}
+                  placeholder="John Doe ltd."
+                  description="Name of your company"
+                />
                 <FormTextarea
                   className="h-20"
                   name="companyDetails.address.value"
