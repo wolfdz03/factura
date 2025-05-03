@@ -5,17 +5,9 @@ import React, { useEffect, useState } from "react";
 import { PDFViewer } from "@react-pdf/renderer";
 import InvoicePDF from "./pdf-document";
 
-// Add global style to ensure PDF iframe has white background
-const pdfViewerStyle = `
-  iframe {
-    background-color: white !important;
-    border: none !important;
-  }
-`;
-
 const dummyData: ZodCreateInvoiceSchema = {
   companyDetails: {
-    name: "Acme Corporation",
+    name: "MyLegion Corporation",
     logo: "/images/acme-logo.png",
     signature: "/images/john-signature.png",
     address: {
@@ -31,6 +23,9 @@ const dummyData: ZodCreateInvoiceSchema = {
     },
   },
   invoiceDetails: {
+    theme: {
+      baseColor: "#635CFF",
+    },
     currency: "USD",
     prefix: "INV-",
     serialNumber: "2023-0042",
@@ -105,28 +100,9 @@ const InvoicePreview = () => {
   }
 
   return (
-    <div
-      style={{
-        backgroundColor: "white",
-        width: "100%",
-        height: "100%",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      <style dangerouslySetInnerHTML={{ __html: pdfViewerStyle }} />
-      <PDFViewer
-        style={{
-          width: "100%",
-          height: "100%",
-          backgroundColor: "white",
-          border: "none",
-        }}
-        showToolbar={false}
-      >
-        <InvoicePDF data={dummyData} />
-      </PDFViewer>
-    </div>
+    <PDFViewer className="h-full w-full" showToolbar={false}>
+      <InvoicePDF data={dummyData} />
+    </PDFViewer>
   );
 };
 

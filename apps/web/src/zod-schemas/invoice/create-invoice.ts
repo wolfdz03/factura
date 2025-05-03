@@ -51,6 +51,11 @@ export const createInvoiceSchema = z.object({
   ),
   invoiceDetails: z.object(
     {
+      theme: z.object({
+        baseColor: z.string({ invalid_type_error: "Base color must be a string" }).min(1, {
+          message: "Base color cannot be empty",
+        }),
+      }),
       currency: z
         .string({ invalid_type_error: "Currency must be a string" })
         .min(1, { message: "Currency cannot be empty" }),
@@ -198,6 +203,9 @@ export const createInvoiceSchemaDefaultValues: ZodCreateInvoiceSchema = {
     },
   },
   invoiceDetails: {
+    theme: {
+      baseColor: "#635CFF",
+    },
     currency: "USD",
     prefix: "INV-",
     serialNumber: "",

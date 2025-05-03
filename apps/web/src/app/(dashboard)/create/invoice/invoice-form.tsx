@@ -84,7 +84,6 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                   reactform={form}
                   placeholder="USD"
                   description="Currency code for the invoice"
-                  defaultValue={createInvoiceSchemaDefaultValues.invoiceDetails.currency}
                 />
                 <FormRow>
                   <FormInput
