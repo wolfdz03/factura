@@ -14,6 +14,7 @@ const dummyData: ZodCreateInvoiceSchema = {
       label: "address",
       value: "123 Business Ave, Suite 200, San Francisco, CA 94107",
     },
+    metadata: [],
   },
   clientDetails: {
     name: "ScamTechStart Solutions Inc.",
@@ -21,6 +22,7 @@ const dummyData: ZodCreateInvoiceSchema = {
       label: "address",
       value: "456 Innovation Drive, Boston, MA 02110",
     },
+    metadata: [],
   },
   invoiceDetails: {
     theme: {
@@ -36,25 +38,7 @@ const dummyData: ZodCreateInvoiceSchema = {
     date: new Date("2023-10-15"),
     dueDate: new Date("2023-11-15"),
     paymentTerms: "Net 30",
-    discount: {
-      label: "discount",
-      value: 50,
-      type: "fixed",
-    },
-    tax: {
-      label: "tax",
-      value: 8.25,
-      type: "percentage",
-    },
-    shipping: {
-      label: "shipping",
-      value: 25,
-      type: "fixed",
-    },
-    amountPaid: {
-      label: "amount paid",
-      value: 0,
-    },
+    billingDetails: [],
   },
   items: [
     {
@@ -85,6 +69,16 @@ const dummyData: ZodCreateInvoiceSchema = {
       label: "terms",
       value: "Payment is due within 30 days. Late payments subject to a 1.5% monthly fee.",
     },
+    paymentInformation: [
+      {
+        label: "Bank Name",
+        value: "Bank of America",
+      },
+      {
+        label: "Account Number",
+        value: "1234567890",
+      },
+    ],
   },
 };
 

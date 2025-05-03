@@ -6,6 +6,45 @@ export const valueType = z.enum(["percentage", "fixed"], {
   }),
 });
 
+export const createInvoiceItemSchema = z.object(
+  {
+    name: z
+      .string({ invalid_type_error: "Item name must be a string" })
+      .min(1, { message: "Item name cannot be empty" }),
+    description: z.string({
+      invalid_type_error: "Item description must be a string",
+    }),
+    quantity: z
+      .number({ invalid_type_error: "Quantity must be a number" })
+      .positive({ message: "Quantity must be positive" }),
+    unitPrice: z
+      .number({ invalid_type_error: "Unit price must be a number" })
+      .positive({ message: "Unit price must be positive" }),
+  },
+  { invalid_type_error: "Item must be an object" },
+);
+
+export const createInvoiceFieldKeyStringValuesSchema = z.object(
+  {
+    label: z.string({ invalid_type_error: "Label must be a string" }).min(1, {
+      message: "Label cannot be empty",
+    }),
+    value: z.string({ invalid_type_error: "Value must be a string" }),
+  },
+  { invalid_type_error: "Field key string values must be an object" },
+);
+
+export const createInvoiceFieldKeyNumberValuesSchema = z.object(
+  {
+    label: z.string({ invalid_type_error: "Label must be a string" }).min(1, {
+      message: "Label cannot be empty",
+    }),
+    value: z.number({ invalid_type_error: "Value must be a number" }).positive({ message: "Value must be positive" }),
+    type: valueType,
+  },
+  { invalid_type_error: "Field key number values must be an object" },
+);
+
 export const createInvoiceSchema = z.object({
   companyDetails: z.object(
     {
@@ -27,6 +66,7 @@ export const createInvoiceSchema = z.object({
         },
         { invalid_type_error: "Company address must be an object" },
       ),
+      metadata: z.array(createInvoiceFieldKeyStringValuesSchema),
     },
     { invalid_type_error: "Company details must be an object" },
   ),
@@ -46,6 +86,7 @@ export const createInvoiceSchema = z.object({
         },
         { invalid_type_error: "Client address must be an object" },
       ),
+      metadata: z.array(createInvoiceFieldKeyStringValuesSchema),
     },
     { invalid_type_error: "Client details must be an object" },
   ),
@@ -79,81 +120,11 @@ export const createInvoiceSchema = z.object({
       paymentTerms: z.string({
         invalid_type_error: "Payment terms must be a string",
       }),
-      discount: z.object(
-        {
-          label: z
-            .string({ invalid_type_error: "Discount label must be a string" })
-            .min(1, { message: "Discount label cannot be empty" }),
-          value: z
-            .number({ invalid_type_error: "Discount value must be a number" })
-            .min(0, { message: "Discount value must be positive" }),
-          type: valueType,
-        },
-        { invalid_type_error: "Discount must be an object" },
-      ),
-      tax: z.object(
-        {
-          label: z
-            .string({ invalid_type_error: "Tax label must be a string" })
-            .min(1, { message: "Tax label cannot be empty" }),
-          value: z
-            .number({ invalid_type_error: "Tax value must be a number" })
-            .min(0, { message: "Tax value must be positive" }),
-          type: valueType,
-        },
-        { invalid_type_error: "Tax must be an object" },
-      ),
-      shipping: z.object(
-        {
-          label: z
-            .string({ invalid_type_error: "Shipping label must be a string" })
-            .min(1, { message: "Shipping label cannot be empty" }),
-          value: z
-            .number({ invalid_type_error: "Shipping value must be a number" })
-            .min(0, { message: "Shipping value must be positive" }),
-          type: valueType,
-        },
-        { invalid_type_error: "Shipping must be an object" },
-      ),
-      amountPaid: z.object(
-        {
-          label: z
-            .string({
-              invalid_type_error: "Amount paid label must be a string",
-            })
-            .min(1, { message: "Amount paid label cannot be empty" }),
-          value: z
-            .number({
-              invalid_type_error: "Amount paid value must be a number",
-            })
-            .min(0, { message: "Amount paid value must be positive" }),
-        },
-        { invalid_type_error: "Amount paid must be an object" },
-      ),
+      billingDetails: z.array(createInvoiceFieldKeyNumberValuesSchema),
     },
     { invalid_type_error: "Invoice details must be an object" },
   ),
-  items: z
-    .array(
-      z.object(
-        {
-          name: z
-            .string({ invalid_type_error: "Item name must be a string" })
-            .min(1, { message: "Item name cannot be empty" }),
-          description: z.string({
-            invalid_type_error: "Item description must be a string",
-          }),
-          quantity: z
-            .number({ invalid_type_error: "Quantity must be a number" })
-            .positive({ message: "Quantity must be positive" }),
-          unitPrice: z
-            .number({ invalid_type_error: "Unit price must be a number" })
-            .positive({ message: "Unit price must be positive" }),
-        },
-        { invalid_type_error: "Item must be an object" },
-      ),
-    )
-    .min(1, { message: "At least one item is required" }),
+  items: z.array(createInvoiceItemSchema),
   metadata: z.object(
     {
       notes: z.object(
@@ -178,6 +149,7 @@ export const createInvoiceSchema = z.object({
         },
         { invalid_type_error: "Terms must be an object" },
       ),
+      paymentInformation: z.array(createInvoiceFieldKeyStringValuesSchema),
     },
     { invalid_type_error: "Metadata must be an object" },
   ),
@@ -194,6 +166,7 @@ export const createInvoiceSchemaDefaultValues: ZodCreateInvoiceSchema = {
       label: "address",
       value: "",
     },
+    metadata: [],
   },
   clientDetails: {
     name: "",
@@ -201,6 +174,7 @@ export const createInvoiceSchemaDefaultValues: ZodCreateInvoiceSchema = {
       label: "address",
       value: "",
     },
+    metadata: [],
   },
   invoiceDetails: {
     theme: {
@@ -216,25 +190,7 @@ export const createInvoiceSchemaDefaultValues: ZodCreateInvoiceSchema = {
     date: new Date(), // now
     dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day from now
     paymentTerms: "",
-    discount: {
-      label: "discount",
-      value: 0,
-      type: "fixed",
-    },
-    tax: {
-      label: "tax",
-      value: 0,
-      type: "fixed",
-    },
-    shipping: {
-      label: "shipping",
-      value: 0,
-      type: "fixed",
-    },
-    amountPaid: {
-      label: "amount paid",
-      value: 0,
-    },
+    billingDetails: [],
   },
   items: [],
   metadata: {
@@ -246,5 +202,6 @@ export const createInvoiceSchemaDefaultValues: ZodCreateInvoiceSchema = {
       label: "terms",
       value: "",
     },
+    paymentInformation: [],
   },
 };

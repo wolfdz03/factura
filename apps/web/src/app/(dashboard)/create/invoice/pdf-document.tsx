@@ -16,23 +16,7 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
   // Calculate totals
   const subtotal = data.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
 
-  const discountAmount =
-    data.invoiceDetails.discount.type === "percentage"
-      ? (subtotal * data.invoiceDetails.discount.value) / 100
-      : data.invoiceDetails.discount.value;
-
-  const taxAmount =
-    data.invoiceDetails.tax.type === "percentage"
-      ? ((subtotal - discountAmount) * data.invoiceDetails.tax.value) / 100
-      : data.invoiceDetails.tax.value;
-
-  const shippingAmount =
-    data.invoiceDetails.shipping.type === "percentage"
-      ? (subtotal * data.invoiceDetails.shipping.value) / 100
-      : data.invoiceDetails.shipping.value;
-
-  const total = subtotal - discountAmount + taxAmount + shippingAmount;
-  const balanceDue = total - data.invoiceDetails.amountPaid.value;
+  const total = subtotal;
 
   const formatCurrency = (amount: number) => {
     return `${data.invoiceDetails.currency} ${amount.toFixed(2)}`;
@@ -90,23 +74,23 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
             <Text style={{ color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" }}>Billed By</Text>
             <Text style={styles.invoiceBillingName}>{data.companyDetails.name}</Text>
             <Text style={styles.invoiceBillingAddress}>{data.companyDetails.address.value}</Text>
-            <View style={styles.invoiceDetailsRow}>
-              <Text style={styles.invoiceDetailsTitle}>Tax ID</Text>
-              <Text style={styles.invoiceDetailsValue}>93857FSJ23844</Text>
-            </View>
-            <View style={styles.invoiceDetailsRow}>
-              <Text style={styles.invoiceDetailsTitle}>Tax ID</Text>
-              <Text style={styles.invoiceDetailsValue}>93857FSJ23844</Text>
-            </View>
+            {data.companyDetails.metadata.map((metadata) => (
+              <View key={metadata.label} style={styles.invoiceDetailsRow}>
+                <Text style={styles.invoiceDetailsTitle}>{metadata.label}</Text>
+                <Text style={styles.invoiceDetailsValue}>{metadata.value}</Text>
+              </View>
+            ))}
           </View>
           <View style={styles.invoiceBillingContainer}>
             <Text style={{ color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" }}>Billed To</Text>
             <Text style={styles.invoiceBillingName}>{data.companyDetails.name}</Text>
             <Text style={styles.invoiceBillingAddress}>{data.companyDetails.address.value}</Text>
-            <View style={styles.invoiceDetailsRow}>
-              <Text style={styles.invoiceDetailsTitle}>Tax ID</Text>
-              <Text style={styles.invoiceDetailsValue}>93857FSJ23844</Text>
-            </View>
+            {data.clientDetails.metadata.map((metadata) => (
+              <View key={metadata.label} style={styles.invoiceDetailsRow}>
+                <Text style={styles.invoiceDetailsTitle}>{metadata.label}</Text>
+                <Text style={styles.invoiceDetailsValue}>{metadata.value}</Text>
+              </View>
+            ))}
           </View>
         </View>
         {/* Items Table */}
@@ -133,33 +117,21 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
         <View style={styles.invoiceMetaDataAndPricingContainer}>
           <View style={styles.invoiceMetaDataContainer}>
             {/* Payment Information */}
-            <View style={styles.invoicePaymentInformationContainer}>
-              <Text style={{ color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" }}>
-                Payment Information
-              </Text>
-              <View style={styles.invoicePaymentInformationColumnContainer}>
-                <View style={styles.invoiceDetailsRow}>
-                  <Text style={{ minWidth: 100, ...styles.invoiceDetailsTitle }}>Invoice Number</Text>
-                  <Text style={styles.invoiceDetailsValue}>{data.invoiceDetails.serialNumber}</Text>
-                </View>
-                <View style={styles.invoiceDetailsRow}>
-                  <Text style={{ minWidth: 100, ...styles.invoiceDetailsTitle }}>Invoice Date</Text>
-                  <Text style={styles.invoiceDetailsValue}>{format(data.invoiceDetails.date, "dd/MM/yyyy")}</Text>
-                </View>
-                <View style={styles.invoiceDetailsRow}>
-                  <Text style={{ minWidth: 100, ...styles.invoiceDetailsTitle }}>Invoice Due Date</Text>
-                  <Text style={styles.invoiceDetailsValue}>{format(data.invoiceDetails.dueDate, "dd/MM/yyyy")}</Text>
-                </View>
-                <View style={styles.invoiceDetailsRow}>
-                  <Text style={{ minWidth: 100, ...styles.invoiceDetailsTitle }}>Payment Terms</Text>
-                  <Text style={styles.invoiceDetailsValue}>{data.invoiceDetails.paymentTerms}</Text>
-                </View>
-                <View style={styles.invoiceDetailsRow}>
-                  <Text style={{ minWidth: 100, ...styles.invoiceDetailsTitle }}>Currency</Text>
-                  <Text style={styles.invoiceDetailsValue}>{data.invoiceDetails.currency}</Text>
+            {data.metadata.paymentInformation.length > 0 && (
+              <View style={styles.invoicePaymentInformationContainer}>
+                <Text style={{ color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" }}>
+                  Payment Information
+                </Text>
+                <View style={styles.invoicePaymentInformationColumnContainer}>
+                  {data.metadata.paymentInformation.map((paymentInformation) => (
+                    <View key={paymentInformation.label} style={styles.invoiceDetailsRow}>
+                      <Text style={{ minWidth: 100, ...styles.invoiceDetailsTitle }}>{paymentInformation.label}</Text>
+                      <Text style={styles.invoiceDetailsValue}>{paymentInformation.value}</Text>
+                    </View>
+                  ))}
                 </View>
               </View>
-            </View>
+            )}
             {/* Terms and conditions */}
             <View style={styles.invoiceTermsAndConditionsContainer}>
               <Text style={{ color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" }}>
@@ -179,18 +151,12 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
               <Text style={styles.invoicePricingRowTitle}>Subtotal</Text>
               <Text style={styles.invoicePricingRowValue}>{formatCurrency(subtotal)}</Text>
             </View>
-            <View style={styles.invoicePricingRow}>
-              <Text style={styles.invoicePricingRowTitle}>Tax</Text>
-              <Text style={styles.invoicePricingRowValue}>{formatCurrency(taxAmount)}</Text>
-            </View>
-            <View style={styles.invoicePricingRow}>
-              <Text style={styles.invoicePricingRowTitle}>Amount Paid</Text>
-              <Text style={styles.invoicePricingRowValue}>{formatCurrency(data.invoiceDetails.amountPaid.value)}</Text>
-            </View>
-            <View style={styles.invoicePricingRow}>
-              <Text style={styles.invoicePricingRowTitle}>Balance Due</Text>
-              <Text style={styles.invoicePricingRowValue}>{formatCurrency(balanceDue)}</Text>
-            </View>
+            {data.invoiceDetails.billingDetails.map((billingDetail) => (
+              <View key={billingDetail.label} style={styles.invoicePricingRow}>
+                <Text style={styles.invoicePricingRowTitle}>{billingDetail.label}</Text>
+                <Text style={styles.invoicePricingRowValue}>{formatCurrency(billingDetail.value)}</Text>
+              </View>
+            ))}
             <View style={styles.hr}></View>
             <View style={styles.invoicePricingRow}>
               <Text style={styles.invoicePricingTotal}>Total</Text>

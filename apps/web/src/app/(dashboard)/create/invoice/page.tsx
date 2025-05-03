@@ -6,8 +6,8 @@ import {
   type ZodCreateInvoiceSchema,
 } from "@/zod-schemas/invoice/create-invoice";
 import { ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import InvoiceOptions from "./invoiceHelpers/invoice-options";
 import { zodResolver } from "@hookform/resolvers/zod";
-import InvoiceOptions from "./invoice-options";
 import InvoicePreview from "./invoice-preview";
 import { useForm } from "react-hook-form";
 import InvoiceForm from "./invoice-form";
