@@ -46,7 +46,7 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
   }
 
   return (
-    <PDFViewer className="h-full w-full" showToolbar={false}>
+    <PDFViewer className="h-full w-full">
       <InvoicePDF data={data} />
     </PDFViewer>
   );
