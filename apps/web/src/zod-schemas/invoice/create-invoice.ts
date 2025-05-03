@@ -39,7 +39,7 @@ export const createInvoiceFieldKeyNumberValuesSchema = z.object(
     label: z.string({ invalid_type_error: "Label must be a string" }).min(1, {
       message: "Label cannot be empty",
     }),
-    value: z.number({ invalid_type_error: "Value must be a number" }).positive({ message: "Value must be positive" }),
+    value: z.number({ invalid_type_error: "Value must be a number" }),
     type: valueType,
   },
   { invalid_type_error: "Field key number values must be an object" },

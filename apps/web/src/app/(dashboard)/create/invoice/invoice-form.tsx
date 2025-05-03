@@ -7,8 +7,9 @@ import { Form } from "@/components/ui/form/form";
 import { Button } from "@/components/ui/button";
 import { UseFormReturn } from "react-hook-form";
 
+import InvoiceFieldKeyStringValuesSection from "./invoiceHelpers/invoice-field-key-string-value-section";
+import InvoiceFieldKeyNumberValuesSection from "./invoiceHelpers/invoice-field-key-number-value-section";
 import { InvoiceAccordionContent, InvoiceAccordionTrigger } from "./invoiceHelpers/invoice-accordions";
-import InvoiceFieldKeyStringValuesSection from "./invoiceHelpers/invoice-field-key-section";
 import InvoiceItemsSection from "./invoiceHelpers/invoice-items-section";
 import { FormImageInput } from "@/components/ui/form/form-image-input";
 import { FormTextarea } from "@/components/ui/form/form-textarea";
@@ -24,10 +25,12 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
     console.log("SubmittedFormValues", data);
   };
 
+  console.log("FormValues", form.getValues());
+
   return (
     <div className="scroll-bar-hidden flex h-full flex-col overflow-y-scroll">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit, console.error)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <Accordion type="single" collapsible defaultValue="invoice-items" className="w-full divide-y border-b">
             {/* Company Details */}
             <AccordionItem value="company-details">
@@ -51,7 +54,11 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                   reactform={form}
                   placeholder="123 Business St, City, Country"
                 />
-                <InvoiceFieldKeyStringValuesSection reactform={form} name="companyDetails.fields" />
+                <InvoiceFieldKeyStringValuesSection
+                  reactform={form}
+                  name="companyDetails.metadata"
+                  label="Company Fields"
+                />
               </InvoiceAccordionContent>
             </AccordionItem>
             {/* Client Details */}
@@ -65,6 +72,11 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                   label="Client Address"
                   reactform={form}
                   placeholder="456 Client St, City, Country"
+                />
+                <InvoiceFieldKeyStringValuesSection
+                  reactform={form}
+                  name="clientDetails.metadata"
+                  label="Client Fields"
                 />
               </InvoiceAccordionContent>
             </AccordionItem>
@@ -89,6 +101,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                     isOptional={true}
                   />
                   <FormInput
+                    type="number"
                     name="invoiceDetails.serialNumber"
                     label="Serial Number"
                     reactform={form}
@@ -127,6 +140,11 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                   description="Terms of payment"
                   isOptional={true}
                 />
+                <InvoiceFieldKeyNumberValuesSection
+                  reactform={form}
+                  name="invoiceDetails.billingDetails"
+                  label="Billing Details"
+                />
               </InvoiceAccordionContent>
             </AccordionItem>
             {/* Invoice Items */}
@@ -155,6 +173,11 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                   placeholder="Terms & Conditions - late fees, payment methods, delivery terms, etc."
                   description="Terms and conditions for the invoice"
                   isOptional={true}
+                />
+                <InvoiceFieldKeyStringValuesSection
+                  reactform={form}
+                  name="metadata.paymentInformation"
+                  label="Payment Information"
                 />
               </InvoiceAccordionContent>
             </AccordionItem>

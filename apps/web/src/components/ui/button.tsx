@@ -9,21 +9,17 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        ghost:
-          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
+        ghost: "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
-        default:
-          "bg-primary text-primary-foreground hover:bg-primary/90 button-highlighted-shadow",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90 button-highlighted-shadow",
         outline:
-          "border bg-background hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 shadow-xs",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-xs",
+          "border bg-background hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         success:
           "bg-green-500 hover:bg-green-500/80 dark:bg-green-600 text-primary-foreground dark:hover:bg-green-600/80 button-highlighted-shadow",
         warning:
           "bg-amber-500 hover:bg-amber-500/80 dark:bg-amber-600 text-primary-foreground dark:hover:bg-amber-600/80 button-highlighted-shadow",
-        destructive:
-          "bg-red-500 hover:bg-red-500/80 text-primary-foreground button-highlighted-shadow",
+        destructive: "bg-red-500 hover:bg-red-500/80 text-primary-foreground button-highlighted-shadow",
       },
       size: {
         default: "h-8 px-4 py-2 has-[>svg]:px-2.5",
@@ -51,13 +47,7 @@ function Button({
   }) {
   const Comp = asChild ? Slot : "button";
 
-  return (
-    <Comp
-      data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
-    />
-  );
+  return <Comp data-slot="button" className={cn(buttonVariants({ variant, size, className }))} {...props} />;
 }
 
 export { Button, buttonVariants };

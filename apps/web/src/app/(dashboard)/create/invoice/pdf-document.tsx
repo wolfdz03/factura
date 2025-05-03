@@ -133,17 +133,20 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
               </View>
             )}
             {/* Terms and conditions */}
-            <View style={styles.invoiceTermsAndConditionsContainer}>
-              <Text style={{ color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" }}>
-                Terms and conditions
-              </Text>
-              <Text style={styles.invoiceMetaDataDescription}>{data.metadata.terms.value}</Text>
-            </View>
+            {data.metadata.terms.value ? (
+              <View style={styles.invoiceTermsAndConditionsContainer}>
+                <Text style={{ color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" }}>Terms</Text>
+                <Text style={styles.invoiceMetaDataDescription}>{data.metadata.terms.value}</Text>
+              </View>
+            ) : null}
+
             {/* Notes */}
-            <View style={styles.invoiceNotesContainer}>
-              <Text style={{ color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" }}>Notes</Text>
-              <Text style={styles.invoiceMetaDataDescription}>{data.metadata.notes.value}</Text>
-            </View>
+            {data.metadata.notes.value ? (
+              <View style={styles.invoiceNotesContainer}>
+                <Text style={{ color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" }}>Notes</Text>
+                <Text style={styles.invoiceMetaDataDescription}>{data.metadata.notes.value}</Text>
+              </View>
+            ) : null}
           </View>
           {/* Pricing  */}
           <View style={styles.invoicePricingContainer}>
@@ -188,7 +191,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     gap: 2,
-    width: "50%",
     paddingRight: 10,
   },
   invoicePaymentInformationTitle: {
@@ -200,6 +202,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     gap: 15,
     justifyContent: "flex-end",
+    width: "50%",
   },
   invoiceMetaDataDescription: {
     fontSize: 10,
@@ -261,6 +264,7 @@ const styles = StyleSheet.create({
     gap: 6,
     padding: 10,
     width: "50%",
+    minWidth: "50%",
     justifyContent: "flex-end",
   },
   invoicePricingRow: {

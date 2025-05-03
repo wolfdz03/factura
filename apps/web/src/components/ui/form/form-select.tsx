@@ -1,41 +1,35 @@
 "use client";
 
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  useFormField,
-} from "@/components/ui/form/form";
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, useFormField } from "./form";
+import { Select, SelectContent, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FieldPath, FieldValues, UseFormReturn } from "react-hook-form";
 import { InfoIcon, TriangleAlertIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import React from "react";
 
-interface FormInputProps<
+interface FormSelectProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends React.InputHTMLAttributes<HTMLInputElement> {
+> extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   name: TName;
+  children: React.ReactNode;
   label?: string | undefined;
-  description?: string | undefined;
+  placeholder?: string | undefined;
   reactform: UseFormReturn<TFieldValues>;
-  sublabel?: string | undefined;
+  description?: string | undefined;
   isOptional?: boolean;
+  sublabel?: string | undefined;
 }
 
-export const FormInput = <
+export const FormSelect = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   className,
   isOptional = false,
   ...props
-}: FormInputProps<TFieldValues, TName>) => {
+}: FormSelectProps<TFieldValues, TName>) => {
   return (
     <FormField
       control={props.reactform.control}
@@ -56,26 +50,22 @@ export const FormInput = <
                 ) : null}
               </FormLabel>
             ) : null}
-            <FormControl>
-              <Input
-                className={cn(
-                  className,
-                  Boolean(error) && "focus-visible:ring-destructive !border-destructive ring-transparent duration-200",
-                )}
-                {...props}
-                id={props.name}
-                {...field}
-                onChange={(e) => {
-                  // Convert string to number if type is number
-                  if (props.type === "number") {
-                    const value = e.target.value === "" ? "" : Number(e.target.value);
-                    field.onChange(value);
-                  } else {
-                    field.onChange(e);
-                  }
-                }}
-              />
-            </FormControl>
+            <Select onValueChange={field.onChange} value={field.value}>
+              <FormControl>
+                <SelectTrigger
+                  className={cn(
+                    className,
+                    "w-full",
+                    //  if error
+                    props.reactform.formState.errors[props.name] ? "border-red-500" : "",
+                  )}
+                  {...props}
+                >
+                  <SelectValue placeholder={props.placeholder} />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>{props.children}</SelectContent>
+            </Select>
             {/* i.e Render form error message or form description Give priority to error else description */}
             {error || props.description ? (
               <div className="-mt-0.5">
