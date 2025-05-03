@@ -50,10 +50,7 @@ export const FormInput = <
               <FormLabel className="flex items-center">
                 <span className="text-xs capitalize">{props.label}</span>
                 {isOptional ? (
-                  <Badge
-                    size="xs"
-                    variant={Boolean(error) ? "destructive" : "secondary"}
-                  >
+                  <Badge size="xs" variant={Boolean(error) ? "destructive" : "secondary"}>
                     {props.sublabel ?? "Optional"}
                   </Badge>
                 ) : null}
@@ -63,8 +60,7 @@ export const FormInput = <
               <Input
                 className={cn(
                   className,
-                  Boolean(error) &&
-                    "focus-visible:ring-destructive !border-red-400 ring-transparent duration-200",
+                  Boolean(error) && "focus-visible:ring-destructive !border-destructive ring-transparent duration-200",
                 )}
                 {...props}
                 id={props.name}
@@ -79,7 +75,7 @@ export const FormInput = <
               <div className="-mt-0.5">
                 {error ? (
                   <div className="flex items-center gap-1">
-                    <TriangleAlertIcon className="size-2.5 text-red-500" />
+                    <TriangleAlertIcon className="text-destructive size-2.5" />
                     <FormMessage />
                   </div>
                 ) : props.description ? (

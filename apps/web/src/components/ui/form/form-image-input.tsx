@@ -61,7 +61,7 @@ export const FormImageInput = <
               <ImageInput
                 className={cn(
                   className,
-                  Boolean(error) && "focus-visible:ring-destructive !border-red-400 ring-transparent duration-200",
+                  Boolean(error) && "focus-visible:ring-destructive !border-destructive ring-transparent duration-200",
                 )}
                 onFileUpload={(file) => {
                   field.onChange(file);
@@ -75,7 +75,7 @@ export const FormImageInput = <
               <div className="-mt-0.5">
                 {error ? (
                   <div className="flex items-center gap-1">
-                    <TriangleAlertIcon className="size-2.5 text-red-500" />
+                    <TriangleAlertIcon className="text-destructive size-2.5" />
                     <FormMessage />
                   </div>
                 ) : props.description ? (
