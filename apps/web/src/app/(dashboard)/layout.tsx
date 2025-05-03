@@ -21,10 +21,10 @@ export default async function RootLayout({
     <SidebarProvider>
       <DashboardSidebar />
       <SidebarInset>
-        <div className="dash-page overflow-hidden">
+        <div className="dash-page h-full overflow-hidden">
           <DashboardSidebarHeader />
           <Suspense fallback={<div>Loading...</div>}>
-            <main>{children}</main>
+            <main className="dash-layout-page-content-height">{children}</main>
           </Suspense>
         </div>
       </SidebarInset>

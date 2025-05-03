@@ -18,6 +18,7 @@ alwaysApply: false
   - use name.client.tsx for file having "use client" or its a client component so add (.client.tsx) in end of file name.
   - Use lowercase with dashes for directories (e.g., components/auth-wizard).
   - Favor named exports for components.
+  - For all Zod Type must include "Zod" in front of every type of interace example "InvoiceSchema" should be "ZodInvoiceSchema".
   
   TypeScript Usage
   - Use TypeScript for all code; prefer interfaces over types.
