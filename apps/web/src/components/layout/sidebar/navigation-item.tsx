@@ -21,11 +21,9 @@ export function NavigationItem({
 }) {
   const pathname = usePathname();
 
-  console.log("pathname", pathname);
-
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>{title}</SidebarGroupLabel>
+      <SidebarGroupLabel className="select-none">{title}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
           const isActive = pathname === item.url;
@@ -37,8 +35,8 @@ export function NavigationItem({
                 variant={isActive ? "active" : "default"}
               >
                 <Link href={item.url}>
-                  <span className="">{item.icon}</span>
-                  <span className="text-sm font-medium tracking-tight">
+                  <span className="[&>svg]:size-4">{item.icon}</span>
+                  <span className="text-[13px] font-medium tracking-tighter">
                     {item.name}
                   </span>
                 </Link>

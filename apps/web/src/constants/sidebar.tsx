@@ -19,4 +19,11 @@ export const SIDEBAR_ITEMS: ISidebar = {
       icon: <GaugeIcon />,
     },
   ],
+  Create: [
+    {
+      name: "Create Invoice",
+      url: "/generate/invoice",
+      icon: <ReceiptIcon />,
+    },
+  ],
 };

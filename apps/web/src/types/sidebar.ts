@@ -13,3 +13,7 @@ export interface ISidebarUser {
   email: string;
   avatar: string;
 }
+
+export interface ISidebarHeader {
+  children?: React.ReactNode;
+}

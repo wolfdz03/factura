@@ -25,7 +25,7 @@ export function DashboardSidebar({
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
-              className="text-secondary-foreground"
+              className="text-secondary-foreground select-none"
               variant="default"
               size="lg"
               asChild
@@ -46,13 +46,7 @@ export function DashboardSidebar({
         ))}
       </SidebarContent>
       <SidebarFooter>
-        <NavigationUser
-          user={{
-            name: "legion",
-            email: "admin@invoicely.gg",
-            avatar: "/avatars/shadcn.jpg",
-          }}
-        />
+        <NavigationUser user={null} />
       </SidebarFooter>
     </Sidebar>
   );
