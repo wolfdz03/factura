@@ -595,6 +595,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@radix-ui/number@npm:1.1.1":
+  version: 1.1.1
+  resolution: "@radix-ui/number@npm:1.1.1"
+  checksum: 10c0/0570ad92287398e8a7910786d7cee0a998174cdd6637ba61571992897c13204adf70b9ed02d0da2af554119411128e701d9c6b893420612897b438dc91db712b
+  languageName: node
+  linkType: hard
+
 "@radix-ui/primitive@npm:1.1.2":
   version: 1.1.2
   resolution: "@radix-ui/primitive@npm:1.1.2"
@@ -1053,6 +1060,33 @@ __metadata:
     "@types/react-dom":
       optional: true
   checksum: 10c0/ac5d50146f1fb04ad5b53c9a632b9b95ca4698aae994e93b94e169c59268960a4c50f8c6894edb9c8c75bfd643081e07b6d0c6f4e7a0b80a5258d7471c0db22e
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-scroll-area@npm:^1.2.6":
+  version: 1.2.6
+  resolution: "@radix-ui/react-scroll-area@npm:1.2.6"
+  dependencies:
+    "@radix-ui/number": "npm:1.1.1"
+    "@radix-ui/primitive": "npm:1.1.2"
+    "@radix-ui/react-compose-refs": "npm:1.1.2"
+    "@radix-ui/react-context": "npm:1.1.2"
+    "@radix-ui/react-direction": "npm:1.1.1"
+    "@radix-ui/react-presence": "npm:1.1.4"
+    "@radix-ui/react-primitive": "npm:2.1.0"
+    "@radix-ui/react-use-callback-ref": "npm:1.1.1"
+    "@radix-ui/react-use-layout-effect": "npm:1.1.1"
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 10c0/a568d4bf605cdb044d8b940b3ba2a31532b5ce412abde4fdc1fbca30a9f0f553699352c99383359154d1913ac7d736f58d965672dd8d4871fd19ed14d99d9fa7
   languageName: node
   linkType: hard
 
@@ -6791,6 +6825,7 @@ __metadata:
     "@radix-ui/react-dialog": "npm:^1.1.11"
     "@radix-ui/react-dropdown-menu": "npm:^2.1.12"
     "@radix-ui/react-label": "npm:^2.1.4"
+    "@radix-ui/react-scroll-area": "npm:^1.2.6"
     "@radix-ui/react-separator": "npm:^1.1.4"
     "@radix-ui/react-slot": "npm:^1.2.0"
     "@radix-ui/react-tooltip": "npm:^1.2.4"

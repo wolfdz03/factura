@@ -166,3 +166,11 @@ button {
 .dash-layout-page-content-height {
   @apply h-[calc(100svh-48px-18px)];
 }
+
+.scroll-bar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-bar-hidden {
+  scrollbar-width: none;
+}

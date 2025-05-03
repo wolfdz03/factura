@@ -9,14 +9,15 @@ import {
   AccordionTriggerProps,
 } from "@/components/ui/accordion";
 import { ZodCreateInvoiceSchema, createInvoiceSchemaDefaultValues } from "@/zod-schemas/invoice/create-invoice";
+import { UseFormReturn, useFieldArray } from "react-hook-form";
 import { FormInput } from "@/components/ui/form/form-input";
 import { Form } from "@/components/ui/form/form";
 import { Button } from "@/components/ui/button";
-import { UseFormReturn } from "react-hook-form";
 
 import { FormImageInput } from "@/components/ui/form/form-image-input";
 import { FormTextarea } from "@/components/ui/form/form-textarea";
 import FormRow from "@/components/ui/form/form-row";
+import { Trash, Plus } from "lucide-react";
 import React from "react";
 
 interface InvoiceFormProps {
@@ -31,7 +32,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
   console.log("FormValues", form.getValues());
 
   return (
-    <div className="flex h-full flex-col overflow-y-scroll">
+    <div className="scroll-bar-hidden flex h-full flex-col overflow-y-scroll">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit, console.error)} className="space-y-8">
           <Accordion type="single" collapsible defaultValue="company-details" className="w-full divide-y border-b">
@@ -204,8 +205,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
             <AccordionItem value="invoice-items">
               <InvoiceAccordionTrigger>Invoice Items</InvoiceAccordionTrigger>
               <InvoiceAccordionContent>
-                <p className="text-sm text-gray-500">Add invoice items using the item form below</p>
-                {/* Note: Items are typically added dynamically, we'll need a separate component for this */}
+                <InvoiceItemsSection form={form} />
               </InvoiceAccordionContent>
             </AccordionItem>
             {/* Additional Information */}
@@ -241,6 +241,214 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
 };
 
 export default InvoiceForm;
+
+interface InvoiceItemsSectionProps {
+  form: UseFormReturn<ZodCreateInvoiceSchema>;
+}
+
+const InvoiceItemsSection: React.FC<InvoiceItemsSectionProps> = ({ form }) => {
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "items",
+  });
+
+  const addNewItem = () => {
+    append({
+      name: "",
+      description: "",
+      quantity: 1,
+      unitPrice: 0,
+    });
+  };
+
+  // Calculate subtotal from all items
+  const items = form.watch("items") || [];
+  const subtotal = items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
+
+  // Get current values for calculations
+  const discountType = form.watch("invoiceDetails.discount.type");
+  const discountValue = form.watch("invoiceDetails.discount.value") || 0;
+  const taxType = form.watch("invoiceDetails.tax.type");
+  const taxValue = form.watch("invoiceDetails.tax.value") || 0;
+  const shippingType = form.watch("invoiceDetails.shipping.type");
+  const shippingValue = form.watch("invoiceDetails.shipping.value") || 0;
+  const amountPaid = form.watch("invoiceDetails.amountPaid.value") || 0;
+  const currency = form.watch("invoiceDetails.currency") || "USD";
+
+  // Calculate discount amount
+  const discountAmount = discountType === "percentage" ? (subtotal * discountValue) / 100 : discountValue;
+
+  // Calculate tax amount
+  const taxAmount = taxType === "percentage" ? ((subtotal - discountAmount) * taxValue) / 100 : taxValue;
+
+  // Calculate shipping amount
+  const shippingAmount = shippingType === "percentage" ? (subtotal * shippingValue) / 100 : shippingValue;
+
+  // Calculate total
+  const total = subtotal - discountAmount + taxAmount + shippingAmount;
+
+  // Calculate balance due
+  const balanceDue = total - amountPaid;
+
+  return (
+    <div className="space-y-4">
+      <p className="text-sm text-gray-500">Add invoice items using the form below</p>
+
+      {fields.length === 0 && (
+        <div className="flex flex-col items-center justify-center rounded-md border border-dashed p-8">
+          <p className="mb-4 text-sm text-gray-500">No items added yet</p>
+          <Button type="button" onClick={addNewItem} variant="outline" className="gap-2">
+            <Plus className="size-4" />
+            Add First Item
+          </Button>
+        </div>
+      )}
+
+      {fields.map((field, index) => (
+        <div key={field.id} className="rounded-md border p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <h4 className="text-sm font-medium">Item #{index + 1}</h4>
+            <Button
+              type="button"
+              onClick={() => remove(index)}
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0 text-gray-500 hover:text-red-500"
+            >
+              <Trash className="size-4" />
+              <span className="sr-only">Remove item</span>
+            </Button>
+          </div>
+
+          <div className="space-y-3">
+            <FormInput
+              name={`items.${index}.name`}
+              label="Item Name"
+              reactform={form}
+              placeholder="Product or service name"
+            />
+
+            <FormTextarea
+              name={`items.${index}.description`}
+              label="Description"
+              reactform={form}
+              placeholder="Detailed description of the product or service"
+              className="h-20"
+            />
+
+            <FormRow>
+              <FormInput
+                name={`items.${index}.quantity`}
+                label="Quantity"
+                reactform={form}
+                type="number"
+                min="1"
+                placeholder="1"
+              />
+              <FormInput
+                name={`items.${index}.unitPrice`}
+                label="Unit Price"
+                reactform={form}
+                type="number"
+                min="0"
+                step="0.01"
+                placeholder="0.00"
+              />
+            </FormRow>
+
+            {/* Line Total */}
+            <div className="flex justify-end">
+              <div className="rounded-md bg-gray-50 px-3 py-1.5 text-sm dark:bg-gray-800">
+                <span className="mr-2 text-gray-500">Line Total:</span>
+                <span className="font-medium">
+                  {currency} {((items[index]?.quantity || 0) * (items[index]?.unitPrice || 0)).toFixed(2)}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+
+      {fields.length > 0 && (
+        <>
+          <Button type="button" onClick={addNewItem} variant="outline" className="mt-4 w-full gap-2">
+            <Plus className="size-4" />
+            Add Another Item
+          </Button>
+
+          {/* Invoice Summary */}
+          <div className="mt-6 rounded-md border p-4">
+            <h4 className="mb-4 text-sm font-medium">Invoice Summary</h4>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-gray-500">Subtotal:</span>
+                <span>
+                  {currency} {subtotal.toFixed(2)}
+                </span>
+              </div>
+
+              <div className="flex justify-between">
+                <span className="text-gray-500">
+                  Discount ({discountType === "percentage" ? `${discountValue}%` : `${currency} ${discountValue}`}):
+                </span>
+                <span className="text-red-500">
+                  -{currency} {discountAmount.toFixed(2)}
+                </span>
+              </div>
+
+              <div className="flex justify-between">
+                <span className="text-gray-500">
+                  Tax ({taxType === "percentage" ? `${taxValue}%` : `${currency} ${taxValue}`}):
+                </span>
+                <span>
+                  {currency} {taxAmount.toFixed(2)}
+                </span>
+              </div>
+
+              <div className="flex justify-between">
+                <span className="text-gray-500">
+                  Shipping ({shippingType === "percentage" ? `${shippingValue}%` : `${currency} ${shippingValue}`}):
+                </span>
+                <span>
+                  {currency} {shippingAmount.toFixed(2)}
+                </span>
+              </div>
+
+              <div className="border-t pt-2">
+                <div className="flex justify-between font-medium">
+                  <span>Total:</span>
+                  <span>
+                    {currency} {total.toFixed(2)}
+                  </span>
+                </div>
+              </div>
+
+              {amountPaid > 0 && (
+                <>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Amount Paid:</span>
+                    <span className="text-green-500">
+                      -{currency} {amountPaid.toFixed(2)}
+                    </span>
+                  </div>
+
+                  <div className="border-t pt-2">
+                    <div className="flex justify-between font-medium">
+                      <span>Balance Due:</span>
+                      <span>
+                        {currency} {balanceDue.toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
 
 const InvoiceAccordionTrigger = ({ children, ...props }: AccordionTriggerProps) => {
   return (
