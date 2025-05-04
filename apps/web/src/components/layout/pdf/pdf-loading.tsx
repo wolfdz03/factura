@@ -3,7 +3,7 @@ import React from "react";
 
 const PDFLoading = () => {
   return (
-    <div className="flex h-full items-center justify-center bg-white">
+    <div className="bg-background flex h-full items-center justify-center">
       <div className="flex flex-col items-center gap-4 text-center">
         <div className="bg-muted-foreground/10 text-muted-forebg-muted-foreground flex h-14 w-14 items-center justify-center rounded-lg">
           <FileAlertIcon />
