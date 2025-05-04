@@ -3000,6 +3000,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"currency-symbol-map@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "currency-symbol-map@npm:5.1.0"
+  checksum: 10c0/1c6442efe74fc407ed7d5b5b936487e2ab276400ff7a3dceb283a3f688e83613d32c2ba719757d12944b7d9e6c74722bb8de65b5f7c914d35a9119eafec94651
+  languageName: node
+  linkType: hard
+
 "damerau-levenshtein@npm:^1.0.8":
   version: 1.0.8
   resolution: "damerau-levenshtein@npm:1.0.8"
@@ -8121,6 +8128,7 @@ __metadata:
     "@types/react-dom": "npm:^19"
     class-variance-authority: "npm:^0.7.1"
     clsx: "npm:^2.1.1"
+    currency-symbol-map: "npm:^5.1.0"
     date-fns: "npm:^4.1.0"
     eslint: "npm:^9"
     eslint-config-next: "npm:15.3.1"

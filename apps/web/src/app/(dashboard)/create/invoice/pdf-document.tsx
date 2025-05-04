@@ -3,19 +3,21 @@
 
 import { Document, Page, Text, View, StyleSheet, Image, Font } from "@react-pdf/renderer";
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
+import { formatCurrencyText } from "@/constants/currency";
 import { toWords } from "number-to-words";
 import { format } from "date-fns";
 import React from "react";
 
+// Register fonts
 Font.register({
-  family: "JetbrainsMono",
+  family: "GeistMono",
   fonts: [
     {
-      src: "/fonts/jetbrains/JetBrainsMono-Light.ttf",
+      src: "/fonts/geistmono/GeistMono-Light.ttf",
       fontWeight: "light",
     },
     {
-      src: "/fonts/jetbrains/JetBrainsMono-Regular.ttf",
+      src: "/fonts/geistmono/GeistMono-Regular.ttf",
       fontWeight: "normal",
     },
   ],
@@ -53,10 +55,6 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
   const subtotal = data.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
 
   const total = subtotal;
-
-  const formatCurrency = (amount: number) => {
-    return `${data.invoiceDetails.currency} ${amount.toFixed(2)}`;
-  };
 
   const themeColor = { color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" };
 
@@ -147,8 +145,10 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
                 <Text style={styles.detailsValue}>{item.description}</Text>
               </View>
               <Text style={styles.itemQty}>{item.quantity}</Text>
-              <Text style={styles.itemPrice}>{formatCurrency(item.unitPrice)}</Text>
-              <Text style={styles.itemTotal}>{formatCurrency(item.quantity * item.unitPrice)}</Text>
+              <Text style={styles.itemPrice}>{formatCurrencyText(data.invoiceDetails.currency, item.unitPrice)}</Text>
+              <Text style={styles.itemTotal}>
+                {formatCurrencyText(data.invoiceDetails.currency, item.quantity * item.unitPrice)}
+              </Text>
             </View>
           ))}
         </View>
@@ -197,20 +197,22 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
             )}
             <View style={styles.pricingRow}>
               <Text style={styles.pricingLabel}>Subtotal</Text>
-              <Text style={styles.pricingValue}>{formatCurrency(subtotal)}</Text>
+              <Text style={styles.pricingValue}>{formatCurrencyText(data.invoiceDetails.currency, subtotal)}</Text>
             </View>
             {data.invoiceDetails.billingDetails.map((billingDetail, index) => {
               return (
                 <View key={index} style={styles.pricingRow}>
                   <Text style={styles.pricingLabel}>{billingDetail.label}</Text>
-                  <Text style={styles.pricingValue}>{formatCurrency(billingDetail.value)}</Text>
+                  <Text style={styles.pricingValue}>
+                    {formatCurrencyText(data.invoiceDetails.currency, billingDetail.value)}
+                  </Text>
                 </View>
               );
             })}
             <View style={styles.hr}></View>
             <View style={styles.pricingRow}>
               <Text style={styles.pricingTotal}>Total</Text>
-              <Text style={styles.pricingTotalValue}>{formatCurrency(total)}</Text>
+              <Text style={styles.pricingTotalValue}>{formatCurrencyText(data.invoiceDetails.currency, total)}</Text>
             </View>
             <View style={styles.totalWordsContainer}>
               <Text style={styles.totalWordsLabel}>Invoice Total (in words)</Text>
@@ -303,7 +305,7 @@ const styles = StyleSheet.create({
   invoiceTitle: {
     fontSize: 24,
     fontWeight: "semibold",
-    fontFamily: "JetbrainsMono",
+    fontFamily: "GeistMono",
     letterSpacing: -1,
   },
   logo: {
@@ -362,10 +364,10 @@ const styles = StyleSheet.create({
     gap: 2,
     width: "60%",
   },
-  itemName: { width: "60%" },
-  itemQty: { width: "10%", textAlign: "center", fontFamily: "JetbrainsMono", letterSpacing: -1, fontWeight: "light" },
-  itemPrice: { width: "15%", textAlign: "right", fontFamily: "JetbrainsMono", letterSpacing: -1, fontWeight: "light" },
-  itemTotal: { width: "15%", textAlign: "right", fontFamily: "JetbrainsMono", letterSpacing: -1, fontWeight: "light" },
+  itemName: { width: "60%", fontFamily: "GeistMono", fontWeight: "light", letterSpacing: -1 },
+  itemQty: { width: "10%", textAlign: "center", fontFamily: "GeistMono", letterSpacing: -1, fontWeight: "light" },
+  itemPrice: { width: "15%", textAlign: "right", fontFamily: "GeistMono", letterSpacing: -1, fontWeight: "light" },
+  itemTotal: { width: "15%", textAlign: "right", fontFamily: "GeistMono", letterSpacing: -1, fontWeight: "light" },
 
   // Metadata and pricing styles
   metadataPricingContainer: {
@@ -425,7 +427,7 @@ const styles = StyleSheet.create({
   },
   pricingValue: {
     fontSize: 10,
-    fontFamily: "JetbrainsMono",
+    fontFamily: "GeistMono",
     letterSpacing: -1,
     color: "#71717B",
   },
@@ -436,7 +438,7 @@ const styles = StyleSheet.create({
   pricingTotalValue: {
     fontSize: 18,
     fontWeight: "semibold",
-    fontFamily: "JetbrainsMono",
+    fontFamily: "GeistMono",
     letterSpacing: -1,
   },
   totalWordsContainer: {

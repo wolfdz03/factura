@@ -8,10 +8,14 @@ import InvoiceItemsSection from "./invoiceHelpers/invoice-items-section";
 import { FormImageInput } from "@/components/ui/form/form-image-input";
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { FormTextarea } from "@/components/ui/form/form-textarea";
+import { FormSelect } from "@/components/ui/form/form-select";
+import { currenciesWithSymbols } from "@/constants/currency";
 import { FormInput } from "@/components/ui/form/form-input";
 import FormRow from "@/components/ui/form/form-row";
+import { SelectItem } from "@/components/ui/select";
 import { Form } from "@/components/ui/form/form";
 import { UseFormReturn } from "react-hook-form";
+import { Badge } from "@/components/ui/badge";
 import React from "react";
 
 interface InvoiceFormProps {
@@ -27,7 +31,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
     <div className="scroll-bar-hidden flex h-full flex-col overflow-y-scroll">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <Accordion type="single" collapsible defaultValue="invoice-items" className="w-full divide-y border-b">
+          <Accordion type="single" collapsible defaultValue="company-details" className="w-full divide-y border-b">
             {/* Company Details */}
             <AccordionItem value="company-details">
               <InvoiceAccordionTrigger>Company Details</InvoiceAccordionTrigger>
@@ -80,13 +84,22 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
             <AccordionItem value="invoice-details">
               <InvoiceAccordionTrigger>Invoice Details</InvoiceAccordionTrigger>
               <InvoiceAccordionContent>
-                <FormInput
+                <FormSelect
                   name="invoiceDetails.currency"
+                  description="Currency code for the invoice"
+                  defaultValue="USD"
                   label="Currency"
                   reactform={form}
-                  placeholder="USD"
-                  description="Currency code for the invoice"
-                />
+                >
+                  {Object.entries(currenciesWithSymbols).map(([key, value]) => (
+                    <SelectItem key={key} value={key}>
+                      <span>{key}</span>
+                      <Badge className="bg-primary/15 text-primary rounded" variant="default">
+                        {value}
+                      </Badge>
+                    </SelectItem>
+                  ))}
+                </FormSelect>
                 <FormRow>
                   <FormInput
                     name="invoiceDetails.prefix"
