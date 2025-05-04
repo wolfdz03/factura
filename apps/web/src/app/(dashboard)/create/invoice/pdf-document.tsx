@@ -65,9 +65,11 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
             </View>
           </View>
           {/* Invoice Logo */}
-          <View style={styles.flexCenter}>
-            <Image style={styles.logo} src={"/official/logo-icon.png"} />
-          </View>
+          {data.companyDetails.logo && (
+            <View style={styles.flexCenter}>
+              <Image style={styles.logo} src={data.companyDetails.logo} />
+            </View>
+          )}
         </View>
         {/* Invoice billing details */}
         <View style={styles.billingDetailsContainer}>
@@ -260,9 +262,9 @@ const styles = StyleSheet.create({
     fontWeight: "semibold",
   },
   logo: {
-    width: 80,
     height: 80,
     aspectRatio: 1,
+    borderRadius: 8,
   },
 
   // Billing styles
