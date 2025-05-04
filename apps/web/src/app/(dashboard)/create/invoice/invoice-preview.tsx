@@ -20,14 +20,14 @@ const PDFViewer = ({ url }: { url: string | null }) => {
 
   // Show empty state
   if (!url) {
-    return <PDFError message="No document to display" />;
+    return null;
   }
 
   return (
     <div className="flex h-full w-full items-center justify-center p-4">
       <Document
         file={url}
-        loading={<PDFLoading />}
+        loading={<></>}
         // onLoadSuccess={() => {
         //   console.log("PDF document loaded successfully");
         // }}
@@ -41,7 +41,6 @@ const PDFViewer = ({ url }: { url: string | null }) => {
           <Page pageNumber={1} width={isMobile ? 400 : 600} renderTextLayer={false} renderAnnotationLayer={false} />
         )}
       </Document>
-      {error && <PDFError message={error.message} />}
     </div>
   );
 };
