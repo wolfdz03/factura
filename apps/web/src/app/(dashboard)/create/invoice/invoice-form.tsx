@@ -110,7 +110,6 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                     isOptional={true}
                   />
                   <FormInput
-                    type="number"
                     name="invoiceDetails.serialNumber"
                     label="Serial Number"
                     reactform={form}
