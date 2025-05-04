@@ -58,10 +58,12 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
     }
   }, []);
 
+  // Checking if the client is loaded
   useEffect(() => {
     setIsClient(false);
   }, []);
 
+  // Debounce the form data every 1000ms
   useEffect(() => {
     const subscription = form.watch((value) => {
       // Clear any existing timer
@@ -69,7 +71,6 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
         clearTimeout(debounceTimerRef.current);
       }
 
-      // Set a new timer to update data after 1000ms of no changes
       debounceTimerRef.current = setTimeout(() => {
         setData(value as ZodCreateInvoiceSchema);
       }, 1000);
@@ -84,10 +85,12 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
     };
   }, [form]);
 
+  // If the client is not loaded, show a loading state
   if (isClient) {
     return <div>Loading...</div>;
   }
 
+  // If there is an error loading the PDF, show an error message
   if (pdfError) {
     return (
       <div className="flex h-full flex-col items-center justify-center p-4 text-red-500">
@@ -101,7 +104,10 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
     <div className="scroll-bar-hidden h-full w-full overflow-y-auto bg-gray-100">
       <BlobProvider document={<InvoicePDF data={data} />}>
         {({ url, loading, error }) => {
+          // If the PDF is still generating, show a loading state
           if (loading) return <div className="flex h-full items-center justify-center">Generating PDF...</div>;
+
+          // If there is an error generating the PDF, show an error message
           if (error) {
             return (
               <div className="flex h-full items-center justify-center text-red-500">
