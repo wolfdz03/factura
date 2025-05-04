@@ -1,6 +1,6 @@
 "use client";
 
-import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
+import { createInvoiceSchema, ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
 import React, { useEffect, useState, useCallback } from "react";
 import { BlobProvider } from "@react-pdf/renderer";
 import { Document, Page, pdfjs } from "react-pdf";
@@ -47,7 +47,13 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSetData = useCallback(
     debounce((value: ZodCreateInvoiceSchema) => {
-      setData(value);
+      // First verify the data if it matches the schema
+      const isDataValid = createInvoiceSchema.safeParse(value);
+      if (isDataValid.success) {
+        setData(value);
+      } else {
+        console.error("[ERROR]: Invalid data:", isDataValid.error);
+      }
     }, 1000),
     [],
   );

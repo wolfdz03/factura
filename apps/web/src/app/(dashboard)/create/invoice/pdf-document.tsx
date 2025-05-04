@@ -22,6 +22,8 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
     return `${data.invoiceDetails.currency} ${amount.toFixed(2)}`;
   };
 
+  const themeColor = { color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" };
+
   return (
     <Document
       title={`Invoice-${data.invoiceDetails.prefix}${data.invoiceDetails.serialNumber}`}
@@ -32,62 +34,62 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <View style={styles.invoiceTitle}>
-            <Text style={{ color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" }}>
+            <Text style={themeColor}>
               Invoice {data.invoiceDetails.prefix}
               {data.invoiceDetails.serialNumber}
             </Text>
           </View>
         </View>
-        <View style={styles.invoiceDetailsAndLogoContainer}>
+        <View style={styles.flexRowSpaceBetween}>
           {/* Invoice Details */}
-          <View style={styles.invoiceDetailsContainer}>
-            <View style={styles.invoiceDetailsRow}>
-              <Text style={{ minWidth: 100, ...styles.invoiceDetailsTitle }}>Invoice Number</Text>
-              <Text style={styles.invoiceDetailsValue}>{data.invoiceDetails.serialNumber}</Text>
+          <View style={styles.flexColumnGap}>
+            <View style={styles.detailsRow}>
+              <Text style={styles.detailsTitleWithWidth}>Invoice Number</Text>
+              <Text style={styles.detailsValue}>{data.invoiceDetails.serialNumber}</Text>
             </View>
-            <View style={styles.invoiceDetailsRow}>
-              <Text style={{ minWidth: 100, ...styles.invoiceDetailsTitle }}>Invoice Date</Text>
-              <Text style={styles.invoiceDetailsValue}>{format(data.invoiceDetails.date, "dd/MM/yyyy")}</Text>
+            <View style={styles.detailsRow}>
+              <Text style={styles.detailsTitleWithWidth}>Invoice Date</Text>
+              <Text style={styles.detailsValue}>{format(data.invoiceDetails.date, "dd/MM/yyyy")}</Text>
             </View>
-            <View style={styles.invoiceDetailsRow}>
-              <Text style={{ minWidth: 100, ...styles.invoiceDetailsTitle }}>Invoice Due Date</Text>
-              <Text style={styles.invoiceDetailsValue}>{format(data.invoiceDetails.dueDate, "dd/MM/yyyy")}</Text>
+            <View style={styles.detailsRow}>
+              <Text style={styles.detailsTitleWithWidth}>Invoice Due Date</Text>
+              <Text style={styles.detailsValue}>{format(data.invoiceDetails.dueDate, "dd/MM/yyyy")}</Text>
             </View>
-            <View style={styles.invoiceDetailsRow}>
-              <Text style={{ minWidth: 100, ...styles.invoiceDetailsTitle }}>Payment Terms</Text>
-              <Text style={styles.invoiceDetailsValue}>{data.invoiceDetails.paymentTerms}</Text>
+            <View style={styles.detailsRow}>
+              <Text style={styles.detailsTitleWithWidth}>Payment Terms</Text>
+              <Text style={styles.detailsValue}>{data.invoiceDetails.paymentTerms}</Text>
             </View>
-            <View style={styles.invoiceDetailsRow}>
-              <Text style={{ minWidth: 100, ...styles.invoiceDetailsTitle }}>Currency</Text>
-              <Text style={styles.invoiceDetailsValue}>{data.invoiceDetails.currency}</Text>
+            <View style={styles.detailsRow}>
+              <Text style={styles.detailsTitleWithWidth}>Currency</Text>
+              <Text style={styles.detailsValue}>{data.invoiceDetails.currency}</Text>
             </View>
           </View>
           {/* Invoice Logo */}
-          <View style={styles.invoiceLogoContainer}>
-            <Image style={styles.invoiceLogo} src={"/official/logo-icon.png"} />
+          <View style={styles.flexCenter}>
+            <Image style={styles.logo} src={"/official/logo-icon.png"} />
           </View>
         </View>
         {/* Invoice billing details */}
-        <View style={styles.invoiceBillingDetailsContainer}>
-          <View style={styles.invoiceBillingContainer}>
-            <Text style={{ color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" }}>Billed By</Text>
-            <Text style={styles.invoiceBillingName}>{data.companyDetails.name}</Text>
-            <Text style={styles.invoiceBillingAddress}>{data.companyDetails.address.value}</Text>
+        <View style={styles.billingDetailsContainer}>
+          <View style={styles.billingBox}>
+            <Text style={themeColor}>Billed By</Text>
+            <Text style={styles.billingName}>{data.companyDetails.name}</Text>
+            <Text style={styles.detailsValue}>{data.companyDetails.address.value}</Text>
             {data.companyDetails.metadata.map((metadata) => (
-              <View key={metadata.label} style={styles.invoiceDetailsRow}>
-                <Text style={styles.invoiceDetailsTitle}>{metadata.label}</Text>
-                <Text style={styles.invoiceDetailsValue}>{metadata.value}</Text>
+              <View key={metadata.label} style={styles.detailsRow}>
+                <Text style={styles.detailsTitle}>{metadata.label}</Text>
+                <Text style={styles.detailsValue}>{metadata.value}</Text>
               </View>
             ))}
           </View>
-          <View style={styles.invoiceBillingContainer}>
-            <Text style={{ color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" }}>Billed To</Text>
-            <Text style={styles.invoiceBillingName}>{data.companyDetails.name}</Text>
-            <Text style={styles.invoiceBillingAddress}>{data.companyDetails.address.value}</Text>
+          <View style={styles.billingBox}>
+            <Text style={themeColor}>Billed To</Text>
+            <Text style={styles.billingName}>{data.companyDetails.name}</Text>
+            <Text style={styles.detailsValue}>{data.companyDetails.address.value}</Text>
             {data.clientDetails.metadata.map((metadata) => (
-              <View key={metadata.label} style={styles.invoiceDetailsRow}>
-                <Text style={styles.invoiceDetailsTitle}>{metadata.label}</Text>
-                <Text style={styles.invoiceDetailsValue}>{metadata.value}</Text>
+              <View key={metadata.label} style={styles.detailsRow}>
+                <Text style={styles.detailsTitle}>{metadata.label}</Text>
+                <Text style={styles.detailsValue}>{metadata.value}</Text>
               </View>
             ))}
           </View>
@@ -104,7 +106,7 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
             <View key={index} style={styles.tableRow}>
               <View style={styles.itemNameContainer}>
                 <Text style={styles.itemName}>{item.name}</Text>
-                <Text style={styles.invoiceDetailsValue}>{item.description}</Text>
+                <Text style={styles.detailsValue}>{item.description}</Text>
               </View>
               <Text style={styles.itemQty}>{item.quantity}</Text>
               <Text style={styles.itemPrice}>{formatCurrency(item.unitPrice)}</Text>
@@ -113,57 +115,59 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
           ))}
         </View>
         {/* Invoice meta data and pricing */}
-        <View style={styles.invoiceMetaDataAndPricingContainer}>
-          <View style={styles.invoiceMetaDataContainer}>
+        <View style={styles.metadataPricingContainer}>
+          <View style={styles.metadataContainer}>
             {/* Payment Information */}
-            {data.metadata.paymentInformation.length > 0 && (
-              <View style={styles.invoicePaymentInformationContainer}>
-                <Text style={{ color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" }}>
-                  Payment Information
-                </Text>
-                <View style={styles.invoicePaymentInformationColumnContainer}>
-                  {data.metadata.paymentInformation.map((paymentInformation) => (
-                    <View key={paymentInformation.label} style={styles.invoiceDetailsRow}>
-                      <Text style={{ minWidth: 100, ...styles.invoiceDetailsTitle }}>{paymentInformation.label}</Text>
-                      <Text style={styles.invoiceDetailsValue}>{paymentInformation.value}</Text>
+            <View style={data.metadata.paymentInformation.length ? styles.sectionContainer : styles.displayNone}>
+              <Text style={themeColor}>Payment Information</Text>
+              <View style={styles.flexColumnGapSm}>
+                {data.metadata.paymentInformation.map((paymentInformation, index) => {
+                  if (!paymentInformation.label || !paymentInformation.value) return null;
+
+                  return (
+                    <View key={index} style={styles.detailsRow}>
+                      <Text style={styles.detailsTitleWithWidth}>{paymentInformation.label}</Text>
+                      <Text style={styles.detailsValue}>{paymentInformation.value}</Text>
                     </View>
-                  ))}
-                </View>
+                  );
+                })}
               </View>
-            )}
+            </View>
             {/* Terms and conditions */}
-            <View style={data.metadata.terms.value ? styles.invoiceTermsAndConditionsContainer : styles.displayNone}>
-              <Text style={{ color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" }}>Terms</Text>
-              <Text style={styles.invoiceMetaDataDescription}>{data.metadata.terms.value}</Text>
+            <View style={data.metadata.terms.value ? styles.sectionContainer : styles.displayNone}>
+              <Text style={themeColor}>Terms</Text>
+              <Text style={styles.metadataDescription}>{data.metadata.terms.value}</Text>
             </View>
             {/* Notes */}
-            <View style={data.metadata.notes.value ? styles.invoiceNotesContainer : styles.displayNone}>
-              <Text style={{ color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" }}>Notes</Text>
-              <Text style={styles.invoiceMetaDataDescription}>{data.metadata.notes.value}</Text>
+            <View style={data.metadata.notes.value ? styles.sectionContainer : styles.displayNone}>
+              <Text style={themeColor}>Notes</Text>
+              <Text style={styles.metadataDescription}>{data.metadata.notes.value}</Text>
             </View>
           </View>
           {/* Pricing  */}
-          <View style={styles.invoicePricingContainer}>
-            <View style={styles.invoicePricingRow}>
-              <Text style={styles.invoicePricingRowTitle}>Subtotal</Text>
-              <Text style={styles.invoicePricingRowValue}>{formatCurrency(subtotal)}</Text>
+          <View style={styles.pricingContainer}>
+            <View style={styles.pricingRow}>
+              <Text style={styles.pricingLabel}>Subtotal</Text>
+              <Text style={styles.pricingValue}>{formatCurrency(subtotal)}</Text>
             </View>
-            {data.invoiceDetails.billingDetails.map((billingDetail) => (
-              <View key={billingDetail.label} style={styles.invoicePricingRow}>
-                <Text style={styles.invoicePricingRowTitle}>{billingDetail.label}</Text>
-                <Text style={styles.invoicePricingRowValue}>{formatCurrency(billingDetail.value)}</Text>
-              </View>
-            ))}
+            {data.invoiceDetails.billingDetails.map((billingDetail, index) => {
+              if (!billingDetail.label || !billingDetail.value) return null;
+
+              return (
+                <View key={index} style={styles.pricingRow}>
+                  <Text style={styles.pricingLabel}>{billingDetail.label}</Text>
+                  <Text style={styles.pricingValue}>{formatCurrency(billingDetail.value)}</Text>
+                </View>
+              );
+            })}
             <View style={styles.hr}></View>
-            <View style={styles.invoicePricingRow}>
-              <Text style={styles.invoicePricingTotal}>Total</Text>
-              <Text style={styles.invoicePricingTotalValue}>{formatCurrency(total)}</Text>
+            <View style={styles.pricingRow}>
+              <Text style={styles.pricingTotal}>Total</Text>
+              <Text style={styles.pricingTotalValue}>{formatCurrency(total)}</Text>
             </View>
-            <View style={styles.invoicePricingTotalWordsContainer}>
-              <Text style={styles.invoicePricingTotalWords}>Invoice Total (in words)</Text>
-              <Text style={styles.invoicePricingTotalWordsValue}>
-                Fourty-five thousand, four hundred and fifty-four
-              </Text>
+            <View style={styles.totalWordsContainer}>
+              <Text style={styles.totalWordsLabel}>Invoice Total (in words)</Text>
+              <Text style={styles.totalWordsValue}>Fourty-five thousand, four hundred and fifty-four</Text>
             </View>
           </View>
         </View>
@@ -171,86 +175,71 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
     </Document>
   );
 };
+
 export default InvoicePDF;
 
 // Define styles for the PDF
 const styles = StyleSheet.create({
+  // Common styles
+  page: {
+    padding: 20,
+    fontSize: 12,
+    fontFamily: "Roboto",
+    backgroundColor: "white",
+  },
+  flexRowSpaceBetween: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 18,
+  },
+  flexColumnGap: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 5,
+  },
+  flexColumnGapSm: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 2,
+    marginTop: 4,
+  },
+  flexCenter: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  detailsRow: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+  detailsTitle: {
+    fontSize: 10,
+    fontWeight: 600,
+  },
+  detailsTitleWithWidth: {
+    fontSize: 10,
+    fontWeight: 600,
+    minWidth: 100,
+  },
+  detailsValue: {
+    fontSize: 10,
+    fontWeight: "normal",
+    color: "#71717B",
+  },
+  sectionContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 2,
+    paddingRight: 10,
+  },
   displayNone: {
     display: "none",
     height: 0,
     margin: 0,
     overflow: "hidden",
-  },
-  invoicePaymentInformationColumnContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 2,
-    marginTop: 4,
-  },
-  invoicePaymentInformationContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 2,
-    paddingRight: 10,
-  },
-  invoicePaymentInformationTitle: {
-    fontSize: 10,
-    fontWeight: "semibold",
-  },
-  invoiceMetaDataContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 15,
-    justifyContent: "flex-end",
-    width: "50%",
-  },
-  invoiceMetaDataDescription: {
-    fontSize: 10,
-    fontWeight: "normal",
-    color: "#71717B",
-    marginTop: 4,
-  },
-  invoiceTermsAndConditionsContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 2,
-    width: "50%",
-    paddingRight: 10,
-  },
-  invoiceNotesContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 2,
-    width: "50%",
-    paddingRight: 10,
-  },
-  invoiceMetaDataAndPricingContainer: {
-    display: "flex",
-    flexDirection: "row",
-    gap: 50,
-  },
-  invoicePricingTotalWordsContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 2,
-    marginTop: 4,
-  },
-  invoicePricingTotalWords: {
-    fontSize: 8,
-    fontWeight: "normal",
-    color: "#71717B",
-  },
-  invoicePricingTotalWordsValue: {
-    fontSize: 10,
-    fontWeight: "normal",
-  },
-  invoicePricingTotal: {
-    fontSize: 12,
-    fontWeight: "semibold",
-  },
-  invoicePricingTotalValue: {
-    fontSize: 18,
-    fontWeight: "semibold",
   },
   hr: {
     borderBottomWidth: 1,
@@ -258,37 +247,8 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
   },
-  invoicePricingContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 6,
-    padding: 10,
-    width: "50%",
-    minWidth: "50%",
-    justifyContent: "flex-end",
-  },
-  invoicePricingRow: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  invoicePricingRowTitle: {
-    fontSize: 10,
-    fontWeight: "semibold",
-  },
-  invoicePricingRowValue: {
-    fontSize: 10,
-  },
-  page: {
-    padding: 20,
-    fontSize: 12,
-    fontFamily: "Roboto",
-    backgroundColor: "white",
-  },
-  section: {
-    marginBottom: 10,
-  },
+
+  // Header styles
   header: {
     display: "flex",
     flexDirection: "row",
@@ -297,50 +257,21 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "semibold",
   },
-  invoiceDetailsAndLogoContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 18,
-  },
-  invoiceDetailsContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 5,
-  },
-  invoiceDetailsRow: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-  },
-  invoiceDetailsTitle: {
-    fontSize: 10,
-    fontWeight: 600,
-  },
-  invoiceDetailsValue: {
-    fontSize: 10,
-    fontWeight: "normal",
-    color: "#71717B",
-  },
-  invoiceLogoContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  invoiceLogo: {
+  logo: {
     width: 80,
     height: 80,
     aspectRatio: 1,
   },
-  invoiceBillingDetailsContainer: {
+
+  // Billing styles
+  billingDetailsContainer: {
     display: "flex",
     flexDirection: "row",
     marginTop: 18,
     width: "100%",
     gap: 10,
   },
-  invoiceBillingContainer: {
+  billingBox: {
     display: "flex",
     flexDirection: "column",
     gap: 6,
@@ -349,15 +280,12 @@ const styles = StyleSheet.create({
     width: "50%",
     borderRadius: 4,
   },
-  invoiceBillingName: {
+  billingName: {
     fontSize: 10,
     fontWeight: "semibold",
   },
-  invoiceBillingAddress: {
-    fontSize: 10,
-    fontWeight: "normal",
-    color: "#71717B",
-  },
+
+  // Items table styles
   itemsTable: {
     marginTop: 20,
     marginBottom: 30,
@@ -389,4 +317,69 @@ const styles = StyleSheet.create({
   itemQty: { width: "10%", textAlign: "center" },
   itemPrice: { width: "15%", textAlign: "right" },
   itemTotal: { width: "15%", textAlign: "right" },
+
+  // Metadata and pricing styles
+  metadataPricingContainer: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 50,
+  },
+  metadataContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 15,
+    justifyContent: "flex-end",
+    width: "50%",
+  },
+  metadataDescription: {
+    fontSize: 10,
+    fontWeight: "normal",
+    color: "#71717B",
+    marginTop: 4,
+  },
+  pricingContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 6,
+    padding: 10,
+    width: "50%",
+    minWidth: "50%",
+    justifyContent: "flex-end",
+  },
+  pricingRow: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  pricingLabel: {
+    fontSize: 10,
+    fontWeight: "semibold",
+  },
+  pricingValue: {
+    fontSize: 10,
+  },
+  pricingTotal: {
+    fontSize: 12,
+    fontWeight: "semibold",
+  },
+  pricingTotalValue: {
+    fontSize: 18,
+    fontWeight: "semibold",
+  },
+  totalWordsContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 2,
+    marginTop: 4,
+  },
+  totalWordsLabel: {
+    fontSize: 8,
+    fontWeight: "normal",
+    color: "#71717B",
+  },
+  totalWordsValue: {
+    fontSize: 10,
+    fontWeight: "normal",
+  },
 });

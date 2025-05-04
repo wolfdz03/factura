@@ -29,7 +29,9 @@ export const createInvoiceFieldKeyStringValuesSchema = z.object(
     label: z.string({ invalid_type_error: "Label must be a string" }).min(1, {
       message: "Label cannot be empty",
     }),
-    value: z.string({ invalid_type_error: "Value must be a string" }),
+    value: z.string({ invalid_type_error: "Value must be a string" }).min(1, {
+      message: "Value cannot be empty",
+    }),
   },
   { invalid_type_error: "Field key string values must be an object" },
 );
@@ -48,10 +50,14 @@ export const createInvoiceFieldKeyNumberValuesSchema = z.object(
 export const createInvoiceSchema = z.object({
   companyDetails: z.object(
     {
-      logo: z.string({ invalid_type_error: "Logo must be a string" }).url({ message: "Logo must be a valid URL" }),
+      logo: z
+        .string({ invalid_type_error: "Logo must be a string" })
+        .url({ message: "Logo must be a valid URL" })
+        .optional(),
       signature: z
         .string({ invalid_type_error: "Signature must be a string" })
-        .url({ message: "Signature must be a valid URL" }),
+        .url({ message: "Signature must be a valid URL" })
+        .optional(),
       name: z.string({ invalid_type_error: "Company name must be a string" }).min(1, {
         message: "Company name cannot be empty",
       }),
@@ -159,20 +165,18 @@ export type ZodCreateInvoiceSchema = z.infer<typeof createInvoiceSchema>;
 
 export const createInvoiceSchemaDefaultValues: ZodCreateInvoiceSchema = {
   companyDetails: {
-    name: "",
-    logo: "",
-    signature: "",
+    name: "Invoicely Ltd",
     address: {
       label: "address",
-      value: "",
+      value: "123 Main St, Anytown, USA",
     },
     metadata: [],
   },
   clientDetails: {
-    name: "",
+    name: "John Doe",
     address: {
       label: "address",
-      value: "",
+      value: "456 Second St, Anytown, USA",
     },
     metadata: [],
   },
@@ -182,10 +186,10 @@ export const createInvoiceSchemaDefaultValues: ZodCreateInvoiceSchema = {
     },
     currency: "USD",
     prefix: "INV-",
-    serialNumber: "",
+    serialNumber: "0001",
     shipTo: {
       label: "ship to",
-      value: "",
+      value: "456 Second St, Anytown, USA",
     },
     date: new Date(), // now
     dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day from now
