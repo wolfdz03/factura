@@ -5,9 +5,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
-import { EyeScannerIcon, InboxArrowDownIcon } from "@/assets/icons";
 import InvoiceErrorsModal from "./invoice-errors-modal";
 import InvoiceTabSwitch from "./invoice-tab-switch";
+import { InboxArrowDownIcon } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
 import { UseFormReturn } from "react-hook-form";
 import { useEffect, useState } from "react";
@@ -154,24 +154,21 @@ const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
   };
 
   return (
-    <div className="flex h-12 flex-row items-center justify-between gap-2 border-b px-2">
+    <div className="flex h-12 shrink-0 flex-row items-center justify-between gap-2 border-b px-2">
       <InvoiceErrorsModal />
       <div className="flex flex-row items-center gap-2">
         <InvoiceTabSwitch />
-        <Button variant="secondary" onClick={handlePreview}>
-          <EyeScannerIcon className="light:text-muted-foreground mr-2" />
-          Preview
-        </Button>
         <DropdownMenu onOpenChange={setIsDropdownOpen}>
           <DropdownMenuTrigger asChild>
             <Button variant="default">
-              <InboxArrowDownIcon className="mr-2" />
+              <InboxArrowDownIcon />
               Download
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem onClick={handlePdfDownload(formData)}>Download as PDF</DropdownMenuItem>
-            <DropdownMenuItem onClick={handlePngDownload(formData)}>Download as PNG</DropdownMenuItem>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={handlePreview}>View PDF</DropdownMenuItem>
+            <DropdownMenuItem onClick={handlePdfDownload(formData)}>Download PDF</DropdownMenuItem>
+            <DropdownMenuItem onClick={handlePngDownload(formData)}>Download PNG</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

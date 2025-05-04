@@ -7,6 +7,7 @@ import PDFLoading from "@/components/layout/pdf/pdf-loading";
 import PDFError from "@/components/layout/pdf/pdf-error";
 import { BlobProvider } from "@react-pdf/renderer";
 import { Document, Page, pdfjs } from "react-pdf";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { UseFormReturn } from "react-hook-form";
 import InvoicePDF from "./pdf-document";
 import { useSetAtom } from "jotai";
@@ -15,10 +16,11 @@ import { debounce } from "lodash";
 // Custom PDF viewer component that handles displaying a PDF document
 const PDFViewer = ({ url }: { url: string | null }) => {
   const [error, setError] = useState<Error | null>(null);
+  const isMobile = useIsMobile();
 
   // Show empty state
   if (!url) {
-    return <div className="flex h-full items-center justify-center">No document to display</div>;
+    return <PDFError message="No document to display" />;
   }
 
   return (
@@ -35,9 +37,11 @@ const PDFViewer = ({ url }: { url: string | null }) => {
         }}
         className="max-h-full"
       >
-        {!error && <Page pageNumber={1} width={600} renderTextLayer={false} renderAnnotationLayer={false} />}
+        {!error && (
+          <Page pageNumber={1} width={isMobile ? 400 : 600} renderTextLayer={false} renderAnnotationLayer={false} />
+        )}
       </Document>
-      {error && <div className="mt-4 text-center text-red-500">Error loading PDF: {error.message}</div>}
+      {error && <PDFError message={error.message} />}
     </div>
   );
 };

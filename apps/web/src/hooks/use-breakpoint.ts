@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 
 const BREAKPOINTS = {
   "MOBILE:768": 768,
@@ -8,9 +8,9 @@ const BREAKPOINTS = {
 } as const;
 
 export function useIsBreakpoint(breakpoint: keyof typeof BREAKPOINTS) {
-  const [isBreakpoint, setIsBreakpoint] = React.useState<boolean | undefined>(undefined);
+  const [isBreakpoint, setIsBreakpoint] = useState<boolean | undefined>(undefined);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const mql = window.matchMedia(`(max-width: ${BREAKPOINTS[breakpoint] - 1}px)`);
     const onChange = () => {
       setIsBreakpoint(window.innerWidth < BREAKPOINTS[breakpoint]);

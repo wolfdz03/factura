@@ -5,4 +5,5 @@ import { atom } from "jotai";
 export const invoiceErrorAtom = atom<ZodError["issues"]>([]);
 
 // Invoice Form Tab For Preview and Form Tab Switching
-export const invoiceTabAtom = atom<"preview" | "form">("form");
+export type InvoiceTab = "preview" | "form" | "both";
+export const invoiceTabAtom = atom<InvoiceTab>("both");
