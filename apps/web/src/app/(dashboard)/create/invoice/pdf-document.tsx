@@ -3,6 +3,7 @@
 
 import { Document, Page, Text, View, StyleSheet, Image, Font } from "@react-pdf/renderer";
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
+import { getSubTotalValue, getTotalValue } from "@/constants/pdf-helpers";
 import { formatCurrencyText } from "@/constants/currency";
 import { toWords } from "number-to-words";
 import { format } from "date-fns";
@@ -52,11 +53,10 @@ Font.register({
 // Invoice PDF Document component
 const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
   // Calculate totals
-  const subtotal = data.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
+  const subtotal = getSubTotalValue(data);
+  const total = getTotalValue(data);
 
-  const total = subtotal;
-
-  const themeColor = { color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" };
+  const themeColor = { color: data.invoiceDetails.theme.baseColor, fontWeight: 500 };
 
   return (
     <Document
@@ -133,10 +133,10 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
         {/* Items Table */}
         <View style={styles.itemsTable}>
           <View style={{ ...styles.tableHeader, backgroundColor: data.invoiceDetails.theme.baseColor, color: "#fff" }}>
-            <Text style={styles.itemName}>Item</Text>
-            <Text style={styles.itemQty}>Qty</Text>
-            <Text style={styles.itemPrice}>Price</Text>
-            <Text style={styles.itemTotal}>Total</Text>
+            <Text style={styles.tableHeaderItemName}>Item</Text>
+            <Text style={styles.tableHeaderItemQty}>Qty</Text>
+            <Text style={styles.tableHeaderItemPrice}>Price</Text>
+            <Text style={styles.tableHeaderItemTotal}>Total</Text>
           </View>
           {data.items.map((item, index) => (
             <View key={index} style={styles.tableRow}>
@@ -364,7 +364,11 @@ const styles = StyleSheet.create({
     gap: 2,
     width: "60%",
   },
-  itemName: { width: "60%", fontFamily: "GeistMono", fontWeight: "light", letterSpacing: -1 },
+  tableHeaderItemName: { width: "60%" },
+  tableHeaderItemQty: { width: "10%", textAlign: "center" },
+  tableHeaderItemPrice: { width: "15%", textAlign: "right" },
+  tableHeaderItemTotal: { width: "15%", textAlign: "right" },
+  itemName: { width: "60%" },
   itemQty: { width: "10%", textAlign: "center", fontFamily: "GeistMono", letterSpacing: -1, fontWeight: "light" },
   itemPrice: { width: "15%", textAlign: "right", fontFamily: "GeistMono", letterSpacing: -1, fontWeight: "light" },
   itemTotal: { width: "15%", textAlign: "right", fontFamily: "GeistMono", letterSpacing: -1, fontWeight: "light" },

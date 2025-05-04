@@ -53,7 +53,7 @@ const InvoiceFieldKeyNumberValuesSection: React.FC<InvoiceFieldKeyNumberValuesSe
             isOptional={true}
             sublabel="Tax/Discount/Other"
             placeholder="Label"
-            description="Enter the label for the field"
+            description="Label for the field"
           />
           <FormInput
             type="number"
@@ -61,10 +61,10 @@ const InvoiceFieldKeyNumberValuesSection: React.FC<InvoiceFieldKeyNumberValuesSe
             reactform={reactform}
             label="Value"
             placeholder="Value"
-            description="Enter the value for the field"
+            description="Value can be positive or negative"
           />
           <FormSelect
-            description="Select the type of the field"
+            description="Type of the field value"
             name={`${name}.${index}.type`}
             reactform={reactform}
             label="Type"
