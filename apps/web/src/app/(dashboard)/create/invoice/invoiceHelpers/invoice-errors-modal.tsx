@@ -32,8 +32,6 @@ const InvoiceErrorsModal = () => {
     }
   }, [invoiceErrors]);
 
-  console.log("invoiceErrors", invoiceErrors);
-
   return (
     <AnimatePresence>
       <Dialog>
