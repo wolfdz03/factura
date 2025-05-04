@@ -1,14 +1,9 @@
-import {
-  Geist,
-  Geist_Mono,
-  JetBrains_Mono,
-  Instrument_Serif,
-  Instrument_Sans,
-  Urbanist,
-} from "next/font/google";
+import { Geist, Geist_Mono, JetBrains_Mono, Instrument_Serif, Instrument_Sans, Urbanist } from "next/font/google";
+import { ReactScanProvider } from "@/providers";
 import { ThemeProvider } from "next-themes";
 import type { Metadata } from "next";
 import { cn } from "@/lib/utils";
+import { Toaster } from "sonner";
 import "./globals.css";
 import "./fonts.css";
 
@@ -52,8 +47,7 @@ const urbanist = Urbanist({
 
 export const metadata: Metadata = {
   title: "Invoicely | Invoice Generator",
-  description:
-    "Invoicely is a simple and easy to use invoice generator ~ Proudly OSS",
+  description: "Invoicely is a simple and easy to use invoice generator ~ Proudly OSS",
   icons: {
     icon: "/official/invoicely-logo.png",
   },
@@ -77,12 +71,10 @@ export default function RootLayout({
           "antialiased",
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          storageKey="invoicely-theme"
-        >
-          {children}
+        <ThemeProvider attribute="class" defaultTheme="system" storageKey="invoicely-theme">
+          <ReactScanProvider />
+          <Toaster />
+          <>{children}</>
         </ThemeProvider>
       </body>
     </html>
