@@ -1942,6 +1942,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/number-to-words@npm:^1":
+  version: 1.2.3
+  resolution: "@types/number-to-words@npm:1.2.3"
+  checksum: 10c0/2478ddbc7081561c65c28a703fbba3a55010c16878197caf1e54ff0f5dff7e770a1a1ad5506767e4b436b36e2ff1fddbbce7fa9266ee92925d8baefc3d8fc1b8
+  languageName: node
+  linkType: hard
+
 "@types/react-dom@npm:19.1.1":
   version: 19.1.1
   resolution: "@types/react-dom@npm:19.1.1"
@@ -5816,6 +5823,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"number-to-words@npm:^1.2.4":
+  version: 1.2.4
+  resolution: "number-to-words@npm:1.2.4"
+  checksum: 10c0/4859a7870a40d5fcd1d0f5e80b8bb2073d96b085e3c1a17bc9fdb29a1b1837348e1a3d0ef7be7e73ce92bb06c733493eb2aba88f918d9133a7df903d0bf9559d
+  languageName: node
+  linkType: hard
+
 "object-assign@npm:^4.1.1":
   version: 4.1.1
   resolution: "object-assign@npm:4.1.1"
@@ -8102,6 +8116,7 @@ __metadata:
     "@tailwindcss/postcss": "npm:^4"
     "@types/lodash": "npm:^4"
     "@types/node": "npm:^20"
+    "@types/number-to-words": "npm:^1"
     "@types/react": "npm:^19"
     "@types/react-dom": "npm:^19"
     class-variance-authority: "npm:^0.7.1"
@@ -8114,6 +8129,7 @@ __metadata:
     motion: "npm:^12.9.4"
     next: "npm:15.3.1"
     next-themes: "npm:^0.4.6"
+    number-to-words: "npm:^1.2.4"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
     react-hook-form: "npm:^7.56.1"

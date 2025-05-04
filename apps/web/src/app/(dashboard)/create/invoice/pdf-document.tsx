@@ -3,12 +3,48 @@
 
 import { Document, Page, Text, View, StyleSheet, Image, Font } from "@react-pdf/renderer";
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
+import { toWords } from "number-to-words";
 import { format } from "date-fns";
 import React from "react";
 
 Font.register({
-  family: "Roboto",
-  src: "http://fonts.gstatic.com/s/roboto/v16/zN7GBFwfMP4uA6AR0HCoLQ.ttf",
+  family: "JetbrainsMono",
+  fonts: [
+    {
+      src: "/fonts/jetbrains/JetBrainsMono-Light.ttf",
+      fontWeight: "light",
+    },
+    {
+      src: "/fonts/jetbrains/JetBrainsMono-Regular.ttf",
+      fontWeight: "normal",
+    },
+  ],
+});
+
+Font.register({
+  family: "Quicksand",
+  fonts: [
+    {
+      src: "/fonts/quicksand/Quicksand-Regular.ttf",
+      fontWeight: "normal",
+    },
+    {
+      src: "/fonts/quicksand/Quicksand-Bold.ttf",
+      fontWeight: "bold",
+    },
+    {
+      src: "/fonts/quicksand/Quicksand-Medium.ttf",
+      fontWeight: "medium",
+    },
+    {
+      src: "/fonts/quicksand/Quicksand-SemiBold.ttf",
+      fontWeight: "semibold",
+    },
+    {
+      src: "/fonts/quicksand/Quicksand-Light.ttf",
+      fontWeight: "light",
+    },
+  ],
 });
 
 // Invoice PDF Document component
@@ -44,15 +80,15 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
           {/* Invoice Details */}
           <View style={styles.flexColumnGap}>
             <View style={styles.detailsRow}>
-              <Text style={styles.detailsTitleWithWidth}>Invoice Number</Text>
+              <Text style={styles.detailsTitleWithWidth}>Serial Number</Text>
               <Text style={styles.detailsValue}>{data.invoiceDetails.serialNumber}</Text>
             </View>
             <View style={styles.detailsRow}>
-              <Text style={styles.detailsTitleWithWidth}>Invoice Date</Text>
+              <Text style={styles.detailsTitleWithWidth}>Date</Text>
               <Text style={styles.detailsValue}>{format(data.invoiceDetails.date, "dd/MM/yyyy")}</Text>
             </View>
             <View style={styles.detailsRow}>
-              <Text style={styles.detailsTitleWithWidth}>Invoice Due Date</Text>
+              <Text style={styles.detailsTitleWithWidth}>Due Date</Text>
               <Text style={styles.detailsValue}>{format(data.invoiceDetails.dueDate, "dd/MM/yyyy")}</Text>
             </View>
             <View style={styles.detailsRow}>
@@ -86,8 +122,8 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
           </View>
           <View style={styles.billingBox}>
             <Text style={themeColor}>Billed To</Text>
-            <Text style={styles.billingName}>{data.companyDetails.name}</Text>
-            <Text style={styles.detailsValue}>{data.companyDetails.address.value}</Text>
+            <Text style={styles.billingName}>{data.clientDetails.name}</Text>
+            <Text style={styles.detailsValue}>{data.clientDetails.address.value}</Text>
             {data.clientDetails.metadata.map((metadata) => (
               <View key={metadata.label} style={styles.detailsRow}>
                 <Text style={styles.detailsTitle}>{metadata.label}</Text>
@@ -152,6 +188,13 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
           </View>
           {/* Pricing  */}
           <View style={styles.pricingContainer}>
+            {/* Signature */}
+            {data.companyDetails.signature && (
+              <View style={styles.signatureContainer}>
+                <Text style={styles.signatureName}>Verified by {data.companyDetails.name}</Text>
+                <Image style={styles.signatureImage} src={data.companyDetails.signature} />
+              </View>
+            )}
             <View style={styles.pricingRow}>
               <Text style={styles.pricingLabel}>Subtotal</Text>
               <Text style={styles.pricingValue}>{formatCurrency(subtotal)}</Text>
@@ -171,7 +214,7 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
             </View>
             <View style={styles.totalWordsContainer}>
               <Text style={styles.totalWordsLabel}>Invoice Total (in words)</Text>
-              <Text style={styles.totalWordsValue}>Fourty-five thousand, four hundred and fifty-four</Text>
+              <Text style={styles.totalWordsValue}>{toWords(total)}</Text>
             </View>
           </View>
         </View>
@@ -188,7 +231,7 @@ const styles = StyleSheet.create({
   page: {
     padding: 20,
     fontSize: 12,
-    fontFamily: "Roboto",
+    fontFamily: "Quicksand",
     backgroundColor: "white",
   },
   flexRowSpaceBetween: {
@@ -260,13 +303,15 @@ const styles = StyleSheet.create({
   invoiceTitle: {
     fontSize: 24,
     fontWeight: "semibold",
+    fontFamily: "JetbrainsMono",
+    letterSpacing: -1,
   },
   logo: {
+    width: 80,
     height: 80,
     aspectRatio: 1,
     borderRadius: 8,
   },
-
   // Billing styles
   billingDetailsContainer: {
     display: "flex",
@@ -318,9 +363,9 @@ const styles = StyleSheet.create({
     width: "60%",
   },
   itemName: { width: "60%" },
-  itemQty: { width: "10%", textAlign: "center" },
-  itemPrice: { width: "15%", textAlign: "right" },
-  itemTotal: { width: "15%", textAlign: "right" },
+  itemQty: { width: "10%", textAlign: "center", fontFamily: "JetbrainsMono", letterSpacing: -1, fontWeight: "light" },
+  itemPrice: { width: "15%", textAlign: "right", fontFamily: "JetbrainsMono", letterSpacing: -1, fontWeight: "light" },
+  itemTotal: { width: "15%", textAlign: "right", fontFamily: "JetbrainsMono", letterSpacing: -1, fontWeight: "light" },
 
   // Metadata and pricing styles
   metadataPricingContainer: {
@@ -340,6 +385,24 @@ const styles = StyleSheet.create({
     fontWeight: "normal",
     color: "#71717B",
     marginTop: 4,
+  },
+  signatureContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-end",
+    width: "100%",
+  },
+  signatureName: {
+    fontSize: 8,
+    fontWeight: "normal",
+    color: "#71717B",
+  },
+  signatureImage: {
+    height: 80,
+    width: 80,
+    aspectRatio: 1,
+    borderRadius: 8,
+    objectFit: "cover",
   },
   pricingContainer: {
     display: "flex",
@@ -362,6 +425,9 @@ const styles = StyleSheet.create({
   },
   pricingValue: {
     fontSize: 10,
+    fontFamily: "JetbrainsMono",
+    letterSpacing: -1,
+    color: "#71717B",
   },
   pricingTotal: {
     fontSize: 12,
@@ -370,6 +436,8 @@ const styles = StyleSheet.create({
   pricingTotalValue: {
     fontSize: 18,
     fontWeight: "semibold",
+    fontFamily: "JetbrainsMono",
+    letterSpacing: -1,
   },
   totalWordsContainer: {
     display: "flex",
