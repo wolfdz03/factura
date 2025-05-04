@@ -106,7 +106,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                   </FormSelect>
                   <FormColorPicker
                     name="invoiceDetails.theme.baseColor"
-                    label="Invoice Color"
+                    label="Theme Color"
                     reactform={form}
                     description="Color of the invoice theme"
                   />
