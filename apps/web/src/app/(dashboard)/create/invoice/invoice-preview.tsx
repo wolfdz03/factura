@@ -2,10 +2,12 @@
 
 import { createInvoiceSchema, ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
 import React, { useEffect, useState, useCallback } from "react";
+import { invoiceErrorAtom } from "@/global/atoms/invoice-atom";
 import { BlobProvider } from "@react-pdf/renderer";
 import { Document, Page, pdfjs } from "react-pdf";
 import { UseFormReturn } from "react-hook-form";
 import InvoicePDF from "./pdf-document";
+import { useSetAtom } from "jotai";
 import { debounce } from "lodash";
 
 // Custom PDF viewer component that handles displaying a PDF document
@@ -42,6 +44,7 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
   const [isClient, setIsClient] = useState(true);
   const [data, setData] = useState(form.getValues());
   const [pdfError, setPdfError] = useState<Error | null>(null);
+  const setInvoiceError = useSetAtom(invoiceErrorAtom);
 
   // Create a debounced function to update data
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -51,8 +54,9 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
       const isDataValid = createInvoiceSchema.safeParse(value);
       if (isDataValid.success) {
         setData(value);
+        setInvoiceError([]);
       } else {
-        console.error("[ERROR]: Invalid data:", isDataValid.error);
+        setInvoiceError(isDataValid.error.issues);
       }
     }, 1000),
     [],

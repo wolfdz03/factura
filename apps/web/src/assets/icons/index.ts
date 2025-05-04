@@ -10,3 +10,4 @@ export { default as BoxPlusIcon } from "./box-plus";
 export { default as BoxIcon } from "./box";
 export { default as TrashIcon } from "./trash";
 export { default as CalendarPenIcon } from "./calender-pen";
+export { default as FileAlertIcon } from "./file-alert";

@@ -1,6 +1,6 @@
 import { EyeScannerIcon, InboxArrowDownIcon } from "@/assets/icons";
+import InvoiceErrorsModal from "./invoice-errors-modal";
 import { Button } from "@/components/ui/button";
-
 const InvoiceOptions = () => {
   return (
     <div className="flex h-12 flex-row items-center justify-end gap-2 border-b px-2">
@@ -12,6 +12,7 @@ const InvoiceOptions = () => {
         <InboxArrowDownIcon />
         Download
       </Button>
+      <InvoiceErrorsModal />
     </div>
   );
 };

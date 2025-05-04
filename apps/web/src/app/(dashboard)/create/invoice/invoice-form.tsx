@@ -25,7 +25,8 @@ interface InvoiceFormProps {
 
 const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
   const onSubmit = (data: ZodCreateInvoiceSchema) => {
-    console.log("Form submitted", data);
+    // Do Nothing
+    console.log("FormValues", data);
   };
 
   return (
