@@ -6,6 +6,7 @@ import InvoiceFieldKeyNumberValuesSection from "./invoiceHelpers/invoice-field-k
 import { InvoiceAccordionContent, InvoiceAccordionTrigger } from "./invoiceHelpers/invoice-accordions";
 import InvoiceItemsSection from "./invoiceHelpers/invoice-items-section";
 import { FormImageInput } from "@/components/ui/form/form-image-input";
+import { FormDatePicker } from "@/components/ui/form/form-date-picker";
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { FormTextarea } from "@/components/ui/form/form-textarea";
 import { FormSelect } from "@/components/ui/form/form-select";
@@ -125,18 +126,16 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                   description="If invoice includes shipping, add shipping address or email address."
                 />
                 <FormRow>
-                  <FormInput
+                  <FormDatePicker
                     name="invoiceDetails.date"
                     label="Invoice Date"
                     reactform={form}
-                    type="date"
                     description="Date when invoice is issued"
                   />
-                  <FormInput
+                  <FormDatePicker
                     name="invoiceDetails.dueDate"
                     label="Due Date"
                     reactform={form}
-                    type="date"
                     description="Date when payment is due"
                   />
                 </FormRow>

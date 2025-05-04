@@ -9,3 +9,4 @@ export { default as ImageSparkleIcon } from "./image-sparkle";
 export { default as BoxPlusIcon } from "./box-plus";
 export { default as BoxIcon } from "./box";
 export { default as TrashIcon } from "./trash";
+export { default as CalendarPenIcon } from "./calender-pen";
