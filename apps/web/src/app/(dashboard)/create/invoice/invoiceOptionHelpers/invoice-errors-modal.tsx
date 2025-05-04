@@ -20,13 +20,24 @@ import { FileAlertIcon } from "@/assets/icons";
 import React, { useEffect } from "react";
 import { useAtomValue } from "jotai";
 
+const shakeAnimation = [300, -300, 300, -300, 300, -300, 0];
+
 const InvoiceErrorsModal = () => {
   const invoiceErrors = useAtomValue(invoiceErrorAtom);
 
   useEffect(() => {
     // Animating a button shake when there are errors
     if (invoiceErrors.length > 0) {
-      animate("#invoice-err-btn", { rotate: [300, -300, 300, -300, 300, -300, 0] }, { duration: 0.4, ease: "linear" });
+      // Initial shake animation
+      animate("#invoice-err-btn", { rotate: shakeAnimation }, { duration: 0.4, ease: "linear" });
+
+      // Set up interval for repeated shaking every 10 seconds
+      const interval = setInterval(() => {
+        animate("#invoice-err-btn", { rotate: shakeAnimation }, { duration: 0.4, ease: "linear" });
+      }, 10000);
+
+      // Cleanup interval on unmount or when errors are cleared
+      return () => clearInterval(interval);
     }
   }, [invoiceErrors]);
 
