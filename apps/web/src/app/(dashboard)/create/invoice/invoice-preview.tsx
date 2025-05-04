@@ -108,7 +108,11 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
 
   return (
     <div className="scroll-bar-hidden h-full w-full overflow-y-auto bg-gray-100">
-      <BlobProvider document={<InvoicePDF data={data} />}>
+      {/* 
+      Use a key to force a re-render of the BlobProvider when the data changes Else it will not re-render and breaks the pdf generation on deleting dynamic fields
+      Found this solution on Github Issues: https://github.com/diegomura/react-pdf/issues/3153 
+      */}
+      <BlobProvider key={Date.now()} document={<InvoicePDF data={data} />}>
         {({ url, loading, error }) => {
           // If the PDF is still generating, show a loading state
           if (loading) return <div className="flex h-full items-center justify-center">Generating PDF...</div>;

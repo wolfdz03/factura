@@ -118,31 +118,35 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
         <View style={styles.metadataPricingContainer}>
           <View style={styles.metadataContainer}>
             {/* Payment Information */}
-            <View style={data.metadata.paymentInformation.length ? styles.sectionContainer : styles.displayNone}>
-              <Text style={themeColor}>Payment Information</Text>
-              <View style={styles.flexColumnGapSm}>
-                {data.metadata.paymentInformation.map((paymentInformation, index) => {
-                  if (!paymentInformation.label || !paymentInformation.value) return null;
-
-                  return (
-                    <View key={index} style={styles.detailsRow}>
-                      <Text style={styles.detailsTitleWithWidth}>{paymentInformation.label}</Text>
-                      <Text style={styles.detailsValue}>{paymentInformation.value}</Text>
-                    </View>
-                  );
-                })}
+            {data.metadata.paymentInformation.length && (
+              <View style={styles.sectionContainer}>
+                <Text style={themeColor}>Payment Information</Text>
+                <View style={styles.flexColumnGapSm}>
+                  {data.metadata.paymentInformation.map((paymentInformation, index) => {
+                    return (
+                      <View key={index} style={styles.detailsRow}>
+                        <Text style={styles.detailsTitleWithWidth}>{paymentInformation.label}</Text>
+                        <Text style={styles.detailsValue}>{paymentInformation.value}</Text>
+                      </View>
+                    );
+                  })}
+                </View>
               </View>
-            </View>
+            )}
             {/* Terms and conditions */}
-            <View style={data.metadata.terms.value ? styles.sectionContainer : styles.displayNone}>
-              <Text style={themeColor}>Terms</Text>
-              <Text style={styles.metadataDescription}>{data.metadata.terms.value}</Text>
-            </View>
+            {data.metadata.terms.value && (
+              <View style={styles.sectionContainer}>
+                <Text style={themeColor}>Terms</Text>
+                <Text style={styles.metadataDescription}>{data.metadata.terms.value}</Text>
+              </View>
+            )}
             {/* Notes */}
-            <View style={data.metadata.notes.value ? styles.sectionContainer : styles.displayNone}>
-              <Text style={themeColor}>Notes</Text>
-              <Text style={styles.metadataDescription}>{data.metadata.notes.value}</Text>
-            </View>
+            {data.metadata.notes.value && (
+              <View style={styles.sectionContainer}>
+                <Text style={themeColor}>Notes</Text>
+                <Text style={styles.metadataDescription}>{data.metadata.notes.value}</Text>
+              </View>
+            )}
           </View>
           {/* Pricing  */}
           <View style={styles.pricingContainer}>
@@ -151,8 +155,6 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
               <Text style={styles.pricingValue}>{formatCurrency(subtotal)}</Text>
             </View>
             {data.invoiceDetails.billingDetails.map((billingDetail, index) => {
-              if (!billingDetail.label || !billingDetail.value) return null;
-
               return (
                 <View key={index} style={styles.pricingRow}>
                   <Text style={styles.pricingLabel}>{billingDetail.label}</Text>
