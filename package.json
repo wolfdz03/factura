@@ -15,6 +15,7 @@
     "prepare": "husky",
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "dev:scan": "turbo run dev & npx react-scan@latest localhost:3000",
     "start": "turbo run start",
     "production": "turbo run build && turbo run start",
     "lint": "turbo run lint",
