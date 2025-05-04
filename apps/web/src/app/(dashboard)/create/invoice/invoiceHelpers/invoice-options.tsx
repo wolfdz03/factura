@@ -14,6 +14,78 @@ import { pdf } from "@react-pdf/renderer";
 import InvoicePDF from "../pdf-document";
 import { pdfjs } from "react-pdf";
 
+const generatePdfBlob = (data: ZodCreateInvoiceSchema) => {
+  return new Promise<Blob>((resolve, reject) => {
+    try {
+      const pdfDocument = <InvoicePDF data={data} />;
+      pdf(pdfDocument)
+        .toBlob()
+        .then((blob) => {
+          if (blob) {
+            resolve(blob);
+          } else {
+            reject(new Error("Failed to generate PDF"));
+          }
+        })
+        .catch(reject);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+const convertPdfPageToImage = async (pdfBlob: Blob, scale: number = 2): Promise<Blob> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      const loadingTask = pdfjs.getDocument(pdfUrl);
+      const pdf = await loadingTask.promise;
+
+      const page = await pdf.getPage(1);
+
+      const viewport = page.getViewport({ scale });
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      if (!ctx) {
+        reject(new Error("Failed to get canvas context"));
+        return;
+      }
+
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+
+      const renderContext = {
+        canvasContext: ctx,
+        viewport: viewport,
+      };
+
+      await page.render(renderContext).promise;
+
+      canvas.toBlob((blob) => {
+        if (blob) {
+          resolve(blob);
+        } else {
+          reject(new Error("Failed to convert canvas to blob"));
+        }
+        URL.revokeObjectURL(pdfUrl);
+      }, "image/png");
+    } catch (error) {
+      console.error("[ERROR]: Error converting PDF to PNG:", error);
+      reject(error);
+    }
+  });
+};
+
+const downloadFile = (url: string, fileName: string) => {
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [formData, setFormData] = useState<ZodCreateInvoiceSchema>(form.getValues());
@@ -48,80 +120,8 @@ const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
     };
 
     previewPdf().catch((error) => {
-      console.error("Error previewing PDF:", error);
+      console.error("[ERROR]: Error previewing PDF:", error);
     });
-  };
-
-  const generatePdfBlob = (data: ZodCreateInvoiceSchema) => {
-    return new Promise<Blob>((resolve, reject) => {
-      try {
-        const pdfDocument = <InvoicePDF data={data} />;
-        pdf(pdfDocument)
-          .toBlob()
-          .then((blob) => {
-            if (blob) {
-              resolve(blob);
-            } else {
-              reject(new Error("Failed to generate PDF"));
-            }
-          })
-          .catch(reject);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
-
-  const convertPdfPageToImage = async (pdfBlob: Blob, scale: number = 2): Promise<Blob> => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const pdfUrl = URL.createObjectURL(pdfBlob);
-        const loadingTask = pdfjs.getDocument(pdfUrl);
-        const pdf = await loadingTask.promise;
-
-        const page = await pdf.getPage(1);
-
-        const viewport = page.getViewport({ scale });
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-
-        if (!ctx) {
-          reject(new Error("Failed to get canvas context"));
-          return;
-        }
-
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-
-        const renderContext = {
-          canvasContext: ctx,
-          viewport: viewport,
-        };
-
-        await page.render(renderContext).promise;
-
-        canvas.toBlob((blob) => {
-          if (blob) {
-            resolve(blob);
-          } else {
-            reject(new Error("Failed to convert canvas to blob"));
-          }
-          URL.revokeObjectURL(pdfUrl);
-        }, "image/png");
-      } catch (error) {
-        console.error("Error converting PDF to PNG:", error);
-        reject(error);
-      }
-    });
-  };
-
-  const downloadFile = (url: string, fileName: string) => {
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   };
 
   const handlePdfDownload = (data: ZodCreateInvoiceSchema) => async () => {
@@ -132,7 +132,7 @@ const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
       downloadFile(url, fileName);
       URL.revokeObjectURL(url);
     } catch (error) {
-      console.error("Error downloading PDF:", error);
+      console.error("[ERROR]: Error downloading PDF:", error);
     }
   };
 
@@ -148,7 +148,7 @@ const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
 
       URL.revokeObjectURL(pngUrl);
     } catch (error) {
-      console.error("Error downloading PNG:", error);
+      console.error("[ERROR]: Error downloading PNG:", error);
     }
   };
 
