@@ -1,11 +1,12 @@
 "use client";
 
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { BlobProvider } from "@react-pdf/renderer";
 import { Document, Page, pdfjs } from "react-pdf";
 import { UseFormReturn } from "react-hook-form";
 import InvoicePDF from "./pdf-document";
+import { debounce } from "lodash";
 
 // Custom PDF viewer component that handles displaying a PDF document
 const PDFViewer = ({ url }: { url: string | null }) => {
@@ -40,8 +41,16 @@ const PDFViewer = ({ url }: { url: string | null }) => {
 const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> }) => {
   const [isClient, setIsClient] = useState(true);
   const [data, setData] = useState(form.getValues());
-  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const [pdfError, setPdfError] = useState<Error | null>(null);
+
+  // Create a debounced function to update data
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedSetData = useCallback(
+    debounce((value: ZodCreateInvoiceSchema) => {
+      setData(value);
+    }, 1000),
+    [],
+  );
 
   // Initialize PDF.js worker
   useEffect(() => {
@@ -63,27 +72,18 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
     setIsClient(false);
   }, []);
 
-  // Debounce the form data every 1000ms
+  // Watch for form changes and apply debounce
   useEffect(() => {
     const subscription = form.watch((value) => {
-      // Clear any existing timer
-      if (debounceTimerRef.current) {
-        clearTimeout(debounceTimerRef.current);
-      }
-
-      debounceTimerRef.current = setTimeout(() => {
-        setData(value as ZodCreateInvoiceSchema);
-      }, 1000);
+      debouncedSetData(value as ZodCreateInvoiceSchema);
     });
 
     return () => {
-      // Cleanup subscription and any pending timer
+      // Cleanup subscription and cancel any pending debounced calls
       subscription.unsubscribe();
-      if (debounceTimerRef.current) {
-        clearTimeout(debounceTimerRef.current);
-      }
+      debouncedSetData.cancel();
     };
-  }, [form]);
+  }, [form, debouncedSetData]);
 
   // If the client is not loaded, show a loading state
   if (isClient) {

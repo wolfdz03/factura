@@ -1910,6 +1910,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:^4":
+  version: 4.17.16
+  resolution: "@types/lodash@npm:4.17.16"
+  checksum: 10c0/cf017901b8ab1d7aabc86d5189d9288f4f99f19a75caf020c0e2c77b8d4cead4db0d0b842d009b029339f92399f49f34377dd7c2721053388f251778b4c23534
+  languageName: node
+  linkType: hard
+
 "@types/minimatch@npm:*":
   version: 5.1.2
   resolution: "@types/minimatch@npm:5.1.2"
@@ -8093,6 +8100,7 @@ __metadata:
     "@radix-ui/react-tooltip": "npm:^1.2.4"
     "@react-pdf/renderer": "npm:^4.3.0"
     "@tailwindcss/postcss": "npm:^4"
+    "@types/lodash": "npm:^4"
     "@types/node": "npm:^20"
     "@types/react": "npm:^19"
     "@types/react-dom": "npm:^19"
@@ -8101,6 +8109,7 @@ __metadata:
     date-fns: "npm:^4.1.0"
     eslint: "npm:^9"
     eslint-config-next: "npm:15.3.1"
+    lodash: "npm:^4.17.21"
     lucide-react: "npm:^0.506.0"
     motion: "npm:^12.9.4"
     next: "npm:15.3.1"
