@@ -5,6 +5,7 @@ import InvoiceFieldKeyStringValuesSection from "./invoiceHelpers/invoice-field-k
 import InvoiceFieldKeyNumberValuesSection from "./invoiceHelpers/invoice-field-key-number-value-section";
 import { InvoiceAccordionContent, InvoiceAccordionTrigger } from "./invoiceHelpers/invoice-accordions";
 import InvoiceItemsSection from "./invoiceHelpers/invoice-items-section";
+import { FormColorPicker } from "@/components/ui/form/form-color-picker";
 import { FormImageInput } from "@/components/ui/form/form-image-input";
 import { FormDatePicker } from "@/components/ui/form/form-date-picker";
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
@@ -86,22 +87,30 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
             <AccordionItem value="invoice-details">
               <InvoiceAccordionTrigger>Invoice Details</InvoiceAccordionTrigger>
               <InvoiceAccordionContent>
-                <FormSelect
-                  name="invoiceDetails.currency"
-                  description="Currency code for the invoice"
-                  defaultValue="USD"
-                  label="Currency"
-                  reactform={form}
-                >
-                  {Object.entries(currenciesWithSymbols).map(([key, value]) => (
-                    <SelectItem key={key} value={key}>
-                      <span>{key}</span>
-                      <Badge className="bg-primary/15 text-primary rounded" variant="default">
-                        {value}
-                      </Badge>
-                    </SelectItem>
-                  ))}
-                </FormSelect>
+                <FormRow>
+                  <FormSelect
+                    name="invoiceDetails.currency"
+                    description="Currency code for the invoice"
+                    defaultValue="USD"
+                    label="Currency"
+                    reactform={form}
+                  >
+                    {Object.entries(currenciesWithSymbols).map(([key, value]) => (
+                      <SelectItem key={key} value={key}>
+                        <span>{key}</span>
+                        <Badge className="bg-primary/15 text-primary rounded" variant="default">
+                          {value}
+                        </Badge>
+                      </SelectItem>
+                    ))}
+                  </FormSelect>
+                  <FormColorPicker
+                    name="invoiceDetails.theme.baseColor"
+                    label="Invoice Color"
+                    reactform={form}
+                    description="Color of the invoice theme"
+                  />
+                </FormRow>
                 <FormRow>
                   <FormInput
                     name="invoiceDetails.prefix"

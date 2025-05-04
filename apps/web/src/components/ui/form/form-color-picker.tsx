@@ -9,21 +9,19 @@ import {
   FormMessage,
   useFormField,
 } from "@/components/ui/form/form";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { FieldPath, FieldValues, UseFormReturn } from "react-hook-form";
+import { Popover, PopoverContent, PopoverTrigger } from "../popover";
 import { InfoIcon, TriangleAlertIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
-import { CalendarPenIcon } from "@/assets/icons";
+import { HexColorPicker } from "react-colorful";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "../button";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import React from "react";
 
-interface FormDatePickerProps<
+interface FormColorPickerProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends React.InputHTMLAttributes<HTMLInputElement> {
+> extends React.InputHTMLAttributes<HTMLDivElement> {
   name: TName;
   label?: string | undefined;
   description?: string | undefined;
@@ -32,14 +30,14 @@ interface FormDatePickerProps<
   isOptional?: boolean;
 }
 
-export const FormDatePicker = <
+export const FormColorPicker = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   className,
   isOptional = false,
   ...props
-}: FormDatePickerProps<TFieldValues, TName>) => {
+}: FormColorPickerProps<TFieldValues, TName>) => {
   return (
     <FormField
       control={props.reactform.control}
@@ -61,24 +59,30 @@ export const FormDatePicker = <
               </FormLabel>
             ) : null}
             <FormControl>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"outline"}
-                    className={cn(
-                      className,
-                      "w-full justify-start text-left font-normal",
-                      !field.value && "text-muted-foreground",
-                    )}
-                  >
-                    <CalendarPenIcon />
-                    {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="center">
-                  <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
-                </PopoverContent>
-              </Popover>
+              <div className={cn(className, "flex flex-row items-center")}>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      style={{
+                        backgroundColor: field.value,
+                      }}
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !field.value && "text-muted-foreground",
+                      )}
+                    ></Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="center">
+                    <HexColorPicker
+                      style={{
+                        width: "auto",
+                      }}
+                      color={field.value}
+                      onChange={field.onChange}
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
             </FormControl>
             {/* i.e Render form error message or form description Give priority to error else description */}
             {error || props.description ? (
