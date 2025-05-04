@@ -7,6 +7,7 @@ import {
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
 import { EyeScannerIcon, InboxArrowDownIcon } from "@/assets/icons";
 import InvoiceErrorsModal from "./invoice-errors-modal";
+import InvoiceTabSwitch from "./invoice-tab-switch";
 import { Button } from "@/components/ui/button";
 import { UseFormReturn } from "react-hook-form";
 import { useEffect, useState } from "react";
@@ -156,6 +157,7 @@ const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
     <div className="flex h-12 flex-row items-center justify-between gap-2 border-b px-2">
       <InvoiceErrorsModal />
       <div className="flex flex-row items-center gap-2">
+        <InvoiceTabSwitch />
         <Button variant="secondary" onClick={handlePreview}>
           <EyeScannerIcon className="light:text-muted-foreground mr-2" />
           Preview
