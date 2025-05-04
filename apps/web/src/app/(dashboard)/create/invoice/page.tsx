@@ -26,16 +26,12 @@ const Page = () => {
     <div className="flex h-full flex-col">
       <InvoiceOptions form={form} />
       <ResizablePanelGroup direction="horizontal" className="divide-x">
-        {(invoiceTab === "form" || invoiceTab === "both") && (
-          <ResizablePanel>
-            <InvoiceForm form={form} />
-          </ResizablePanel>
-        )}
-        {(invoiceTab === "preview" || invoiceTab === "both") && (
-          <ResizablePanel>
-            <InvoicePreview form={form} />
-          </ResizablePanel>
-        )}
+        <ResizablePanel defaultSize={50}>
+          <InvoiceForm form={form} />
+        </ResizablePanel>
+        <ResizablePanel defaultSize={50}>
+          <InvoicePreview form={form} />
+        </ResizablePanel>
       </ResizablePanelGroup>
     </div>
   );
