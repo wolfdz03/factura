@@ -3,6 +3,8 @@
 import { createInvoiceSchema, ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
 import React, { useEffect, useState, useCallback } from "react";
 import { invoiceErrorAtom } from "@/global/atoms/invoice-atom";
+import PDFLoading from "@/components/layout/pdf/pdf-loading";
+import PDFError from "@/components/layout/pdf/pdf-error";
 import { BlobProvider } from "@react-pdf/renderer";
 import { Document, Page, pdfjs } from "react-pdf";
 import { UseFormReturn } from "react-hook-form";
@@ -23,7 +25,7 @@ const PDFViewer = ({ url }: { url: string | null }) => {
     <div className="flex h-full w-full items-center justify-center p-4">
       <Document
         file={url}
-        loading={<div className="p-4 text-center">Loading document...</div>}
+        loading={<PDFLoading />}
         // onLoadSuccess={() => {
         //   console.log("PDF document loaded successfully");
         // }}
@@ -97,17 +99,12 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
 
   // If the client is not loaded, show a loading state
   if (isClient) {
-    return <div>Loading...</div>;
+    return <PDFLoading />;
   }
 
   // If there is an error loading the PDF, show an error message
   if (pdfError) {
-    return (
-      <div className="flex h-full flex-col items-center justify-center p-4 text-red-500">
-        <p className="mb-2 font-semibold">PDF Viewer Error:</p>
-        <p>{pdfError.message}</p>
-      </div>
-    );
+    return <PDFError message={pdfError.message} />;
   }
 
   return (
@@ -119,15 +116,11 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
       <BlobProvider key={Date.now()} document={<InvoicePDF data={data} />}>
         {({ url, loading, error }) => {
           // If the PDF is still generating, show a loading state
-          if (loading) return <div className="flex h-full items-center justify-center">Generating PDF...</div>;
+          if (loading) return <PDFLoading />;
 
           // If there is an error generating the PDF, show an error message
           if (error) {
-            return (
-              <div className="flex h-full items-center justify-center text-red-500">
-                Error generating PDF: {error.message}
-              </div>
-            );
+            return <PDFError message={error.message} />;
           }
 
           return <PDFViewer url={url} />;

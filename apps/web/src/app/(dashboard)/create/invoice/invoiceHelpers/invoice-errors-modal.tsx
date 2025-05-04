@@ -20,15 +20,13 @@ import { FileAlertIcon } from "@/assets/icons";
 import React, { useEffect } from "react";
 import { useAtomValue } from "jotai";
 
-const shakeArray = [300, -300, 300, -300, 300, -300, 0];
-
 const InvoiceErrorsModal = () => {
   const invoiceErrors = useAtomValue(invoiceErrorAtom);
 
   useEffect(() => {
     // Animating a button shake when there are errors
     if (invoiceErrors.length > 0) {
-      animate("#invoice-err-btn", { rotate: shakeArray }, { duration: 0.4, ease: "linear", type: "spring", bounce: 0 });
+      animate("#invoice-err-btn", { rotate: [300, -300, 300, -300, 300, -300, 0] }, { duration: 0.4, ease: "linear" });
     }
   }, [invoiceErrors]);
 

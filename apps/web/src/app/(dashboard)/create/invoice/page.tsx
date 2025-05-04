@@ -5,7 +5,7 @@ import {
   createInvoiceSchemaDefaultValues,
   type ZodCreateInvoiceSchema,
 } from "@/zod-schemas/invoice/create-invoice";
-import { ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import InvoiceOptions from "./invoiceHelpers/invoice-options";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InvoicePreview from "./invoice-preview";
@@ -26,6 +26,7 @@ const Page = () => {
         <ResizablePanel minSize={50} defaultSize={50}>
           <InvoiceForm form={form} />
         </ResizablePanel>
+        <ResizableHandle />
         <ResizablePanel minSize={50} defaultSize={50}>
           <InvoicePreview form={form} />
         </ResizablePanel>
