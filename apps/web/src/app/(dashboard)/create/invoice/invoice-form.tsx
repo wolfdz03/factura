@@ -19,10 +19,14 @@ interface InvoiceFormProps {
 }
 
 const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
+  const onSubmit = (data: ZodCreateInvoiceSchema) => {
+    console.log("Form submitted", data);
+  };
+
   return (
     <div className="scroll-bar-hidden flex h-full flex-col overflow-y-scroll">
       <Form {...form}>
-        <form className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <Accordion type="single" collapsible defaultValue="invoice-items" className="w-full divide-y border-b">
             {/* Company Details */}
             <AccordionItem value="company-details">

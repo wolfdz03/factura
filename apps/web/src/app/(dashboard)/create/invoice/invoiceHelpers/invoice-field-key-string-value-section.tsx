@@ -57,12 +57,12 @@ const InvoiceFieldKeyStringValuesSection: React.FC<InvoiceFieldKeyStringValuesSe
             placeholder="Value"
             description="Enter the value for the field"
           />
-          <Button className="mb-4.5" variant="destructive" size="icon" onClick={() => remove(index)}>
+          <Button className="mb-4.5" variant="destructive" size="icon" onClick={() => remove(index)} type="button">
             <TrashIcon />
           </Button>
         </div>
       ))}
-      <Button className="w-full border-dashed" variant="outline" onClick={addNewField}>
+      <Button className="w-full border-dashed" variant="outline" onClick={addNewField} type="button">
         Add New Field
       </Button>
     </div>
