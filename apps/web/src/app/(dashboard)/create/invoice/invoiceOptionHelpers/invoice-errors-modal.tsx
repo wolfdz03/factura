@@ -54,7 +54,7 @@ const InvoiceErrorsModal = () => {
             </DialogHeader>
           </DialogHeaderContainer>
           <DialogContentContainer className="scroll-bar-hidden max-h-80 divide-y overflow-y-scroll p-0">
-            {[...invoiceErrors, ...invoiceErrors, ...invoiceErrors].map((error, index) => (
+            {invoiceErrors.map((error, index) => (
               <div key={index} className="flex flex-col gap-1 p-2">
                 <div className="flex flex-row items-center justify-between gap-1">
                   <span className="text-muted-foreground jetbrains-mono text-[10px]">CODE: {error.code}</span>
