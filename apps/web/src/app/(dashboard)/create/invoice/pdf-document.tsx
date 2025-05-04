@@ -28,7 +28,6 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
       author={data.companyDetails.name}
       creator={data.companyDetails.name}
       producer="Invoicely"
-      creationDate={new Date()}
     >
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>

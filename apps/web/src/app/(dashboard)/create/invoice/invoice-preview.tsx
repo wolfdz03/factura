@@ -2,18 +2,70 @@
 
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
 import React, { useEffect, useState, useRef } from "react";
+import { BlobProvider } from "@react-pdf/renderer";
+import { Document, Page, pdfjs } from "react-pdf";
 import { UseFormReturn } from "react-hook-form";
 import InvoicePDF from "./pdf-document";
-import dynamic from "next/dynamic";
 
-const PDFViewer = dynamic(() => import("@react-pdf/renderer").then((mod) => mod.PDFViewer), {
-  ssr: false,
-});
+// Custom PDF viewer component that handles displaying a PDF document
+const PDFViewer = ({ url }: { url: string | null }) => {
+  const [error, setError] = useState<Error | null>(null);
+
+  // Log the URL for debugging
+  useEffect(() => {
+    console.log("PDF URL:", url);
+  }, [url]);
+
+  // Show empty state
+  if (!url) {
+    return <div className="flex h-full items-center justify-center">No document to display</div>;
+  }
+
+  return (
+    <div className="flex h-full w-full items-center justify-center p-4">
+      <Document
+        file={url}
+        loading={<div className="p-4 text-center">Loading document...</div>}
+        onLoadSuccess={() => {
+          console.log("PDF document loaded successfully");
+        }}
+        onLoadError={(error) => {
+          console.error("Error loading PDF:", error);
+          setError(error);
+        }}
+        className="max-h-full"
+      >
+        {!error && <Page pageNumber={1} width={600} renderTextLayer={false} renderAnnotationLayer={false} />}
+      </Document>
+
+      {error && <div className="mt-4 text-center text-red-500">Error loading PDF: {error.message}</div>}
+    </div>
+  );
+};
 
 const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> }) => {
   const [isClient, setIsClient] = useState(true);
   const [data, setData] = useState(form.getValues());
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [pdfError, setPdfError] = useState<Error | null>(null);
+
+  // Initialize PDF.js worker
+  useEffect(() => {
+    try {
+      if (typeof window !== "undefined" && !pdfjs.GlobalWorkerOptions.workerSrc) {
+        // Log worker setup for debugging
+        console.log("Setting up PDF.js worker");
+        pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+          "pdfjs-dist/build/pdf.worker.min.mjs",
+          import.meta.url,
+        ).toString();
+        console.log("Worker URL:", pdfjs.GlobalWorkerOptions.workerSrc);
+      }
+    } catch (error) {
+      console.error("Error setting up PDF worker:", error);
+      setPdfError(error instanceof Error ? error : new Error("Failed to setup PDF worker"));
+    }
+  }, []);
 
   useEffect(() => {
     setIsClient(false);
@@ -45,10 +97,36 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
     return <div>Loading...</div>;
   }
 
+  if (pdfError) {
+    return (
+      <div className="flex h-full flex-col items-center justify-center p-4 text-red-500">
+        <p className="mb-2 font-semibold">PDF Viewer Error:</p>
+        <p>{pdfError.message}</p>
+      </div>
+    );
+  }
+
   return (
-    <PDFViewer className="h-full w-full">
-      <InvoicePDF data={data} />
-    </PDFViewer>
+    <div className="scroll-bar-hidden h-full w-full overflow-y-auto bg-gray-100">
+      <BlobProvider document={<InvoicePDF data={data} />}>
+        {({ url, loading, error }) => {
+          // Log blob provider status for debugging
+          console.log("BlobProvider state:", { url, loading, error });
+
+          if (loading) return <div className="flex h-full items-center justify-center">Generating PDF...</div>;
+          if (error) {
+            console.error("BlobProvider error:", error);
+            return (
+              <div className="flex h-full items-center justify-center text-red-500">
+                Error generating PDF: {error.message}
+              </div>
+            );
+          }
+
+          return <PDFViewer url={url} />;
+        }}
+      </BlobProvider>
+    </div>
   );
 };
 
