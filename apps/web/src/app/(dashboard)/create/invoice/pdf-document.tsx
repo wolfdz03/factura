@@ -132,20 +132,15 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
               </View>
             )}
             {/* Terms and conditions */}
-            {data.metadata.terms.value ? (
-              <View style={styles.invoiceTermsAndConditionsContainer}>
-                <Text style={{ color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" }}>Terms</Text>
-                <Text style={styles.invoiceMetaDataDescription}>{data.metadata.terms.value}</Text>
-              </View>
-            ) : null}
-
+            <View style={data.metadata.terms.value ? styles.invoiceTermsAndConditionsContainer : styles.displayNone}>
+              <Text style={{ color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" }}>Terms</Text>
+              <Text style={styles.invoiceMetaDataDescription}>{data.metadata.terms.value}</Text>
+            </View>
             {/* Notes */}
-            {data.metadata.notes.value ? (
-              <View style={styles.invoiceNotesContainer}>
-                <Text style={{ color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" }}>Notes</Text>
-                <Text style={styles.invoiceMetaDataDescription}>{data.metadata.notes.value}</Text>
-              </View>
-            ) : null}
+            <View style={data.metadata.notes.value ? styles.invoiceNotesContainer : styles.displayNone}>
+              <Text style={{ color: data.invoiceDetails.theme.baseColor, fontWeight: "semibold" }}>Notes</Text>
+              <Text style={styles.invoiceMetaDataDescription}>{data.metadata.notes.value}</Text>
+            </View>
           </View>
           {/* Pricing  */}
           <View style={styles.invoicePricingContainer}>
@@ -180,6 +175,12 @@ export default InvoicePDF;
 
 // Define styles for the PDF
 const styles = StyleSheet.create({
+  displayNone: {
+    display: "none",
+    height: 0,
+    margin: 0,
+    overflow: "hidden",
+  },
   invoicePaymentInformationColumnContainer: {
     display: "flex",
     flexDirection: "column",
