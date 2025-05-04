@@ -21,7 +21,7 @@ const Page = () => {
 
   return (
     <div className="flex h-full flex-col">
-      <InvoiceOptions />
+      <InvoiceOptions form={form} />
       <ResizablePanelGroup direction="horizontal" className="h-full">
         <ResizablePanel minSize={50} defaultSize={50}>
           <InvoiceForm form={form} />
