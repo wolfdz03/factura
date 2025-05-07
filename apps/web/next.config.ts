@@ -1,8 +1,9 @@
 import type { NextConfig } from "next";
+import { withContentCollections } from "@content-collections/next";
 
 const nextConfig: NextConfig = {
   /* config options here */
   serverExternalPackages: ["@react-pdf/renderer"],
 };
 
-export default nextConfig;
+export default withContentCollections(nextConfig);
