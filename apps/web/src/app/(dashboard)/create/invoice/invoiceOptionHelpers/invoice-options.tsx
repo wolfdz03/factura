@@ -5,6 +5,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
+import { PostHogAnalytics } from "@/components/ui/posthog-analytics";
 import InvoiceErrorsModal from "./invoice-errors-modal";
 import InvoiceTabSwitch from "./invoice-tab-switch";
 import { InboxArrowDownIcon } from "@/assets/icons";
@@ -155,20 +156,40 @@ const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
 
   return (
     <div className="flex h-12 shrink-0 flex-row items-center justify-between gap-2 border-b px-2">
-      <InvoiceErrorsModal />
+      <PostHogAnalytics analytics={{ name: "error-modal-open", group: "create-invoice-page" }}>
+        <InvoiceErrorsModal />
+      </PostHogAnalytics>
       <div className="flex flex-row items-center gap-2">
-        <InvoiceTabSwitch />
+        <Button
+          variant="secondary"
+          onClick={handlePreview}
+          analytics={{ name: "preview-invoice-action", group: "create-invoice-page" }}
+        >
+          <EyeScannerIcon className="light:text-muted-foreground mr-2" />
+          Preview
+        </Button>
         <DropdownMenu onOpenChange={setIsDropdownOpen}>
           <DropdownMenuTrigger asChild>
-            <Button variant="default">
-              <InboxArrowDownIcon />
+            <Button variant="default" analytics={{ name: "download-invoice-action", group: "create-invoice-page" }}>
+              <InboxArrowDownIcon className="mr-2" />
               Download
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={handlePreview}>View PDF</DropdownMenuItem>
-            <DropdownMenuItem onClick={handlePdfDownload(formData)}>Download PDF</DropdownMenuItem>
-            <DropdownMenuItem onClick={handlePngDownload(formData)}>Download PNG</DropdownMenuItem>
+          <DropdownMenuContent>
+            <DropdownMenuItem
+              onClick={handlePdfDownload(formData)}
+              // data-s:event="download-invoice-pdf"
+              // data-s:event-props="format=pdf;type=invoice"
+            >
+              Download as PDF
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={handlePngDownload(formData)}
+              // data-s:event="download-invoice-png"
+              // data-s:event-props="format=png;type=invoice"
+            >
+              Download as PNG
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
