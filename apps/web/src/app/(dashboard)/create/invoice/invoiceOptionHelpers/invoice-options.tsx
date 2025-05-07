@@ -177,15 +177,15 @@ const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
           <DropdownMenuContent>
             <DropdownMenuItem
               onClick={handlePdfDownload(formData)}
-              data-s:event="download-invoice-pdf"
-              data-s:event-props="format=pdf;type=invoice"
+              // data-s:event="download-invoice-pdf"
+              // data-s:event-props="format=pdf;type=invoice"
             >
               Download as PDF
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={handlePngDownload(formData)}
-              data-s:event="download-invoice-png"
-              data-s:event-props="format=png;type=invoice"
+              // data-s:event="download-invoice-png"
+              // data-s:event-props="format=png;type=invoice"
             >
               Download as PNG
             </DropdownMenuItem>
