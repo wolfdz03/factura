@@ -1,3 +1,3 @@
 # Invoicely
 
-~ Proudly OSS
+~~ Proudly OSS
