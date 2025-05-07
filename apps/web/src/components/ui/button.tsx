@@ -3,6 +3,7 @@ import { usePostHog } from "posthog-js/react";
 import { Slot } from "@radix-ui/react-slot";
 import * as React from "react";
 
+import { IAnalytics } from "@/types";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
@@ -36,26 +37,13 @@ const buttonVariants = cva(
   },
 );
 
-type AnalyticsEventSuffix = "-click" | "-action" | "-submit" | "-download" | "-toggle" | "-select" | "-open" | "-close";
-
-type Analytics = {
-  name: `${string}${AnalyticsEventSuffix}`;
-  group?: string;
-};
-
-function Button({
-  className,
-  variant,
-  size,
-  asChild = false,
-  analytics,
-  onClick,
-  ...props
-}: React.ComponentProps<"button"> &
+type ButtonProps = React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
-    analytics: Analytics;
-  }) {
+    analytics: IAnalytics;
+  };
+
+function Button({ className, variant, size, asChild = false, analytics, onClick, ...props }: ButtonProps) {
   const Comp = asChild ? Slot : "button";
   const posthog = usePostHog();
 
