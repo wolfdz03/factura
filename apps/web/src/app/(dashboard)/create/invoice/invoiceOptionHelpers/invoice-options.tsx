@@ -6,9 +6,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
 import { PostHogAnalytics } from "@/components/ui/posthog-analytics";
+// import InvoiceTabSwitch from "./invoice-tab-switch";
+import { EyeScannerIcon, InboxArrowDownIcon } from "@/assets/icons";
 import InvoiceErrorsModal from "./invoice-errors-modal";
-import InvoiceTabSwitch from "./invoice-tab-switch";
-import { InboxArrowDownIcon } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
 import { UseFormReturn } from "react-hook-form";
 import { useEffect, useState } from "react";
