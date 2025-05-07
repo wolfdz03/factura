@@ -47,6 +47,10 @@ alwaysApply: false
     - Favor server components and Next.js SSR.
     - Use only for Web API access in small components.
     - Avoid for data fetching or state management.
+
+  Github Commit Syntax
+  - use <type>(required scope any related to commit file): single title for commit without description
+ 
   
   Follow Next.js docs for Data Fetching, Rendering, and Routing.
   

@@ -1,15 +1,13 @@
 import DashboardSidebarHeader from "@/components/layout/sidebar/dashboard-sidebar-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/components/layout/sidebar";
+import { generateWebsiteMetadata } from "@/constants";
 import type { Metadata } from "next";
 // import { Suspense } from "react";
-export const metadata: Metadata = {
+
+export const metadata: Metadata = generateWebsiteMetadata({
   title: "Invoicely | Dashboard",
-  description: "Invoicely is a simple and easy to use invoice generator ~ Proudly OSS",
-  icons: {
-    icon: "/official/invoicely-logo.png",
-  },
-};
+});
 
 export default async function RootLayout({
   children,

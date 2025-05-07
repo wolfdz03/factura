@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono, JetBrains_Mono, Instrument_Serif, Instrument_Sans, Urbanist } from "next/font/google";
+import { defaultWebsiteMetadata, defaultWebsiteViewport } from "@/constants";
 import { ReactScanProvider, JotaiProvider, PostHogProvider } from "@/providers";
 import { ThemeProvider } from "next-themes";
-import type { Metadata } from "next";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
 import "./globals.css";
@@ -45,13 +45,8 @@ const urbanist = Urbanist({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Invoicely | Invoice Generator",
-  description: "Invoicely is a simple and easy to use invoice generator ~ Proudly OSS",
-  icons: {
-    icon: "/official/invoicely-logo.png",
-  },
-};
+export const metadata = defaultWebsiteMetadata;
+export const viewport = defaultWebsiteViewport;
 
 export default function RootLayout({
   children,
