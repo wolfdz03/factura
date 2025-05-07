@@ -40,7 +40,7 @@ const buttonVariants = cva(
 type ButtonProps = React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
-    analytics: IAnalytics;
+    analytics?: IAnalytics;
   };
 
 function Button({ className, variant, size, asChild = false, analytics, onClick, ...props }: ButtonProps) {
@@ -50,7 +50,7 @@ function Button({ className, variant, size, asChild = false, analytics, onClick,
   const handleClick = React.useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       // Track analytics event if analytics name is provided
-      if (analytics?.name && posthog) {
+      if (analytics && posthog) {
         posthog.capture(analytics.name, {
           buttonGroup: analytics.group,
           buttonVariant: variant,
