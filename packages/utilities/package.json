@@ -6,6 +6,12 @@
   "repository": "https://github.com/legions-developer/invoicely",
   "author": "legions-developer",
   "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    }
+  },
   "devDependencies": {
     "@invoicely/eslint-config": "workspace:*",
     "@invoicely/typescript-config": "workspace:*",

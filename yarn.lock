@@ -6931,6 +6931,7 @@ __metadata:
   dependencies:
     "@invoicely/eslint-config": "workspace:*"
     "@invoicely/typescript-config": "workspace:*"
+    "@t3-oss/env-nextjs": "npm:^0.13.4"
     "@types/node": "npm:^22.15.3"
     husky: "npm:^9.1.7"
     prettier: "npm:^3.5.3"
