@@ -1,9 +1,9 @@
 "use client";
 
-import React, { JSX, useEffect } from "react";
+import React, { useEffect } from "react";
 import { scan } from "react-scan";
 
-const ReactScanProvider = (): JSX.Element => {
+export const ReactScanProvider = () => {
   useEffect(() => {
     scan({
       enabled: true,
@@ -11,5 +11,3 @@ const ReactScanProvider = (): JSX.Element => {
   }, []);
   return <></>;
 };
-
-export default ReactScanProvider;
