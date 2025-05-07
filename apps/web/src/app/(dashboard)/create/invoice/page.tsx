@@ -5,15 +5,18 @@ import {
   createInvoiceSchemaDefaultValues,
   type ZodCreateInvoiceSchema,
 } from "@/zod-schemas/invoice/create-invoice";
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import { ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import InvoiceOptions from "./invoiceOptionHelpers/invoice-options";
+// import { invoiceTabAtom } from "@/global/atoms/invoice-atom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InvoicePreview from "./invoice-preview";
 import { useForm } from "react-hook-form";
 import InvoiceForm from "./invoice-form";
+// import { useAtomValue } from "jotai";
 import React from "react";
 
 const Page = () => {
+  // const invoiceTab = useAtomValue(invoiceTabAtom);
   const form = useForm<ZodCreateInvoiceSchema>({
     resolver: zodResolver(createInvoiceSchema),
     defaultValues: createInvoiceSchemaDefaultValues,
@@ -22,12 +25,11 @@ const Page = () => {
   return (
     <div className="flex h-full flex-col">
       <InvoiceOptions form={form} />
-      <ResizablePanelGroup direction="horizontal" className="h-full">
-        <ResizablePanel minSize={50} defaultSize={50}>
+      <ResizablePanelGroup direction="horizontal" className="divide-x">
+        <ResizablePanel defaultSize={50}>
           <InvoiceForm form={form} />
         </ResizablePanel>
-        <ResizableHandle />
-        <ResizablePanel minSize={50} defaultSize={50}>
+        <ResizablePanel defaultSize={50}>
           <InvoicePreview form={form} />
         </ResizablePanel>
       </ResizablePanelGroup>

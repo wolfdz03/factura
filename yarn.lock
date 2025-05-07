@@ -1860,6 +1860,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@radix-ui/react-tabs@npm:^1.1.9":
+  version: 1.1.9
+  resolution: "@radix-ui/react-tabs@npm:1.1.9"
+  dependencies:
+    "@radix-ui/primitive": "npm:1.1.2"
+    "@radix-ui/react-context": "npm:1.1.2"
+    "@radix-ui/react-direction": "npm:1.1.1"
+    "@radix-ui/react-id": "npm:1.1.1"
+    "@radix-ui/react-presence": "npm:1.1.4"
+    "@radix-ui/react-primitive": "npm:2.1.0"
+    "@radix-ui/react-roving-focus": "npm:1.1.7"
+    "@radix-ui/react-use-controllable-state": "npm:1.2.2"
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 10c0/831e6189d25209ce9bb118612345fdf64f243bb4c95d9b9829527aa8e8f06ac6a595236ad2f34b88813a31eeac0d40949c8052c4dfc87875a9e00d2d8c6cb02b
+  languageName: node
+  linkType: hard
+
 "@radix-ui/react-tooltip@npm:^1.2.4":
   version: 1.2.4
   resolution: "@radix-ui/react-tooltip@npm:1.2.4"
@@ -9398,6 +9424,7 @@ __metadata:
     "@radix-ui/react-select": "npm:^2.2.2"
     "@radix-ui/react-separator": "npm:^1.1.4"
     "@radix-ui/react-slot": "npm:^1.2.0"
+    "@radix-ui/react-tabs": "npm:^1.1.9"
     "@radix-ui/react-tooltip": "npm:^1.2.4"
     "@react-pdf/renderer": "npm:^4.3.0"
     "@tailwindcss/postcss": "npm:^4"

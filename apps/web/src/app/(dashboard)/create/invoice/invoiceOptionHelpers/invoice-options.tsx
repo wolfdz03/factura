@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
 import { PostHogAnalytics } from "@/components/ui/posthog-analytics";
+// import InvoiceTabSwitch from "./invoice-tab-switch";
 import { EyeScannerIcon, InboxArrowDownIcon } from "@/assets/icons";
 import InvoiceErrorsModal from "./invoice-errors-modal";
 import { Button } from "@/components/ui/button";
