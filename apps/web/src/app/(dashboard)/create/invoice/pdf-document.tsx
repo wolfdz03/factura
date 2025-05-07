@@ -156,7 +156,7 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
         <View style={styles.metadataPricingContainer}>
           <View style={styles.metadataContainer}>
             {/* Payment Information */}
-            {data.metadata.paymentInformation.length && (
+            {data.metadata.paymentInformation.length ? (
               <View style={styles.sectionContainer}>
                 <Text style={themeColor}>Payment Information</Text>
                 <View style={styles.flexColumnGapSm}>
@@ -170,7 +170,7 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
                   })}
                 </View>
               </View>
-            )}
+            ) : null}
             {/* Terms and conditions */}
             {data.metadata.terms.value && (
               <View style={styles.sectionContainer}>

@@ -1,7 +1,13 @@
 import { FileAlertIcon } from "@/assets/icons";
 import React from "react";
 
-const PDFLoading = () => {
+const PDFLoading = ({
+  message = "Generating PDF",
+  description = "Please wait while we generate the PDF",
+}: {
+  message?: string;
+  description?: string;
+}) => {
   return (
     <div className="bg-background flex h-full items-center justify-center">
       <div className="flex flex-col items-center gap-4 text-center">
@@ -9,8 +15,8 @@ const PDFLoading = () => {
           <FileAlertIcon />
         </div>
         <div className="flex flex-col">
-          <p className="text-muted-foreground font-semibold">Generating PDF</p>
-          <p className="text-muted-foreground max-w-md text-xs">Please wait while we generate the PDF</p>
+          <p className="text-muted-foreground font-semibold">{message}</p>
+          <p className="text-muted-foreground max-w-md text-xs">{description}</p>
         </div>
       </div>
     </div>
