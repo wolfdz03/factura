@@ -50,7 +50,7 @@ function Button({ className, variant, size, asChild = false, analytics, onClick,
   const handleClick = React.useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       // Track analytics event if analytics name is provided
-      if (analytics && posthog) {
+      if (analytics) {
         posthog.capture(analytics.name, {
           buttonGroup: analytics.group,
           buttonVariant: variant,
