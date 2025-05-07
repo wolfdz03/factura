@@ -1,8 +1,9 @@
 import { Geist, Geist_Mono, JetBrains_Mono, Instrument_Serif, Instrument_Sans, Urbanist } from "next/font/google";
-import { defaultWebsiteMetadata, defaultWebsiteViewport } from "@/constants";
 import { ReactScanProvider, JotaiProvider, PostHogProvider } from "@/providers";
+import { defaultWebsiteMetadata, defaultWebsiteViewport } from "@/constants";
 import { ThemeProvider } from "next-themes";
 import { cn } from "@/lib/utils";
+import Script from "next/script";
 import { Toaster } from "sonner";
 import "./globals.css";
 import "./fonts.css";
@@ -76,6 +77,7 @@ export default function RootLayout({
           </JotaiProvider>
         </PostHogProvider>
       </body>
+      <Script defer src="https://assets.onedollarstats.com/stonks.js" data-debug="invoicely.gg" />
     </html>
   );
 }
