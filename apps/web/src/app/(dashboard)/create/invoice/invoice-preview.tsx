@@ -5,15 +5,12 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import { invoiceErrorAtom } from "@/global/atoms/invoice-atom";
 import PDFLoading from "@/components/layout/pdf/pdf-loading";
 import PDFError from "@/components/layout/pdf/pdf-error";
+import { BlobProvider } from "@react-pdf/renderer";
 import { Document, Page, pdfjs } from "react-pdf";
 import { UseFormReturn } from "react-hook-form";
 import InvoicePDF from "./pdf-document";
-import dynamic from "next/dynamic";
 import { useSetAtom } from "jotai";
 import { debounce } from "lodash";
-
-// Dynamic import for BlobProvider to avoid server-side rendering
-const BlobProvider = dynamic(() => import("@react-pdf/renderer").then((mod) => mod.BlobProvider), { ssr: false });
 
 // Custom PDF viewer component that handles displaying a PDF document
 const PDFViewer = ({ url, width }: { url: string | null; width: number }) => {
@@ -54,11 +51,16 @@ const PDFViewer = ({ url, width }: { url: string | null; width: number }) => {
 };
 
 const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> }) => {
+  const [client, setClient] = useState(false);
   const [data, setData] = useState(form.getValues());
   const [pdfError, setPdfError] = useState<Error | null>(null);
   const setInvoiceError = useSetAtom(invoiceErrorAtom);
   const previewRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(600);
+
+  useEffect(() => {
+    setClient(true);
+  }, []);
 
   // Create a debounced function to update data
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -124,6 +126,10 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
       debouncedSetData.cancel();
     };
   }, [form, debouncedSetData]);
+
+  if (!client) {
+    return <PDFLoading />;
+  }
 
   // If there is an error loading the PDF, show an error message
   if (pdfError) {
