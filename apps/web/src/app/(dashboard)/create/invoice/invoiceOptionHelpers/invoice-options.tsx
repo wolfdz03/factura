@@ -4,10 +4,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-// import InvoiceTabSwitch from "./invoice-tab-switch";
 import { EyeScannerIcon, FileDownloadIcon, ImageSparkleIcon, InboxArrowDownIcon } from "@/assets/icons";
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
-import { PostHogAnalytics } from "@/components/ui/posthog-analytics";
 import InvoiceErrorsModal from "./invoice-errors-modal";
 import InvoiceTabSwitch from "./invoice-tab-switch";
 import { Button } from "@/components/ui/button";
@@ -157,9 +155,7 @@ const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
 
   return (
     <div className="flex h-12 shrink-0 flex-row items-center justify-between gap-2 border-b px-2">
-      <PostHogAnalytics analytics={{ name: "error-modal-open", group: "create-invoice-page" }}>
-        <InvoiceErrorsModal />
-      </PostHogAnalytics>
+      <InvoiceErrorsModal />
       <div className="flex flex-row items-center gap-2">
         <InvoiceTabSwitch />
         <DropdownMenu onOpenChange={setIsDropdownOpen}>
