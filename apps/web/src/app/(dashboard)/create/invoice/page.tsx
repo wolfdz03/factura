@@ -60,12 +60,13 @@ const Page = () => {
     <div className="flex h-full flex-col">
       <InvoiceOptions form={form} />
       <ResizablePanelGroup direction="horizontal" className="divide-x">
-        <ResizablePanel collapsible={true} ref={invoiceFormPanelRef}>
+        <ResizablePanel collapsible={true} defaultSize={50} ref={invoiceFormPanelRef}>
           <InvoiceForm form={form} />
         </ResizablePanel>
         <ResizablePanel
           className={cn(invoiceTab === "both" ? "hidden md:flex" : "flex")}
           collapsible={true}
+          defaultSize={50}
           ref={invoicePreviewPanelRef}
         >
           <InvoicePreview form={form} />

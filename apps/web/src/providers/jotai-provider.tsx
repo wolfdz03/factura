@@ -2,7 +2,7 @@
 
 import { createStore, Provider } from "jotai";
 // import { DevTools } from "jotai-devtools";
-import "jotai-devtools/styles.css";
+// import "jotai-devtools/styles.css";
 
 const store = createStore();
 
