@@ -1,22 +1,20 @@
 "use client";
 
 import { createInvoiceSchema, ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { invoiceErrorAtom } from "@/global/atoms/invoice-atom";
 import PDFLoading from "@/components/layout/pdf/pdf-loading";
 import PDFError from "@/components/layout/pdf/pdf-error";
 import { BlobProvider } from "@react-pdf/renderer";
 import { Document, Page, pdfjs } from "react-pdf";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { UseFormReturn } from "react-hook-form";
 import InvoicePDF from "./pdf-document";
 import { useSetAtom } from "jotai";
 import { debounce } from "lodash";
 
 // Custom PDF viewer component that handles displaying a PDF document
-const PDFViewer = ({ url }: { url: string | null }) => {
+const PDFViewer = ({ url, width }: { url: string | null; width: number }) => {
   const [error, setError] = useState<Error | null>(null);
-  const isMobile = useIsMobile();
 
   // Show empty state
   if (!url) {
@@ -24,13 +22,15 @@ const PDFViewer = ({ url }: { url: string | null }) => {
   }
 
   return (
-    <div className="flex h-full w-full items-center justify-center p-4">
+    <div
+      style={{
+        width: width ? width : "fit-content",
+      }}
+      className="flex h-full items-center justify-center p-4"
+    >
       <Document
         file={url}
-        loading={<></>}
-        // onLoadSuccess={() => {
-        //   console.log("PDF document loaded successfully");
-        // }}
+        loading={null}
         onLoadError={(error) => {
           console.error("[ERROR]: Error loading PDF:", error);
           setError(error);
@@ -38,7 +38,12 @@ const PDFViewer = ({ url }: { url: string | null }) => {
         className="max-h-full"
       >
         {!error && (
-          <Page pageNumber={1} width={isMobile ? 400 : 600} renderTextLayer={false} renderAnnotationLayer={false} />
+          <Page
+            pageNumber={1}
+            width={width > 600 ? 600 - 32 : width - 32}
+            renderTextLayer={false}
+            renderAnnotationLayer={false}
+          />
         )}
       </Document>
     </div>
@@ -46,10 +51,16 @@ const PDFViewer = ({ url }: { url: string | null }) => {
 };
 
 const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> }) => {
-  const [isClient, setIsClient] = useState(true);
+  const [client, setClient] = useState(false);
   const [data, setData] = useState(form.getValues());
   const [pdfError, setPdfError] = useState<Error | null>(null);
   const setInvoiceError = useSetAtom(invoiceErrorAtom);
+  const previewRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(600);
+
+  useEffect(() => {
+    setClient(true);
+  }, []);
 
   // Create a debounced function to update data
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -82,9 +93,25 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
     }
   }, []);
 
-  // Checking if the client is loaded
+  // Set up ResizeObserver to update width when container resizes
   useEffect(() => {
-    setIsClient(false);
+    if (!previewRef.current) return;
+
+    const element = previewRef.current;
+    setContainerWidth(element.clientWidth);
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerWidth(entry.target.clientWidth);
+      }
+    });
+
+    resizeObserver.observe(element);
+
+    return () => {
+      resizeObserver.unobserve(element);
+      resizeObserver.disconnect();
+    };
   }, []);
 
   // Watch for form changes and apply debounce
@@ -100,8 +127,7 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
     };
   }, [form, debouncedSetData]);
 
-  // If the client is not loaded, show a loading state
-  if (isClient) {
+  if (!client) {
     return <PDFLoading />;
   }
 
@@ -111,7 +137,7 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
   }
 
   return (
-    <div className="scroll-bar-hidden h-full w-full overflow-y-auto bg-gray-100">
+    <div ref={previewRef} className="scroll-bar-hidden bg-sidebar h-full w-full overflow-y-auto">
       {/* 
       Use a key to force a re-render of the BlobProvider when the data changes Else it will not re-render and breaks the pdf generation on deleting dynamic fields
       Found this solution on Github Issues: https://github.com/diegomura/react-pdf/issues/3153 
@@ -126,7 +152,7 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
             return <PDFError message={error.message} />;
           }
 
-          return <PDFViewer url={url} />;
+          return <PDFViewer url={url} width={containerWidth} />;
         }}
       </BlobProvider>
     </div>

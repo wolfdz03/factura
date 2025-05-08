@@ -1,7 +1,9 @@
 "use client";
 
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { EyeScannerIcon, FileFeatherIcon, FileTreeIcon } from "@/assets/icons";
 import { type InvoiceTab, invoiceTabAtom } from "@/global/atoms/invoice-atom";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PostHogAnalytics } from "@/components/ui/posthog-analytics";
 import { useIsMobile } from "@/hooks/use-mobile";
 import React, { useEffect } from "react";
 import { useAtom } from "jotai";
@@ -10,29 +12,47 @@ const InvoiceTabSwitch = () => {
   const [tab, setTab] = useAtom(invoiceTabAtom);
   const isMobile = useIsMobile();
 
+  const handleTabChange = (tab: InvoiceTab) => {
+    setTab(tab);
+  };
+
+  // if is mobile and both then we need to force set form
+  // because we cant show both on mobile
   useEffect(() => {
-    if (isMobile) {
+    if (isMobile && tab === "both") {
       setTab("form");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobile]);
+  }, [isMobile, tab, setTab]);
 
   return (
-    <Tabs
-      onValueChange={(value) => {
-        setTab(value as InvoiceTab);
-      }}
-      defaultValue={tab}
-      className="w-fit"
-    >
-      <TabsList className="grid w-full grid-cols-2 md:grid-cols-3">
-        <TabsTrigger value="form">Edit</TabsTrigger>
-        <TabsTrigger value="preview">Preview</TabsTrigger>
-        <TabsTrigger className="hidden md:block" value="both">
-          Both
-        </TabsTrigger>
-      </TabsList>
-    </Tabs>
+    <Select onValueChange={handleTabChange} value={tab} defaultValue={tab}>
+      <PostHogAnalytics
+        analytics={{
+          name: "invoice-tab-select",
+          group: "create-invoice-page",
+        }}
+      >
+        <SelectTrigger className="w-32">
+          <SelectValue placeholder="Select a tab" />
+        </SelectTrigger>
+      </PostHogAnalytics>
+      <SelectContent align="end">
+        <SelectGroup>
+          <SelectItem value="form">
+            <FileFeatherIcon />
+            <span>Form</span>
+          </SelectItem>
+          <SelectItem value="preview">
+            <EyeScannerIcon />
+            <span>Preview</span>
+          </SelectItem>
+          <SelectItem className="hidden md:flex" value="both">
+            <FileTreeIcon />
+            <span>Both</span>
+          </SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
   );
 };
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { PostHogAnalytics } from "@/components/ui/posthog-analytics";
 import LogoIcon from "@/components/assets/logo-icon";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
@@ -21,9 +22,16 @@ export default function Home() {
         </div>
         <p className="text-muted-foreground text-center text-sm">The easiest way to create and send invoices</p>
         <div className="mt-4 flex gap-2">
-          <Link href={LINKS.DASHBOARD}>
-            <Button>Get Started</Button>
-          </Link>
+          <PostHogAnalytics
+            analytics={{
+              name: "get-started-button-click",
+              group: "landing-page",
+            }}
+          >
+            <Link href={LINKS.DASHBOARD}>
+              <Button>Get Started</Button>
+            </Link>
+          </PostHogAnalytics>
           <Button variant="secondary" onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
             Switch Theme
           </Button>
