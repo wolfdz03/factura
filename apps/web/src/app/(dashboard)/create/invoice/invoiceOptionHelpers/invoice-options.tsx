@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { EyeScannerIcon, FileDownloadIcon, ImageSparkleIcon, InboxArrowDownIcon } from "@/assets/icons";
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
+import { PostHogAnalytics } from "@/components/ui/posthog-analytics";
 import InvoiceErrorsModal from "./invoice-errors-modal";
 import InvoiceTabSwitch from "./invoice-tab-switch";
 import { Button } from "@/components/ui/button";
@@ -158,28 +159,30 @@ const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
       <InvoiceErrorsModal />
       <div className="flex flex-row items-center gap-2">
         <InvoiceTabSwitch />
-        <DropdownMenu onOpenChange={setIsDropdownOpen}>
-          <DropdownMenuTrigger asChild>
-            <Button variant="default" analytics={{ name: "download-invoice-action", group: "create-invoice-page" }}>
-              <InboxArrowDownIcon />
-              Download
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={handlePreview}>
-              <EyeScannerIcon />
-              <span>View PDF</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handlePdfDownload(formData)}>
-              <FileDownloadIcon />
-              <span>Download PDF</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handlePngDownload(formData)}>
-              <ImageSparkleIcon />
-              <span>Download PNG</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <PostHogAnalytics analytics={{ name: "download-invoice-action", group: "create-invoice-page" }}>
+          <DropdownMenu onOpenChange={setIsDropdownOpen}>
+            <DropdownMenuTrigger asChild>
+              <Button variant="default">
+                <InboxArrowDownIcon />
+                Download
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={handlePreview}>
+                <EyeScannerIcon />
+                <span>View PDF</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handlePdfDownload(formData)}>
+                <FileDownloadIcon />
+                <span>Download PDF</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handlePngDownload(formData)}>
+                <ImageSparkleIcon />
+                <span>Download PNG</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </PostHogAnalytics>
       </div>
     </div>
   );
