@@ -28,7 +28,7 @@ export default function ImageInput({
     { files, isDragging, errors },
     { handleDragEnter, handleDragLeave, handleDragOver, handleDrop, openFileDialog, removeFile, getInputProps },
   ] = useFileUpload({
-    accept: "image/*",
+    accept: "image/png, image/jpeg, image/jpg",
     maxSize,
   });
 
@@ -68,7 +68,7 @@ export default function ImageInput({
                 <ImageSparkleIcon className="size-4 opacity-60" />
               </div>
               <p className="mb-1.5 text-xs font-medium">{title}</p>
-              <p className="text-muted-foreground text-[10px]">Max size: {maxSizeMB}MB</p>
+              <p className="text-muted-foreground text-[10px]">Max size: {maxSizeMB}MB (PNG, JPG, JPEG)</p>
             </div>
           )}
         </div>
