@@ -3,5 +3,7 @@ export const LINKS = {
   DASHBOARD: "/dashboard",
   INVOICES: "/invoices",
   ANALYTICS: "/analytics",
-  CREATE_INVOICE: "/create/invoice",
+  CREATE: {
+    INVOICE: "/create/invoice",
+  },
 };

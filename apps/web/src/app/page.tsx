@@ -21,7 +21,7 @@ export default function Home() {
         </div>
         <p className="text-muted-foreground text-center text-sm">The easiest way to create and send invoices</p>
         <div className="mt-4 flex gap-2">
-          <Link href={LINKS.DASHBOARD}>
+          <Link href={LINKS.CREATE.INVOICE}>
             <Button>Get Started</Button>
           </Link>
           <Button variant="secondary" onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
