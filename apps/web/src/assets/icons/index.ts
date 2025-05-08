@@ -11,3 +11,6 @@ export { default as BoxIcon } from "./box";
 export { default as TrashIcon } from "./trash";
 export { default as CalendarPenIcon } from "./calender-pen";
 export { default as FileAlertIcon } from "./file-alert";
+export { default as FileFeatherIcon } from "./file-feather";
+export { default as FileDownloadIcon } from "./file-download";
+export { default as FileTreeIcon } from "./file-tree";

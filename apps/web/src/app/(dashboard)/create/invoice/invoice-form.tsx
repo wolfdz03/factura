@@ -39,7 +39,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
             <AccordionItem value="company-details">
               <InvoiceAccordionTrigger>Company Details</InvoiceAccordionTrigger>
               <InvoiceAccordionContent>
-                <div className="flex w-full flex-row gap-4">
+                <div className="flex w-full flex-row gap-4 md:flex-col [&>*]:flex-1 [@media(min-width:1200px)]:flex-row">
                   <FormImageInput label="Company Logo" name="companyDetails.logo" reactform={form} />
                   <FormImageInput label="Company Signature" name="companyDetails.signature" reactform={form} />
                 </div>
