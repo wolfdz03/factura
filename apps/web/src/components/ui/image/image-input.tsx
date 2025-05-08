@@ -14,6 +14,7 @@ interface ImageInputProps {
   maxSizeMB?: number;
   className?: string;
   onFileUpload?: (file: string) => void;
+  defaultUrl?: string;
 }
 
 export default function ImageInput({
@@ -21,6 +22,7 @@ export default function ImageInput({
   maxSizeMB = 5,
   className,
   onFileUpload,
+  defaultUrl,
 }: ImageInputProps) {
   const maxSize = maxSizeMB * 1024 * 1024; // 5MB default
 
@@ -32,7 +34,7 @@ export default function ImageInput({
     maxSize,
   });
 
-  const previewUrl = files[0]?.preview || "";
+  const previewUrl = files[0]?.preview || defaultUrl || "";
 
   useEffect(() => {
     if (onFileUpload) {
