@@ -28,7 +28,7 @@ export default function Home() {
               group: "landing-page",
             }}
           >
-            <Link href={LINKS.DASHBOARD}>
+            <Link href={LINKS.CREATE.INVOICE}>
               <Button>Get Started</Button>
             </Link>
           </PostHogAnalytics>

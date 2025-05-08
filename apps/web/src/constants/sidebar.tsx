@@ -23,7 +23,7 @@ export const SIDEBAR_ITEMS: ISidebar = {
   Create: [
     {
       name: "Create Invoice",
-      url: LINKS.CREATE_INVOICE,
+      url: LINKS.CREATE.INVOICE,
       icon: <ReceiptIcon />,
     },
   ],
