@@ -48,11 +48,12 @@ const Page = () => {
         return invoiceFormPanelRef.current?.collapse();
       case "both":
         if (invoicePanel.isCollapsed()) {
-          return invoicePanel.expand();
+          invoicePanel.expand();
         }
         if (invoicePreviewPanel.isCollapsed()) {
-          return invoicePreviewPanel.expand();
+          invoicePreviewPanel.expand();
         }
+        return;
     }
   }, [invoiceTab, isMobile, setInvoiceTab]);
 

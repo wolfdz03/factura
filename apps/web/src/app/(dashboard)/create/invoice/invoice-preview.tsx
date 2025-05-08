@@ -22,12 +22,7 @@ const PDFViewer = ({ url, width }: { url: string | null; width: number }) => {
   }
 
   return (
-    <div
-      style={{
-        width: width ? width : "fit-content",
-      }}
-      className="flex h-full items-center justify-center p-4"
-    >
+    <div className="flex h-full w-full items-center justify-center p-4">
       <Document
         file={url}
         loading={null}
