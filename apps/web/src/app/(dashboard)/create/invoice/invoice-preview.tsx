@@ -46,7 +46,7 @@ const PDFViewer = ({ url, width }: { url: string | null; width: number }) => {
 };
 
 const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> }) => {
-  const [client, setClient] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const [data, setData] = useState(form.getValues());
   const [pdfError, setPdfError] = useState<Error | null>(null);
   const setInvoiceError = useSetAtom(invoiceErrorAtom);
@@ -54,7 +54,7 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
   const [containerWidth, setContainerWidth] = useState<number>(600);
 
   useEffect(() => {
-    setClient(true);
+    setIsClient(true);
   }, []);
 
   // Create a debounced function to update data
@@ -96,6 +96,7 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
     setContainerWidth(element.clientWidth);
 
     const resizeObserver = new ResizeObserver((entries) => {
+      console.log("ressized");
       for (const entry of entries) {
         setContainerWidth(entry.target.clientWidth);
       }
@@ -107,7 +108,7 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
       resizeObserver.unobserve(element);
       resizeObserver.disconnect();
     };
-  }, []);
+  }, [isClient]);
 
   // Watch for form changes and apply debounce
   useEffect(() => {
@@ -122,7 +123,7 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
     };
   }, [form, debouncedSetData]);
 
-  if (!client) {
+  if (!isClient) {
     return <PDFLoading />;
   }
 
