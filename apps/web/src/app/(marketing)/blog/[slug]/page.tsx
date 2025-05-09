@@ -1,9 +1,10 @@
+import { blogComponents } from "@/components/layout/marketing/blogs/components";
 import BlogHeader from "@/components/layout/marketing/blogs/blog-header";
-import { Pre, CodeBlock } from "fumadocs-ui/components/codeblock";
+import BlogHero from "@/components/layout/marketing/blogs/blog-hero";
 import { MDXContent } from "@content-collections/mdx/react";
-import defaultComponents from "fumadocs-ui/mdx";
 import { allBlogs } from "content-collections";
 import { notFound } from "next/navigation";
+import { cn } from "@/lib/utils";
 import { Metadata } from "next";
 
 export async function generateStaticParams() {
@@ -32,24 +33,18 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
   const post = allBlogs.find((post) => post._meta.path === slug);
   if (!post) return notFound();
   return (
-    <article className="mx-auto flex min-h-screen max-w-[1000px] flex-col border-x border-dashed">
+    <article
+      className={cn("mx-auto flex min-h-screen max-w-[1000px] flex-col border-x border-dashed", "instrument-sans")}
+    >
       <BlogHeader />
-      <div className="mx-auto flex max-w-[600px] flex-col p-0">
-        <div className="prose prose-invert prose-lg container my-5">
-          <h1 className="text-xl font-bold">{post.title}</h1>
-          <p className="mb-10 text-base text-gray-400">{post.summary}</p>
-          <MDXContent
-            code={post.mdx}
-            components={{
-              ...defaultComponents,
-              pre: ({ ...props }) => (
-                <CodeBlock {...props} keepBackground className="font-mono">
-                  <Pre>{props.children}</Pre>
-                </CodeBlock>
-              ),
-            }}
-          />
+      <BlogHero title={post.title} description={post.summary} />
+      <div className="grid grid-cols-7">
+        {/* Content */}
+        <div className="col-span-5 space-y-4 border-r border-dashed p-12">
+          <MDXContent code={post.mdx} components={blogComponents} />
         </div>
+        {/* Sidebar List of contents */}
+        <div className="col-span-2 p-4"></div>
       </div>
     </article>
   );

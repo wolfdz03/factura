@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { BlogIcon } from "@/assets/icons";
 import { LINKS } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,7 +14,10 @@ const BlogHeader = () => {
       </Link>
       <div className="flex flex-row items-center gap-2">
         <Link href={LINKS.BLOGS}>
-          <Button variant="outline">All Blogs</Button>
+          <Button variant="secondary">
+            <BlogIcon />
+            <span>All Blogs</span>
+          </Button>
         </Link>
       </div>
     </div>

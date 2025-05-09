@@ -17,16 +17,20 @@ When choosing a frontend framework, consider these popular options:
 - **Vue**: Great for progressive enhancement and single-page applications
 - **Angular**: Ideal for enterprise-level applications with built-in TypeScript support
 
+![Popular Frontend Frameworks](https://images.pexels.com/photos/1402787/pexels-photo-1402787.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)
+
 ### Backend Technologies
 
 Modern backend development offers several approaches:
 
 1. **Node.js with Express**
+
    - Lightweight and fast
    - Great for real-time applications
    - Extensive npm ecosystem
 
 2. **Python with FastAPI**
+
    - High performance
    - Automatic API documentation
    - Easy to learn and maintain
@@ -49,12 +53,43 @@ Choose your architecture based on your needs:
 
 Follow these REST API best practices:
 
-```typescript
-// Example API endpoint structure
-GET /api/v1/users/:id
-POST /api/v1/users
-PUT /api/v1/users/:id
-DELETE /api/v1/users/:id
+```tsx
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={cn(
+          geistSans.variable,
+          geistMono.variable,
+          jetBrainsMono.variable,
+          instrumentSerif.variable,
+          instrumentSans.variable,
+          urbanist.variable,
+          "antialiased",
+        )}
+      >
+        <FumadocsRootProvider>
+          <OneDollarStatsProvider>
+            <PostHogProvider>
+              <JotaiProvider>
+                <ThemeProvider attribute="class" defaultTheme="system" storageKey="invoicely-theme">
+                  <ReactScanProvider />
+                  <Toaster />
+                  {children}
+                </ThemeProvider>
+              </JotaiProvider>
+            </PostHogProvider>
+          </OneDollarStatsProvider>
+        </FumadocsRootProvider>
+      </body>
+    </html>
+  );
+}
+
 ```
 
 ## Database Considerations
@@ -62,6 +97,7 @@ DELETE /api/v1/users/:id
 ### Database Types
 
 1. **SQL Databases**
+
    - PostgreSQL
    - MySQL
    - SQLite
@@ -104,12 +140,14 @@ Essential security measures:
 ### Frontend Optimization
 
 1. **Code Splitting**
+
 ```javascript
 // Example of dynamic import
-const MyComponent = React.lazy(() => import('./MyComponent'));
+const MyComponent = React.lazy(() => import("./MyComponent"));
 ```
 
 2. **Asset Optimization**
+
 - Image compression
 - Minification
 - Tree shaking
@@ -117,11 +155,13 @@ const MyComponent = React.lazy(() => import('./MyComponent'));
 ### Backend Optimization
 
 1. **Caching Strategies**
+
 - Redis caching
 - CDN implementation
 - Browser caching
 
 2. **Database Optimization**
+
 - Query optimization
 - Connection pooling
 - Indexing
@@ -133,10 +173,12 @@ const MyComponent = React.lazy(() => import('./MyComponent'));
 Essential components:
 
 1. **Version Control**
+
    - Git workflow
    - Branching strategies
 
 2. **Automated Testing**
+
    - Unit tests
    - Integration tests
    - E2E tests
@@ -154,15 +196,15 @@ Implement comprehensive logging:
 
 ```javascript
 // Example logging setup
-const winston = require('winston');
+const winston = require("winston");
 
 const logger = winston.createLogger({
-  level: 'info',
+  level: "info",
   format: winston.format.json(),
   transports: [
-    new winston.transports.File({ filename: 'error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'combined.log' })
-  ]
+    new winston.transports.File({ filename: "error.log", level: "error" }),
+    new winston.transports.File({ filename: "combined.log" }),
+  ],
 });
 ```
 
@@ -179,6 +221,7 @@ Tools to consider:
 Building modern web applications requires careful consideration of various factors. By following these best practices and choosing the right tools for your specific needs, you can create scalable, maintainable, and performant applications that will serve your users well.
 
 Remember to:
+
 - Start with a clear architecture
 - Implement security from day one
 - Focus on performance
@@ -189,4 +232,4 @@ Remember to:
 
 - [MDN Web Docs](https://developer.mozilla.org/)
 - [Web.dev](https://web.dev/)
-- [OWASP Security Guidelines](https://owasp.org/www-project-top-ten/) 
+- [OWASP Security Guidelines](https://owasp.org/www-project-top-ten/)

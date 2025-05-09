@@ -15,3 +15,4 @@ export { default as FileFeatherIcon } from "./file-feather";
 export { default as FileDownloadIcon } from "./file-download";
 export { default as FileTreeIcon } from "./file-tree";
 export { default as GithubIcon } from "./github";
+export { default as BlogIcon } from "./blog";
