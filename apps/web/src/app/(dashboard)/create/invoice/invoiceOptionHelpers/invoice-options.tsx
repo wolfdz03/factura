@@ -4,11 +4,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { EyeScannerIcon, FileDownloadIcon, ImageSparkleIcon, InboxArrowDownIcon } from "@/assets/icons";
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
 import { PostHogAnalytics } from "@/components/ui/posthog-analytics";
-// import InvoiceTabSwitch from "./invoice-tab-switch";
-import { EyeScannerIcon, InboxArrowDownIcon } from "@/assets/icons";
 import InvoiceErrorsModal from "./invoice-errors-modal";
+import InvoiceTabSwitch from "./invoice-tab-switch";
 import { Button } from "@/components/ui/button";
 import { UseFormReturn } from "react-hook-form";
 import { useEffect, useState } from "react";
@@ -156,42 +156,33 @@ const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
 
   return (
     <div className="flex h-12 shrink-0 flex-row items-center justify-between gap-2 border-b px-2">
-      <PostHogAnalytics analytics={{ name: "error-modal-open", group: "create-invoice-page" }}>
-        <InvoiceErrorsModal />
-      </PostHogAnalytics>
+      <InvoiceErrorsModal />
       <div className="flex flex-row items-center gap-2">
-        <Button
-          variant="secondary"
-          onClick={handlePreview}
-          analytics={{ name: "preview-invoice-action", group: "create-invoice-page" }}
-        >
-          <EyeScannerIcon className="light:text-muted-foreground mr-2" />
-          Preview
-        </Button>
-        <DropdownMenu onOpenChange={setIsDropdownOpen}>
-          <DropdownMenuTrigger asChild>
-            <Button variant="default" analytics={{ name: "download-invoice-action", group: "create-invoice-page" }}>
-              <InboxArrowDownIcon className="mr-2" />
-              Download
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem
-              onClick={handlePdfDownload(formData)}
-              // data-s:event="download-invoice-pdf"
-              // data-s:event-props="format=pdf;type=invoice"
-            >
-              Download as PDF
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={handlePngDownload(formData)}
-              // data-s:event="download-invoice-png"
-              // data-s:event-props="format=png;type=invoice"
-            >
-              Download as PNG
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <InvoiceTabSwitch />
+        <PostHogAnalytics analytics={{ name: "download-invoice-action", group: "create-invoice-page" }}>
+          <DropdownMenu onOpenChange={setIsDropdownOpen}>
+            <DropdownMenuTrigger asChild>
+              <Button variant="default">
+                <InboxArrowDownIcon />
+                Download
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={handlePreview}>
+                <EyeScannerIcon />
+                <span>View PDF</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handlePdfDownload(formData)}>
+                <FileDownloadIcon />
+                <span>Download PDF</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handlePngDownload(formData)}>
+                <ImageSparkleIcon />
+                <span>Download PNG</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </PostHogAnalytics>
       </div>
     </div>
   );

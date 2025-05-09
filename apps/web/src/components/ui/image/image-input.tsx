@@ -14,6 +14,7 @@ interface ImageInputProps {
   maxSizeMB?: number;
   className?: string;
   onFileUpload?: (file: string) => void;
+  defaultUrl?: string;
 }
 
 export default function ImageInput({
@@ -21,6 +22,7 @@ export default function ImageInput({
   maxSizeMB = 5,
   className,
   onFileUpload,
+  defaultUrl,
 }: ImageInputProps) {
   const maxSize = maxSizeMB * 1024 * 1024; // 5MB default
 
@@ -28,11 +30,11 @@ export default function ImageInput({
     { files, isDragging, errors },
     { handleDragEnter, handleDragLeave, handleDragOver, handleDrop, openFileDialog, removeFile, getInputProps },
   ] = useFileUpload({
-    accept: "image/*",
+    accept: "image/png, image/jpeg, image/jpg",
     maxSize,
   });
 
-  const previewUrl = files[0]?.preview || "";
+  const previewUrl = files[0]?.preview || defaultUrl || "";
 
   useEffect(() => {
     if (onFileUpload) {
@@ -68,7 +70,7 @@ export default function ImageInput({
                 <ImageSparkleIcon className="size-4 opacity-60" />
               </div>
               <p className="mb-1.5 text-xs font-medium">{title}</p>
-              <p className="text-muted-foreground text-[10px]">Max size: {maxSizeMB}MB</p>
+              <p className="text-muted-foreground text-[10px]">Max size: {maxSizeMB}MB (PNG, JPG, JPEG)</p>
             </div>
           )}
         </div>

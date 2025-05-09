@@ -7,3 +7,9 @@ export const invoiceErrorAtom = atom<ZodError["issues"]>([]);
 // Invoice Form Tab For Preview and Form Tab Switching
 export type InvoiceTab = "preview" | "form" | "both";
 export const invoiceTabAtom = atom<InvoiceTab>("both");
+
+// Debug labels for Jotai DevTools
+if (process.env.NODE_ENV === "development") {
+  invoiceTabAtom.debugLabel = "invoiceTab";
+  invoiceErrorAtom.debugLabel = "invoiceError";
+}

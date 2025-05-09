@@ -66,6 +66,7 @@ export const FormImageInput = <
                 onFileUpload={(file) => {
                   field.onChange(file);
                 }}
+                defaultUrl={field.value}
                 {...props}
                 {...field}
               />
