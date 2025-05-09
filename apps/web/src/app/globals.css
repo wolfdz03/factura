@@ -203,3 +203,13 @@ pre {
 li::marker {
   @apply !text-secondary-foreground;
 }
+
+.text-fd-muted-foreground {
+  font-family: var(--font-jetbrains-mono) !important;
+  font-size: 13px !important;
+  letter-spacing: -0.02em !important;
+}
+
+.text-fd-muted-foreground {
+  @apply !text-secondary-foreground font-semibold;
+}
