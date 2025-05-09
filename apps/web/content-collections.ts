@@ -1,6 +1,7 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
 import { rehypeCode } from "fumadocs-core/mdx-plugins";
 import { compileMDX } from "@content-collections/mdx";
+import rehypeSlug from "rehype-slug";
 // for more information on configuration, visit:
 // https://www.content-collections.dev/docs/configuration
 
@@ -15,6 +16,7 @@ const writings = defineCollection({
   transform: async (document, context) => {
     const mdx = await compileMDX(context, document, {
       rehypePlugins: [
+        rehypeSlug,
         [
           rehypeCode,
           {

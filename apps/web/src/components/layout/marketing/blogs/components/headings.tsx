@@ -5,11 +5,12 @@ import React from "react";
 interface MDXElementProps {
   src?: string;
   children?: React.ReactNode;
+  id?: string;
   [key: string]: unknown;
 }
 
-const Heading = ({ ...props }) => {
-  return <h2 {...props} className="instrument-serif text-3xl font-semibold" />;
+const Heading = ({ id, ...props }: MDXElementProps) => {
+  return <h2 id={id} {...props} className="instrument-serif text-3xl font-semibold" />;
 };
 
 // Custom paragraph component that handles images

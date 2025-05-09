@@ -1,7 +1,6 @@
-import { blogComponents } from "@/components/layout/marketing/blogs/components";
 import BlogHeader from "@/components/layout/marketing/blogs/blog-header";
 import BlogHero from "@/components/layout/marketing/blogs/blog-hero";
-import { MDXContent } from "@content-collections/mdx/react";
+import { BlogContent } from "@/components/layout/marketing/blogs/blog-content";
 import { allBlogs } from "content-collections";
 import { notFound } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -38,14 +37,7 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
     >
       <BlogHeader />
       <BlogHero title={post.title} description={post.summary} />
-      <div className="grid grid-cols-7">
-        {/* Content */}
-        <div className="col-span-5 space-y-4 border-r border-dashed p-12">
-          <MDXContent code={post.mdx} components={blogComponents} />
-        </div>
-        {/* Sidebar List of contents */}
-        <div className="col-span-2 p-4"></div>
-      </div>
+      <BlogContent code={post.mdx} />
     </article>
   );
 }
