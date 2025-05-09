@@ -1,7 +1,6 @@
 import { Geist, Geist_Mono, JetBrains_Mono, Instrument_Serif, Instrument_Sans, Urbanist } from "next/font/google";
 import { ReactScanProvider, JotaiProvider, PostHogProvider, OneDollarStatsProvider } from "@/providers";
 import { defaultWebsiteMetadata, defaultWebsiteViewport } from "@/constants";
-import { RootProvider as FumadocsRootProvider } from "fumadocs-ui/provider";
 import { ThemeProvider } from "next-themes";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
@@ -67,19 +66,17 @@ export default function RootLayout({
           "antialiased",
         )}
       >
-        <FumadocsRootProvider>
-          <OneDollarStatsProvider>
-            <PostHogProvider>
-              <JotaiProvider>
-                <ThemeProvider attribute="class" defaultTheme="system" storageKey="invoicely-theme">
-                  <ReactScanProvider />
-                  <Toaster />
-                  {children}
-                </ThemeProvider>
-              </JotaiProvider>
-            </PostHogProvider>
-          </OneDollarStatsProvider>
-        </FumadocsRootProvider>
+        <OneDollarStatsProvider>
+          <PostHogProvider>
+            <JotaiProvider>
+              <ThemeProvider attribute="class" defaultTheme="system" storageKey="invoicely-theme">
+                <ReactScanProvider />
+                <Toaster />
+                {children}
+              </ThemeProvider>
+            </JotaiProvider>
+          </PostHogProvider>
+        </OneDollarStatsProvider>
       </body>
     </html>
   );

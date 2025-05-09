@@ -2,7 +2,7 @@ import { Pre, CodeBlock } from "fumadocs-ui/components/codeblock";
 
 export const Code = ({ ...props }) => {
   return (
-    <CodeBlock {...props} keepBackground>
+    <CodeBlock {...props}>
       <Pre>{props.children}</Pre>
     </CodeBlock>
   );

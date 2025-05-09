@@ -201,5 +201,5 @@ pre {
 }
 
 li::marker {
-  @apply !text-primary-foreground;
+  @apply !text-secondary-foreground;
 }

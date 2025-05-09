@@ -3,7 +3,7 @@ const Heading = ({ ...props }) => {
 };
 
 const Paragraph = ({ ...props }) => {
-  return <p {...props} className="text-primary-foreground/70 text-base text-[15px] font-light" />;
+  return <p {...props} className="text-secondary-foreground text-base text-[15px] font-light" />;
 };
 
 export { Heading, Paragraph };

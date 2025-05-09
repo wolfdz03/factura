@@ -14,7 +14,17 @@ const writings = defineCollection({
   }),
   transform: async (document, context) => {
     const mdx = await compileMDX(context, document, {
-      rehypePlugins: [[rehypeCode]],
+      rehypePlugins: [
+        [
+          rehypeCode,
+          {
+            themes: {
+              light: "min-light",
+              dark: "min-dark",
+            },
+          },
+        ],
+      ],
     });
     return {
       ...document,
