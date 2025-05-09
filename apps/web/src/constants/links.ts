@@ -8,6 +8,7 @@ export const LINKS = {
   DASHBOARD: "/dashboard",
   INVOICES: "/invoices",
   ANALYTICS: "/analytics",
+  BLOGS: "/blogs",
   CREATE: {
     INVOICE: "/create/invoice",
   },
