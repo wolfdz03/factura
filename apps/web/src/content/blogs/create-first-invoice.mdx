@@ -1,7 +1,115 @@
 ---
 title: "Create your first invoice with Invoicely"
-summary: "Learn how to create your first invoice with Invoicely and download it and share it"
+summary: "Learn how to create your first invoice with Invoicely and download it and sh"
 publishedAt: "2023-04-12"
 ---
 
-# Getting Started
+# Building Modern Web Applications
+
+[pfafaf](https://www.google.com)
+
+## A Comprehensive Guide
+
+> **Note:** This guide covers essential concepts and best practices for building scalable, performant, and maintainable web applications. Whether you're a beginner or experienced developer, you'll find valuable insights to enhance your web development skills.
+
+## Introduction
+
+Building modern web applications requires a **deep** understanding of various technologies, architectural patterns, and best practices. In this guide, we'll explore the key components and considerations for creating robust web applications that can scale with your business needs.
+
+![Modern Web Development](https://images.pexels.com/photos/1402787/pexels-photo-1402787.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)
+
+## Core Technologies
+
+### Frontend Framework Selection
+
+When choosing a frontend framework, consider these popular options:
+
+- **React**: Perfect for component-based UIs with a large ecosystem
+- **Vue**: Great for progressive enhancement and single-page applications
+- **Angular**: Ideal for enterprise-level applications with built-in TypeScript support
+
+### Backend Technologies
+
+Modern backend development offers several approaches:
+
+#### Node.js with Express
+
+- Lightweight and fast
+- Great for real-time applications
+- Extensive npm ecosystem
+
+#### Python with FastAPI
+
+- High performance
+- Automatic API documentation
+- Easy to learn and maintain
+
+#### Go
+
+- Excellent performance
+- Built-in concurrency
+- Strong typing system
+
+## Architecture Patterns
+
+### Microservices vs Monolith
+
+| Architecture  | Best For                 | Characteristics                   |
+| ------------- | ------------------------ | --------------------------------- |
+| Monolithic    | Smaller applications     | Simpler to develop and deploy     |
+| Microservices | Large-scale applications | Independent scaling, more complex |
+
+### API Design
+
+> **Warning:** Following REST API best practices is crucial for consistency and maintainability.
+
+```tsx
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={cn(
+          geistSans.variable,
+          geistMono.variable,
+          jetBrainsMono.variable,
+          instrumentSerif.variable,
+          instrumentSans.variable,
+          urbanist.variable,
+          "antialiased",
+        )}
+      >
+        <FumadocsRootProvider>
+          <OneDollarStatsProvider>
+            <PostHogProvider>
+              <JotaiProvider>
+                <ThemeProvider attribute="class" defaultTheme="system" storageKey="invoicely-theme">
+                  <ReactScanProvider />
+                  <Toaster />
+                  {children}
+                </ThemeProvider>
+              </JotaiProvider>
+            </PostHogProvider>
+          </OneDollarStatsProvider>
+        </FumadocsRootProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+## Database Considerations
+
+### Database Types
+
+1. **SQL Databases**
+   - PostgreSQL
+   - MySQL
+   - SQLite
+2. **NoSQL Databases**
+   - MongoDB
+   - Redis
+   - Cassandra

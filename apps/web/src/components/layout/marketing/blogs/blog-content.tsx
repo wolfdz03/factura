@@ -1,29 +1,79 @@
-'use client';
+"use client";
 
-import { useRef, useEffect, useState } from 'react';
+import { AnchorProvider, ScrollProvider, TOCItem } from "fumadocs-core/toc";
 import { MDXContent } from "@content-collections/mdx/react";
+import type { TableOfContents } from "fumadocs-core/server";
+import { useEffect, useRef, useState } from "react";
 import { blogComponents } from "./components";
-import { TableOfContents } from "./components/toc";
+import { BlogIcon } from "@/assets/icons";
+import { cn } from "@/lib/utils";
 
-export function BlogContent({ code }: { code: string }) {
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [renderedHTML, setRenderedHTML] = useState<string>('');
+interface BlogContentProps {
+  code: string;
+  toc: TableOfContents;
+}
+
+export function BlogContent({ code, toc }: BlogContentProps) {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const viewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (contentRef.current) {
-      setRenderedHTML(contentRef.current.innerHTML);
-    }
-  }, []);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // finding index in toc
+            const indexOfToc = toc.findIndex((tocItem) => tocItem.url === `#${entry.target.id}`);
+
+            if (indexOfToc !== -1) {
+              setActiveIndex(indexOfToc);
+            }
+          }
+        });
+      },
+      { rootMargin: "0px 0px -80% 0px" },
+    );
+
+    const elements = document.querySelectorAll("h2[id], h3[id]");
+    elements.forEach((element) => observer.observe(element));
+
+    return () => {
+      elements.forEach((element) => observer.unobserve(element));
+    };
+  }, [toc]);
 
   return (
-    <div className="grid grid-cols-7">
+    <div className="relative grid grid-cols-7">
       {/* Content */}
-      <div className="col-span-5 space-y-4 border-r border-dashed p-12" ref={contentRef}>
+      <div className="col-span-5 space-y-4 border-r border-dashed p-12">
         <MDXContent code={code} components={blogComponents} />
       </div>
       {/* Sidebar List of contents */}
-      <div className="col-span-2 p-6">
-        <TableOfContents html={renderedHTML} />
+      <div className="sticky top-0 col-span-2 flex h-fit flex-col py-6 pr-6">
+        <div className="text-muted-foreground mb-4 flex flex-row items-center gap-2 pl-6 text-sm">
+          <BlogIcon />
+          <span className="text-secondary-foreground">On this page</span>
+        </div>
+        <AnchorProvider toc={toc}>
+          <div ref={viewRef} className="flex flex-col gap-1 overflow-auto">
+            <ScrollProvider containerRef={viewRef}>
+              {toc.map((item, idx) => (
+                <TOCItem
+                  className={cn(
+                    activeIndex === idx
+                      ? "text-secondary-foreground border-secondary-foreground"
+                      : "text-muted-foreground border-muted-foreground",
+                    "border-l pl-6 text-sm",
+                  )}
+                  key={item.url}
+                  href={item.url}
+                >
+                  {item.title}
+                </TOCItem>
+              ))}
+            </ScrollProvider>
+          </div>
+        </AnchorProvider>
       </div>
     </div>
   );
