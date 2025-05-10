@@ -7,7 +7,15 @@ export function MDXLink({ href, ...props }: AnchorHTMLAttributes<HTMLAnchorEleme
   const isExternal = href.startsWith("https://") || href.startsWith("http://");
 
   if (isExternal) {
-    return <a href={href} target="_blank" rel="noreferrer noopener" {...props} />;
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noreferrer noopener"
+        className="text-primary underline-offset-2 hover:underline"
+        {...props}
+      />
+    );
   }
 
   return <Link href={href} {...props} />;

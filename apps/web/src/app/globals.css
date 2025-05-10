@@ -213,3 +213,7 @@ li::marker {
 .text-fd-muted-foreground {
   @apply !text-secondary-foreground font-semibold;
 }
+
+.new-container {
+  @apply mx-auto flex min-h-screen max-w-[1000px] flex-col border-x border-dashed;
+}

@@ -1,6 +1,6 @@
+import { HeadingTwo, HeadingThree, Paragraph } from "./headings";
 import { UnorderedList, OrderedList } from "./points";
 import defaultComponents from "fumadocs-ui/mdx";
-import { Heading, Paragraph } from "./headings";
 import { MDXLink } from "./link";
 import MDXImage from "./image";
 import { Code } from "./code";
@@ -10,11 +10,11 @@ export const blogComponents = {
   img: MDXImage,
   a: MDXLink,
   pre: Code,
-  h1: Heading,
-  h2: Heading,
-  h3: Heading,
-  h4: Heading,
-  h5: Heading,
+  h1: HeadingTwo,
+  h2: HeadingTwo,
+  h3: HeadingThree,
+  h4: HeadingThree,
+  h5: HeadingThree,
   p: Paragraph,
   ul: UnorderedList,
   ol: OrderedList,

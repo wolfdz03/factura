@@ -1,115 +1,86 @@
 ---
 title: "Create your first invoice with Invoicely"
-summary: "Learn how to create your first invoice with Invoicely and download it and sh"
-publishedAt: "2023-04-12"
+summary: "Learn how to create your first invoice with Invoicely and download it and share it with your clients"
+slug: "create-first-invoice"
+thumbnail: "https://images.pexels.com/photos/1402787/pexels-photo-1402787.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
 ---
 
-# Building Modern Web Applications
+# Create Your First Invoice
 
-[pfafaf](https://www.google.com)
+Welcome to Invoicely, the simple and powerful invoicing platform designed for freelancers, small businesses, and entrepreneurs. In this guide, we'll walk you through the process of creating your first professional invoice in just a few minutes.
 
-## A Comprehensive Guide
+## What is Invoicely?
 
-> **Note:** This guide covers essential concepts and best practices for building scalable, performant, and maintainable web applications. Whether you're a beginner or experienced developer, you'll find valuable insights to enhance your web development skills.
+Invoicely is a user-friendly invoicing solution that helps you create, send, and manage invoices effortlessly. With our intuitive interface, customizable templates, and powerful features, you can:
 
-## Introduction
+- Create professional invoices in minutes
+- Track payments and outstanding balances
+- Manage client information
+- Generate financial reports
+- Accept online payments
+- Send automated reminders
 
-Building modern web applications requires a **deep** understanding of various technologies, architectural patterns, and best practices. In this guide, we'll explore the key components and considerations for creating robust web applications that can scale with your business needs.
+Whether you're a freelancer, consultant, or small business owner, Invoicely streamlines your billing process so you can focus on what matters most—growing your business.
 
-![Modern Web Development](https://images.pexels.com/photos/1402787/pexels-photo-1402787.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)
+![Dashboard Image](/blogs/create-first-invoice/dashboard-image.png)
 
-## Core Technologies
+## Getting Started
 
-### Frontend Framework Selection
+### Step 1: Visit the create invoice page
 
-When choosing a frontend framework, consider these popular options:
+If you are first time user, [click here](https://invoicely.gg/create/invoice) to create your first invoice.
 
-- **React**: Perfect for component-based UIs with a large ecosystem
-- **Vue**: Great for progressive enhancement and single-page applications
-- **Angular**: Ideal for enterprise-level applications with built-in TypeScript support
+### Step 2: Set Up Your Company Information
 
-### Backend Technologies
+1. Click on Company Details tab
+2. Add your company name, address, and contact information
+3. Upload your company logo & signature
+4. You can also add your company other information like tax information, bank information, etc.
+5. Just click on add company field to add more information
 
-Modern backend development offers several approaches:
+### Step 3: Setup your client information
 
-#### Node.js with Express
+1. Click on Client Details tab
+2. Add your client's name, email, billing address, and any additional contact information
+3. Just click on add client field to add more information
 
-- Lightweight and fast
-- Great for real-time applications
-- Extensive npm ecosystem
+### Step 4: Add items to your invoice
 
-#### Python with FastAPI
+1. Click on Items tab
+2. Add your items name, description, quantity, unit price.
+3. Just click on add item field to add more information
 
-- High performance
-- Automatic API documentation
-- Easy to learn and maintain
+### Step 5: Add notes and terms
 
-#### Go
+1. Click on Notes & Terms tab
+2. Add your notes and terms
+3. Just click on add note field to add more information
 
-- Excellent performance
-- Built-in concurrency
-- Strong typing system
+### Step 6: Filling Billing Information & Tax Information
 
-## Architecture Patterns
+1. Click on Invoice Details tab
+2. Select your preferred currency
+3. Write down your payment terms agreed with your client
+4. Add a new field under billing details tab
 
-### Microservices vs Monolith
+### Step 7: Preview and finalize your invoice
 
-| Architecture  | Best For                 | Characteristics                   |
-| ------------- | ------------------------ | --------------------------------- |
-| Monolithic    | Smaller applications     | Simpler to develop and deploy     |
-| Microservices | Large-scale applications | Independent scaling, more complex |
+1. Click on download button at the top right corner
+2. You can view preview of your invoice before downloading
+3. You can download your invoice as PDF or save it as PNG image
 
-### API Design
+## Pro Tips for Effective Invoicing
 
-> **Warning:** Following REST API best practices is crucial for consistency and maintainability.
+To make the most of Invoicely:
 
-```tsx
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          geistSans.variable,
-          geistMono.variable,
-          jetBrainsMono.variable,
-          instrumentSerif.variable,
-          instrumentSans.variable,
-          urbanist.variable,
-          "antialiased",
-        )}
-      >
-        <FumadocsRootProvider>
-          <OneDollarStatsProvider>
-            <PostHogProvider>
-              <JotaiProvider>
-                <ThemeProvider attribute="class" defaultTheme="system" storageKey="invoicely-theme">
-                  <ReactScanProvider />
-                  <Toaster />
-                  {children}
-                </ThemeProvider>
-              </JotaiProvider>
-            </PostHogProvider>
-          </OneDollarStatsProvider>
-        </FumadocsRootProvider>
-      </body>
-    </html>
-  );
-}
-```
+- **Use consistent numbering**: Develop a logical invoice numbering system
+- **Set clear payment terms**: Clearly state your expectations for payment
+- **Personalize your invoices**: Add your logo and use your brand colors
+- **Be specific with descriptions**: Provide detailed item descriptions
+- **Send invoices promptly**: The sooner you invoice, the sooner you get paid
 
-## Database Considerations
+## Ready to Create More Invoices?
 
-### Database Types
+Congratulations on creating your first invoice with Invoicely! As you continue using our platform, you'll discover more advanced features like recurring invoices, expense tracking, and comprehensive financial reports.
 
-1. **SQL Databases**
-   - PostgreSQL
-   - MySQL
-   - SQLite
-2. **NoSQL Databases**
-   - MongoDB
-   - Redis
-   - Cassandra
+Happy invoicing!

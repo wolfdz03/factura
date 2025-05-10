@@ -9,8 +9,12 @@ interface MDXElementProps {
   [key: string]: unknown;
 }
 
-const Heading = ({ id, ...props }: MDXElementProps) => {
+const HeadingTwo = ({ id, ...props }: MDXElementProps) => {
   return <h2 id={id} {...props} className="instrument-serif text-3xl font-semibold" />;
+};
+
+const HeadingThree = ({ id, ...props }: MDXElementProps) => {
+  return <h3 id={id} {...props} className="instrument-serif text-xl font-semibold" />;
 };
 
 // Custom paragraph component that handles images
@@ -32,7 +36,7 @@ const Paragraph = (props: React.HTMLAttributes<HTMLParagraphElement>) => {
     <p
       {...props}
       className={cn(
-        "text-secondary-foreground text-base text-[15px] font-light",
+        "text-secondary-foreground/70 text-base text-[15px] font-light",
         // Code tag inside paragraph
         "[&>code]:bg-secondary-foreground/10 [&>code]:rounded-sm [&>code]:border [&>code]:px-1 [&>code]:text-xs",
       )}
@@ -40,4 +44,4 @@ const Paragraph = (props: React.HTMLAttributes<HTMLParagraphElement>) => {
   );
 };
 
-export { Heading, Paragraph };
+export { HeadingTwo, HeadingThree, Paragraph };

@@ -10,8 +10,10 @@ const writings = defineCollection({
   directory: "src/content/blogs",
   include: "*.mdx",
   schema: (z) => ({
+    slug: z.string(),
     title: z.string(),
     summary: z.string(),
+    thumbnail: z.string(),
   }),
   transform: async (document, context) => {
     const mdx = await compileMDX(context, document, {

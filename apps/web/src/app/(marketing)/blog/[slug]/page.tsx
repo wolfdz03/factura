@@ -4,6 +4,7 @@ import BlogHero from "@/components/layout/marketing/blogs/blog-hero";
 import { getTableOfContents } from "fumadocs-core/server";
 import { allBlogs } from "content-collections";
 import { notFound } from "next/navigation";
+import { LINKS } from "@/constants";
 import { cn } from "@/lib/utils";
 import { Metadata } from "next";
 
@@ -36,11 +37,9 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
   const toc = getTableOfContents(post.content);
 
   return (
-    <article
-      className={cn("mx-auto flex min-h-screen max-w-[1000px] flex-col border-x border-dashed", "instrument-sans")}
-    >
-      <BlogHeader />
-      <BlogHero title={post.title} description={post.summary} />
+    <article className={cn("new-container", "instrument-sans")}>
+      <BlogHeader link={LINKS.BLOGS} label="All Blogs" />
+      <BlogHero blog={post} />
       <BlogContent code={post.mdx} toc={toc} />
     </article>
   );
