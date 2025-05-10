@@ -1,3 +1,5 @@
+"use client";
+
 import { cva, type VariantProps } from "class-variance-authority";
 import { usePostHog } from "posthog-js/react";
 import { Slot } from "@radix-ui/react-slot";

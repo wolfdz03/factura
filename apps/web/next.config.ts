@@ -1,3 +1,4 @@
+import { withContentCollections } from "@content-collections/next";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -21,6 +22,7 @@ const nextConfig: NextConfig = {
   // This is required to support PostHog trailing slash API requests
   skipTrailingSlashRedirect: true,
   serverExternalPackages: ["@react-pdf/renderer", "jotai-devtools"],
+  productionBrowserSourceMaps: true,
 };
 
-export default nextConfig;
+export default withContentCollections(nextConfig);
