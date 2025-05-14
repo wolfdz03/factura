@@ -96,7 +96,6 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
     setContainerWidth(element.clientWidth);
 
     const resizeObserver = new ResizeObserver((entries) => {
-      console.log("ressized");
       for (const entry of entries) {
         setContainerWidth(entry.target.clientWidth);
       }
