@@ -10,30 +10,15 @@ export class InvoiceDownloadManager {
   private invoiceData: ZodCreateInvoiceSchema | undefined;
   private invoiceName: string | undefined;
   private blob: Blob | undefined;
-
   // Initialize the invoice data
-  public initialize(invoice: ZodCreateInvoiceSchema) {
+  public async initialize(invoice: ZodCreateInvoiceSchema): Promise<void> {
     // Cleanup resources
     this.cleanup();
 
     // Initialize the invoice data
     this.invoiceData = invoice;
     this.invoiceName = generateInvoiceName({ invoiceData: invoice, extension: "pdf" });
-    createPdfBlob({ invoiceData: this.isInvoiceDataInitialized() })
-      .then((blob) => {
-        if (!blob) {
-          throw new Error("Failed to generate PDF Blob");
-        }
-        // Set the blob
-        this.blob = blob;
-      })
-      .catch((error) => {
-        console.error("[ERROR]: Failed to generate PDF", error);
-        // Show error to user
-        toast.error("Failed to generate PDF", {
-          description: "Please try again or contact support",
-        });
-      });
+    this.blob = await createPdfBlob({ invoiceData: this.isInvoiceDataInitialized() });
   }
 
   // Preview the PDF
@@ -71,6 +56,7 @@ export class InvoiceDownloadManager {
   //   Error Handling
   private isBlobInitialized(): Blob {
     if (!this.blob) {
+      toast.error("Blob not initialized. Initialize the InvoiceDownloadManager");
       throw new Error("Blob not initialized. Initialize the InvoiceDownloadManager");
     }
     return this.blob;
@@ -78,6 +64,7 @@ export class InvoiceDownloadManager {
 
   private isInvoiceDataInitialized(): ZodCreateInvoiceSchema {
     if (!this.invoiceData) {
+      toast.error("Invoice data not initialized. Initialize the InvoiceDownloadManager");
       throw new Error("Invoice data not initialized. Initialize the InvoiceDownloadManager");
     }
     return this.invoiceData;
@@ -85,6 +72,7 @@ export class InvoiceDownloadManager {
 
   private isInvoiceNameInitialized(): string {
     if (!this.invoiceName) {
+      toast.error("Invoice name not initialized. Initialize the InvoiceDownloadManager");
       throw new Error("Invoice name not initialized. Initialize the InvoiceDownloadManager");
     }
     return this.invoiceName;
