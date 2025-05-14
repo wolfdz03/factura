@@ -19,7 +19,9 @@ const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
 
   useEffect(() => {
     if (isDropdownOpen) {
-      InvoiceDownloadManagerInstance.initialize(form.getValues());
+      const formValues = form.getValues();
+
+      InvoiceDownloadManagerInstance.initialize(formValues);
     }
   }, [isDropdownOpen, form]);
 
