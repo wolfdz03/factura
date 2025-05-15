@@ -7,13 +7,13 @@ import {
 } from "@/zod-schemas/invoice/create-invoice";
 import { ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import InvoiceOptions from "./invoiceOptionHelpers/invoice-options";
-import PdfWorkerProvider from "@/providers/pdf-worker-provider";
 import { ImperativePanelHandle } from "react-resizable-panels";
 import { invoiceTabAtom } from "@/global/atoms/invoice-atom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useIsMobile } from "@/hooks/use-mobile";
 import React, { useEffect, useRef } from "react";
 import InvoicePreview from "./invoice-preview";
+import { PdfWorkerProvider } from "@/providers";
 import { useForm } from "react-hook-form";
 import InvoiceForm from "./invoice-form";
 import { cn } from "@/lib/utils";

@@ -1457,6 +1457,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openpanel/nextjs@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "@openpanel/nextjs@npm:1.0.8"
+  dependencies:
+    "@openpanel/web": "npm:1.0.1"
+  peerDependencies:
+    next: ^12.0.0 || ^13.0.0 || ^14.0.0 || ^15.0.0
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/5a03136e6f69839eaf7d60375f3f55d24f31463a00769a3a0b62090a88415893dedd47bc3e9de744cc942e4dc246251e1f91bc3759221261f10f2fa31658b462
+  languageName: node
+  linkType: hard
+
+"@openpanel/sdk@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@openpanel/sdk@npm:1.0.0"
+  checksum: 10c0/a3c40d9ce05cb33a38ac8dc9adf6f2db268440f2b0f5e90e569ee7711d603450a7046f3ba6ea3d56101a93df3535f19d65eeeca41d4469e58180ac173df23503
+  languageName: node
+  linkType: hard
+
+"@openpanel/web@npm:1.0.1":
+  version: 1.0.1
+  resolution: "@openpanel/web@npm:1.0.1"
+  dependencies:
+    "@openpanel/sdk": "npm:1.0.0"
+  checksum: 10c0/18d9dc4730ab1ba31a2ac8eca0afecae567c89588bb8e3b835cf312698c1126d3f2f0787651db5bf7f10ca3a1a15a891d261a730d88a51541cc6fa2665a960b4
+  languageName: node
+  linkType: hard
+
 "@orama/orama@npm:^3.1.6":
   version: 3.1.6
   resolution: "@orama/orama@npm:3.1.6"
@@ -12852,6 +12881,7 @@ __metadata:
     "@hookform/resolvers": "npm:^5.0.1"
     "@invoicely/utilities": "workspace:*"
     "@mantine/hooks": "npm:^8.0.1"
+    "@openpanel/nextjs": "npm:^1.0.8"
     "@radix-ui/react-accordion": "npm:^1.2.8"
     "@radix-ui/react-avatar": "npm:^1.1.7"
     "@radix-ui/react-collapsible": "npm:^1.1.8"

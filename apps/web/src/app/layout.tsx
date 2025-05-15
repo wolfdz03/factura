@@ -1,5 +1,11 @@
+import {
+  ReactScanProvider,
+  JotaiProvider,
+  PostHogProvider,
+  OneDollarStatsProvider,
+  OpenPanelProvider,
+} from "@/providers";
 import { Geist, Geist_Mono, JetBrains_Mono, Instrument_Serif, Instrument_Sans, Urbanist } from "next/font/google";
-import { ReactScanProvider, JotaiProvider, PostHogProvider, OneDollarStatsProvider } from "@/providers";
 import { defaultWebsiteMetadata, defaultWebsiteViewport } from "@/constants";
 import { ThemeProvider } from "next-themes";
 import { cn } from "@/lib/utils";
@@ -66,17 +72,19 @@ export default function RootLayout({
           "antialiased",
         )}
       >
-        <OneDollarStatsProvider>
-          <PostHogProvider>
-            <JotaiProvider>
-              <ThemeProvider attribute="class" defaultTheme="system" storageKey="invoicely-theme">
-                <ReactScanProvider />
-                <Toaster richColors position="top-right" />
-                {children}
-              </ThemeProvider>
-            </JotaiProvider>
-          </PostHogProvider>
-        </OneDollarStatsProvider>
+        <OpenPanelProvider>
+          <OneDollarStatsProvider>
+            <PostHogProvider>
+              <JotaiProvider>
+                <ThemeProvider attribute="class" defaultTheme="system" storageKey="invoicely-theme">
+                  <ReactScanProvider />
+                  <Toaster richColors position="top-right" />
+                  {children}
+                </ThemeProvider>
+              </JotaiProvider>
+            </PostHogProvider>
+          </OneDollarStatsProvider>
+        </OpenPanelProvider>
       </body>
     </html>
   );

@@ -24,4 +24,4 @@ const PdfWorkerProvider = ({ children }: PdfWorkerProviderProps) => {
   return <>{children}</>;
 };
 
-export default PdfWorkerProvider;
+export { PdfWorkerProvider };
