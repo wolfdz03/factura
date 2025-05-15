@@ -14,10 +14,10 @@ export const createInvoiceItemSchema = z.object(
     description: z.string({
       invalid_type_error: "Item description must be a string",
     }),
-    quantity: z
+    quantity: z.coerce
       .number({ invalid_type_error: "Quantity must be a number" })
       .positive({ message: "Quantity must be positive" }),
-    unitPrice: z
+    unitPrice: z.coerce
       .number({ invalid_type_error: "Unit price must be a number" })
       .positive({ message: "Unit price must be positive" }),
   },
