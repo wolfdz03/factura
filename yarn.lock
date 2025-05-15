@@ -1235,6 +1235,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mantine/hooks@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "@mantine/hooks@npm:8.0.1"
+  peerDependencies:
+    react: ^18.x || ^19.x
+  checksum: 10c0/5ee0459d5b393e8e512f1a10c6e8a28235f10f0930503b05477daf3404f6266015e20806e20005c7458a9f66efe310fc85be448be7409bb541e782ed7586bb91
+  languageName: node
+  linkType: hard
+
 "@mdx-js/esbuild@npm:^3.0.0":
   version: 3.1.0
   resolution: "@mdx-js/esbuild@npm:3.1.0"
@@ -12798,6 +12807,7 @@ __metadata:
     "@eslint/eslintrc": "npm:^3"
     "@hookform/resolvers": "npm:^5.0.1"
     "@invoicely/utilities": "workspace:*"
+    "@mantine/hooks": "npm:^8.0.1"
     "@radix-ui/react-accordion": "npm:^1.2.8"
     "@radix-ui/react-avatar": "npm:^1.1.7"
     "@radix-ui/react-collapsible": "npm:^1.1.8"

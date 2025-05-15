@@ -1,14 +1,16 @@
 "use client";
 
 import { createInvoiceSchema, ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import { createBlobUrl, revokeBlobUrl } from "@/lib/invoice/create-blob-url";
+import { parseCatchError } from "@/lib/neverthrow/parseCatchError";
 import { invoiceErrorAtom } from "@/global/atoms/invoice-atom";
+import { useMounted, useResizeObserver } from "@mantine/hooks";
+import { createPdfBlob } from "@/lib/invoice/create-pdf-blob";
 import PDFLoading from "@/components/layout/pdf/pdf-loading";
 import PDFError from "@/components/layout/pdf/pdf-error";
-import { BlobProvider } from "@react-pdf/renderer";
-import { Document, Page, pdfjs } from "react-pdf";
+import React, { useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
-import InvoicePDF from "./pdf-document";
+import { Document, Page } from "react-pdf";
 import { useSetAtom } from "jotai";
 import { debounce } from "lodash";
 
@@ -18,7 +20,12 @@ const PDF_VIEWER_PADDING = 18;
 const PDFViewer = ({ url, width }: { url: string | null; width: number }) => {
   const [error, setError] = useState<Error | null>(null);
 
-  // Show empty state
+  if (width === 0) {
+    // setting width to 600px Because the container is not mounted yet
+    width = 600;
+  }
+
+  // Show empty state if the url is not loaded
   if (!url) {
     return null;
   }
@@ -48,114 +55,96 @@ const PDFViewer = ({ url, width }: { url: string | null; width: number }) => {
 };
 
 const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> }) => {
-  const [isClient, setIsClient] = useState(false);
-  const [data, setData] = useState(form.getValues());
-  const [pdfError, setPdfError] = useState<Error | null>(null);
+  const isClient = useMounted();
+  const [resizeRef, container] = useResizeObserver();
   const setInvoiceError = useSetAtom(invoiceErrorAtom);
-  const previewRef = useRef<HTMLDivElement>(null);
-  const [containerWidth, setContainerWidth] = useState<number>(600);
+  const [data, setData] = useState(form.getValues());
+  const [pdfError, setPdfError] = useState<string | null>(null);
+  const [generatedPdfUrl, setGeneratedPdfUrl] = useState<string | null>(null);
 
+  // Watch for form changes, debounce input, validate, and then update data/errors
   useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  // Create a debounced function to update data
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedSetData = useCallback(
-    debounce((value: ZodCreateInvoiceSchema) => {
+    const processFormValue = (value: ZodCreateInvoiceSchema) => {
       // First verify the data if it matches the schema
       const isDataValid = createInvoiceSchema.safeParse(value);
+      // If the data is valid, set the data to invoice and clear the errors
       if (isDataValid.success) {
         setData(value);
         setInvoiceError([]);
       } else {
         setInvoiceError(isDataValid.error.issues);
       }
-    }, 1000),
-    [],
-  );
-
-  // Initialize PDF.js worker
-  useEffect(() => {
-    try {
-      if (typeof window !== "undefined" && !pdfjs.GlobalWorkerOptions.workerSrc) {
-        pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-          "pdfjs-dist/build/pdf.worker.min.mjs",
-          import.meta.url,
-        ).toString();
-      }
-    } catch (error) {
-      console.error("[ERROR]: Error setting up PDF worker:", error);
-      setPdfError(error instanceof Error ? error : new Error("Failed to setup PDF worker"));
-    }
-  }, []);
-
-  // Set up ResizeObserver to update width when container resizes
-  useEffect(() => {
-    if (!previewRef.current) return;
-
-    const element = previewRef.current;
-    setContainerWidth(element.clientWidth);
-
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        setContainerWidth(entry.target.clientWidth);
-      }
-    });
-
-    resizeObserver.observe(element);
-
-    return () => {
-      resizeObserver.unobserve(element);
-      resizeObserver.disconnect();
     };
-  }, [isClient]);
 
-  // Watch for form changes and apply debounce
-  useEffect(() => {
+    // Create a debounced version of the processing function
+    const debouncedProcessFormValue = debounce(processFormValue, 1000);
+
     const subscription = form.watch((value) => {
-      debouncedSetData(value as ZodCreateInvoiceSchema);
+      // Ensure the watched value is cast correctly, matching the original logic
+      debouncedProcessFormValue(value as ZodCreateInvoiceSchema);
     });
 
     return () => {
       // Cleanup subscription and cancel any pending debounced calls
       subscription.unsubscribe();
-      debouncedSetData.cancel();
+      debouncedProcessFormValue.cancel();
     };
-  }, [form, debouncedSetData]);
 
-  if (!isClient) {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form]);
+
+  // Effect to generate PDF when data changes
+  useEffect(() => {
+    setPdfError(null);
+
+    (async () => {
+      try {
+        const blob = await createPdfBlob({ invoiceData: data });
+        const newUrl = createBlobUrl({ blob });
+
+        setGeneratedPdfUrl((prevUrl) => {
+          if (prevUrl) {
+            revokeBlobUrl({ url: prevUrl });
+          }
+          return newUrl;
+        });
+      } catch (err) {
+        setPdfError(parseCatchError(err, "Failed to generate PDF content"));
+        if (generatedPdfUrl) {
+          revokeBlobUrl({ url: generatedPdfUrl });
+        }
+      }
+    })();
+
+    // Cleanup on component unmount or when data changes again (before new generation)
+    return () => {
+      if (generatedPdfUrl) {
+        revokeBlobUrl({ url: generatedPdfUrl });
+      }
+    };
+
+    // Dont Include generatedPdfUrl in the dependency array as it will cause infinite re-renders
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
+  // If there is an error loading the PDF, show an error message
+  if (pdfError) {
     return (
-      <div className="flex h-full w-full items-center justify-center">
-        <PDFLoading />
+      <div className="h-full w-full">
+        <PDFError message={pdfError} />
       </div>
     );
   }
 
-  // If there is an error loading the PDF, show an error message
-  if (pdfError) {
-    return <PDFError message={pdfError.message} />;
-  }
-
   return (
-    <div ref={previewRef} className="scroll-bar-hidden bg-sidebar h-full w-full overflow-y-auto">
-      {/* 
-      Use a key to force a re-render of the BlobProvider when the data changes Else it will not re-render and breaks the pdf generation on deleting dynamic fields
-      Found this solution on Github Issues: https://github.com/diegomura/react-pdf/issues/3153 
-      */}
-      <BlobProvider key={JSON.stringify(data)} document={<InvoicePDF data={data} />}>
-        {({ url, loading, error }) => {
-          // If the PDF is still generating, show a loading state
-          if (loading) return <PDFLoading />;
-
-          // If there is an error generating the PDF, show an error message
-          if (error) {
-            return <PDFError message={error.message} />;
-          }
-
-          return <PDFViewer url={url} width={containerWidth} />;
-        }}
-      </BlobProvider>
+    <div ref={resizeRef} className="scroll-bar-hidden bg-sidebar h-full w-full overflow-y-auto">
+      {!isClient || !generatedPdfUrl ? (
+        <div className="h-full w-full">
+          <PDFLoading />
+        </div>
+      ) : (
+        <PDFViewer url={generatedPdfUrl} width={container.width} />
+      )}
     </div>
   );
 };
