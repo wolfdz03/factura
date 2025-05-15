@@ -15,6 +15,8 @@ interface ImageInputProps {
   className?: string;
   onFileUpload?: (file: string) => void;
   defaultUrl?: string;
+  onBase64Change?: (base64: string) => void;
+  onFileRemove?: (file: string) => void;
 }
 
 export default function ImageInput({
@@ -23,6 +25,8 @@ export default function ImageInput({
   className,
   onFileUpload,
   defaultUrl,
+  onBase64Change,
+  onFileRemove,
 }: ImageInputProps) {
   const maxSize = maxSizeMB * 1024 * 1024; // 5MB default
 
@@ -40,7 +44,16 @@ export default function ImageInput({
     if (onFileUpload) {
       onFileUpload(previewUrl);
     }
-  }, [previewUrl, onFileUpload]);
+
+    if (onBase64Change && files[0]) {
+      // converting the file to base64
+      const reader = new FileReader();
+      reader.onload = () => {
+        onBase64Change(reader.result as string);
+      };
+      reader.readAsDataURL(files[0].file as File);
+    }
+  }, [previewUrl, onFileUpload, onBase64Change, files]);
 
   return (
     <div className={cn("flex w-full flex-col gap-1.5", className)}>
@@ -79,7 +92,12 @@ export default function ImageInput({
             <button
               type="button"
               className="focus-visible:border-ring focus-visible:ring-ring/50 z-50 flex size-5 cursor-pointer items-center justify-center rounded-full bg-black/60 text-white transition-[color,box-shadow] outline-none hover:bg-black/80 focus-visible:ring-[3px]"
-              onClick={() => removeFile(files[0]?.id)}
+              onClick={() => {
+                removeFile(files[0]?.id);
+                if (onFileRemove) {
+                  onFileRemove(files[0]?.id);
+                }
+              }}
               aria-label="Remove image"
             >
               <XIcon className="size-3" aria-hidden="true" />

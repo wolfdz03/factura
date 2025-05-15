@@ -10,12 +10,14 @@ Invoicely is a simple and easy to use invoice generator where you can create bea
 ## 🛠️ Setup
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/legions-developer/invoicely.git
    cd invoicely
    ```
 
 2. **Install dependencies**
+
    ```bash
    yarn
    ```

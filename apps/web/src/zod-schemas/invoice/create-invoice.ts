@@ -50,12 +50,14 @@ export const createInvoiceFieldKeyNumberValuesSchema = z.object(
 export const createInvoiceSchema = z.object({
   companyDetails: z.object(
     {
+      logoBase64: z.string({ invalid_type_error: "Logo base64 must be a string" }).optional(),
       logo: z
         .string({ invalid_type_error: "Logo must be a string" })
         .refine((val) => !val || val.startsWith("data:image") || val.startsWith("blob:") || val.startsWith("https"), {
           message: "Logo must be a valid image URL, blob URL or data URL",
         })
         .optional(),
+      signatureBase64: z.string({ invalid_type_error: "Signature base64 must be a string" }).optional(),
       signature: z
         .string({ invalid_type_error: "Signature must be a string" })
         .refine((val) => !val || val.startsWith("data:image") || val.startsWith("blob:") || val.startsWith("https"), {

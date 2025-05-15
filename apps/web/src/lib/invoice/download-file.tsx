@@ -5,8 +5,9 @@ interface DownloadFileProps {
 
 export const downloadFile = ({ url, fileName }: DownloadFileProps) => {
   const link = document.createElement("a");
+  link.setAttribute("id", "temp-download-link");
   link.href = url;
   link.download = fileName;
   link.click();
-  document.body.removeChild(link);
+  document.getElementById("temp-download-link")?.remove();
 };

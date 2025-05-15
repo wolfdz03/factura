@@ -12,16 +12,29 @@ import InvoiceErrorsModal from "./invoice-errors-modal";
 import InvoiceTabSwitch from "./invoice-tab-switch";
 import { Button } from "@/components/ui/button";
 import { UseFormReturn } from "react-hook-form";
-import { useEffect, useState } from "react";
+
+type InvoiceOptionsProps = "view-pdf" | "download-pdf" | "download-png";
 
 const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const formValues = form.getValues();
 
-  useEffect(() => {
-    if (isDropdownOpen) {
-      InvoiceDownloadManagerInstance.initialize(form.getValues());
+  const handleDropDownAction = async (action: InvoiceOptionsProps) => {
+    await InvoiceDownloadManagerInstance.initialize(formValues);
+
+    switch (action) {
+      case "view-pdf":
+        InvoiceDownloadManagerInstance.previewPdf();
+        break;
+      case "download-pdf":
+        InvoiceDownloadManagerInstance.downloadPdf();
+        break;
+      case "download-png":
+        InvoiceDownloadManagerInstance.downloadPng();
+        break;
+      default:
+        break;
     }
-  }, [isDropdownOpen, form]);
+  };
 
   return (
     <div className="flex h-12 shrink-0 flex-row items-center justify-between gap-2 border-b px-2">
@@ -29,7 +42,7 @@ const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
       <div className="flex flex-row items-center gap-2">
         <InvoiceTabSwitch />
 
-        <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
+        <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="default">
               <InboxArrowDownIcon />
@@ -38,19 +51,19 @@ const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <PostHogAnalytics analytics={{ name: "view-invoice-action", group: "create-invoice-page" }}>
-              <DropdownMenuItem onClick={() => InvoiceDownloadManagerInstance.previewPdf()}>
+              <DropdownMenuItem onClick={() => handleDropDownAction("view-pdf")}>
                 <EyeScannerIcon />
                 <span>View PDF</span>
               </DropdownMenuItem>
             </PostHogAnalytics>
             <PostHogAnalytics analytics={{ name: "download-invoice-action", group: "create-invoice-page" }}>
-              <DropdownMenuItem onClick={() => InvoiceDownloadManagerInstance.downloadPdf()}>
+              <DropdownMenuItem onClick={() => handleDropDownAction("download-pdf")}>
                 <FileDownloadIcon />
                 <span>Download PDF</span>
               </DropdownMenuItem>
             </PostHogAnalytics>
             <PostHogAnalytics analytics={{ name: "download-invoice-png-action", group: "create-invoice-page" }}>
-              <DropdownMenuItem onClick={() => InvoiceDownloadManagerInstance.downloadPng()}>
+              <DropdownMenuItem onClick={() => handleDropDownAction("download-png")}>
                 <ImageSparkleIcon />
                 <span>Download PNG</span>
               </DropdownMenuItem>
