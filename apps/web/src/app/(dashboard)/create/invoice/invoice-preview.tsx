@@ -125,7 +125,11 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
   }, [form, debouncedSetData]);
 
   if (!isClient) {
-    return <PDFLoading />;
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <PDFLoading />
+      </div>
+    );
   }
 
   // If there is an error loading the PDF, show an error message
