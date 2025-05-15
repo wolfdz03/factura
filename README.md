@@ -1,4 +1,4 @@
-# Invoicely
+# Invoicely - Contributions Accepted
 
 Invoicely is a simple and easy to use invoice generator where you can create beautiful and professional invoices in minutes.
 
