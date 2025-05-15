@@ -62,8 +62,6 @@ export class InvoiceDownloadManager {
       }),
     );
 
-    console.log("[SAVE INVOICE TO INDEXEDDB]", { success });
-
     if (success) {
       toast.success("Invoice saved to indexedDB");
     } else {
