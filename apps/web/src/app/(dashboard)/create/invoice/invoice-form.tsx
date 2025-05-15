@@ -4,7 +4,6 @@ import { ZodCreateInvoiceSchema, createInvoiceSchemaDefaultValues } from "@/zod-
 import InvoiceFieldKeyStringValuesSection from "./invoiceHelpers/invoice-field-key-string-value-section";
 import InvoiceFieldKeyNumberValuesSection from "./invoiceHelpers/invoice-field-key-number-value-section";
 import { InvoiceAccordionContent, InvoiceAccordionTrigger } from "./invoiceHelpers/invoice-accordions";
-import { Alert, AlertButtonGroup, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import InvoiceItemsSection from "./invoiceHelpers/invoice-items-section";
 import { FormColorPicker } from "@/components/ui/form/form-color-picker";
 import { FormImageInput } from "@/components/ui/form/form-image-input";
@@ -14,11 +13,9 @@ import { FormTextarea } from "@/components/ui/form/form-textarea";
 import { FormSelect } from "@/components/ui/form/form-select";
 import { currenciesWithSymbols } from "@/constants/currency";
 import { FormInput } from "@/components/ui/form/form-input";
-import { AnimatePresence, motion } from "motion/react";
 import FormRow from "@/components/ui/form/form-row";
 import { SelectItem } from "@/components/ui/select";
 import { Form } from "@/components/ui/form/form";
-import { Button } from "@/components/ui/button";
 import { UseFormReturn } from "react-hook-form";
 import { Badge } from "@/components/ui/badge";
 import React from "react";
@@ -42,29 +39,6 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
             <AccordionItem value="company-details">
               <InvoiceAccordionTrigger>Company Details</InvoiceAccordionTrigger>
               <InvoiceAccordionContent>
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key="company-details-import-alert"
-                    className="overflow-hidden"
-                    initial={{ height: 0 }}
-                    animate={{ height: "auto" }}
-                    exit={{ height: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <Alert variant="default">
-                      <AlertTitle>Import Company Details</AlertTitle>
-                      <AlertDescription>
-                        Import company details from your last invoice. We will use the company details from the last
-                        invoice to pre-fill the form.
-                      </AlertDescription>
-                      <AlertButtonGroup>
-                        <Button variant="default" size="xs">
-                          Import
-                        </Button>
-                      </AlertButtonGroup>
-                    </Alert>
-                  </motion.div>
-                </AnimatePresence>
                 <div className="flex w-full flex-row gap-4 md:flex-col [&>*]:flex-1 [@media(min-width:1200px)]:flex-row">
                   <FormImageInput
                     label="Company Logo"

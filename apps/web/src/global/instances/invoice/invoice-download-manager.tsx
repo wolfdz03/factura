@@ -5,6 +5,7 @@ import { createPdfToImage } from "@/lib/invoice/create-pdf-to-image";
 import { forceInsertInvoice } from "@/lib/indexdb-queries/invoice";
 import { createPdfBlob } from "@/lib/invoice/create-pdf-blob";
 import { downloadFile } from "@/lib/invoice/download-file";
+import { INVOICE_STATUS } from "@/types/indexdb/invoice";
 import { tryCatch } from "@/lib/neverthrow/tryCatch";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "sonner";
@@ -59,6 +60,8 @@ export class InvoiceDownloadManager {
         createdAt: new Date(),
         data: this.isInvoiceDataInitialized(),
         id: uuidv4(),
+        status: INVOICE_STATUS.PENDING,
+        paidAt: null,
       }),
     );
 
