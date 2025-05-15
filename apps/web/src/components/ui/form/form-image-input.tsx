@@ -22,6 +22,7 @@ interface FormImageInputProps<
 > {
   className?: string;
   name: TName;
+  onBase64Change?: (base64: string) => void;
   label?: string | undefined;
   description?: string | undefined;
   reactform: UseFormReturn<TFieldValues>;
@@ -67,6 +68,15 @@ export const FormImageInput = <
                   field.onChange(file);
                 }}
                 defaultUrl={field.value}
+                onBase64Change={(base64) => {
+                  if (props.onBase64Change) {
+                    props.onBase64Change(base64);
+                  }
+                }}
+                onFileRemove={() => {
+                  // remove the file from the field
+                  field.onChange(undefined);
+                }}
                 {...props}
                 {...field}
               />

@@ -30,7 +30,7 @@ interface InvoiceFormProps {
 const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
   const onSubmit = (data: ZodCreateInvoiceSchema) => {
     // Do Nothing
-    console.log("FormValues", data);
+    console.log("[FORM] Submitted:", data);
   };
 
   return (
@@ -66,8 +66,22 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                   </motion.div>
                 </AnimatePresence>
                 <div className="flex w-full flex-row gap-4 md:flex-col [&>*]:flex-1 [@media(min-width:1200px)]:flex-row">
-                  <FormImageInput label="Company Logo" name="companyDetails.logo" reactform={form} />
-                  <FormImageInput label="Company Signature" name="companyDetails.signature" reactform={form} />
+                  <FormImageInput
+                    label="Company Logo"
+                    name="companyDetails.logo"
+                    reactform={form}
+                    onBase64Change={(base64) => {
+                      form.setValue("companyDetails.logoBase64", base64);
+                    }}
+                  />
+                  <FormImageInput
+                    label="Company Signature"
+                    name="companyDetails.signature"
+                    reactform={form}
+                    onBase64Change={(base64) => {
+                      form.setValue("companyDetails.signatureBase64", base64);
+                    }}
+                  />
                 </div>
                 <FormInput
                   name="companyDetails.name"

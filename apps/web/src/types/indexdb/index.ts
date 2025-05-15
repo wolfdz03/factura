@@ -1,10 +1,11 @@
-import { InvoiceCompanyDetails } from "@/types/indexdb/invoice-company-details";
-import { IDB_INVOICE_COMPANY_DETAILS } from "@/constants/indexed-db";
+import { IDBInvoice } from "@/types/indexdb/invoice";
 import { DBSchema } from "idb";
-
 export interface IndexedDBSchema extends DBSchema {
-  [IDB_INVOICE_COMPANY_DETAILS]: {
-    key: number;
-    value: InvoiceCompanyDetails;
+  invoices: {
+    key: string;
+    value: IDBInvoice;
+    indexes: {
+      id: string;
+    };
   };
 }

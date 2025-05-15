@@ -2,14 +2,18 @@ import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
 import { createBlobUrl, revokeBlobUrl } from "@/lib/invoice/create-blob-url";
 import { generateInvoiceName } from "@/lib/invoice/generate-invoice-name";
 import { createPdfToImage } from "@/lib/invoice/create-pdf-to-image";
+import { forceInsertInvoice } from "@/lib/indexdb-queries/invoice";
 import { createPdfBlob } from "@/lib/invoice/create-pdf-blob";
 import { downloadFile } from "@/lib/invoice/download-file";
+import { tryCatch } from "@/lib/neverthrow/tryCatch";
+import { v4 as uuidv4 } from "uuid";
 import { toast } from "sonner";
 
 export class InvoiceDownloadManager {
   private invoiceData: ZodCreateInvoiceSchema | undefined;
   private invoiceName: string | undefined;
   private blob: Blob | undefined;
+
   // Initialize the invoice data
   public async initialize(invoice: ZodCreateInvoiceSchema): Promise<void> {
     // Cleanup resources
@@ -21,7 +25,7 @@ export class InvoiceDownloadManager {
     this.blob = await createPdfBlob({ invoiceData: this.isInvoiceDataInitialized() });
   }
 
-  // Preview the PDF
+  // Preview the PDF - we dont save data on preview
   public async previewPdf() {
     const url = createBlobUrl({ blob: this.isBlobInitialized() });
     window.open(url, "_blank");
@@ -36,6 +40,8 @@ export class InvoiceDownloadManager {
     const fileName = generateInvoiceName({ invoiceData: this.isInvoiceDataInitialized(), extension: "png" });
     downloadFile({ url, fileName });
     revokeBlobUrl({ url });
+    // Save data to indexedDB
+    await this.saveInvoiceToIndexedDB();
   }
 
   // Download the PDF
@@ -43,6 +49,26 @@ export class InvoiceDownloadManager {
     const url = createBlobUrl({ blob: this.isBlobInitialized() });
     downloadFile({ url, fileName: this.isInvoiceNameInitialized() });
     revokeBlobUrl({ url });
+    // Save data to indexedDB
+    await this.saveInvoiceToIndexedDB();
+  }
+
+  private async saveInvoiceToIndexedDB(): Promise<void> {
+    const { success } = await tryCatch(
+      forceInsertInvoice({
+        createdAt: new Date(),
+        data: this.isInvoiceDataInitialized(),
+        id: uuidv4(),
+      }),
+    );
+
+    console.log("[SAVE INVOICE TO INDEXEDDB]", { success });
+
+    if (success) {
+      toast.success("Invoice saved to indexedDB");
+    } else {
+      toast.error("Invoice not saved to indexedDB");
+    }
   }
 
   // Cleanup resources
