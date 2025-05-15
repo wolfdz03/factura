@@ -29,11 +29,11 @@ const InvoiceErrorsModal = () => {
     // Animating a button shake when there are errors
     if (invoiceErrors.length > 0) {
       // Initial shake animation
-      animate("#invoice-err-btn", { rotate: shakeAnimation }, { duration: 0.4, ease: "linear" });
+      animate("#invoice-err-btn", { rotate: shakeAnimation }, { duration: 0.5, ease: "easeInOut" });
 
       // Set up interval for repeated shaking every 10 seconds
       const interval = setInterval(() => {
-        animate("#invoice-err-btn", { rotate: shakeAnimation }, { duration: 0.4, ease: "linear" });
+        animate("#invoice-err-btn", { rotate: shakeAnimation }, { duration: 0.5, ease: "easeInOut" });
       }, 10000);
 
       // Cleanup interval on unmount or when errors are cleared

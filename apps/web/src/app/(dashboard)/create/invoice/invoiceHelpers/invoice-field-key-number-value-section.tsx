@@ -45,37 +45,33 @@ const InvoiceFieldKeyNumberValuesSection: React.FC<InvoiceFieldKeyNumberValuesSe
         <Label>{label ?? "Fields"}</Label>
       </div>
       {fields.map((field, index) => (
-        <div className="flex flex-row items-end gap-2" key={field.id}>
-          <FormInput
-            name={`${name}.${index}.label`}
-            reactform={reactform}
-            label="Label"
-            isOptional={true}
-            sublabel="Tax/Discount/Other"
-            placeholder="Label"
-            description="Label for the field"
-          />
-          <FormInput
-            type="number"
-            name={`${name}.${index}.value`}
-            reactform={reactform}
-            label="Value"
-            placeholder="Value"
-            description="Value can be positive or negative"
-          />
-          <FormSelect
-            description="Type of the field value"
-            name={`${name}.${index}.type`}
-            reactform={reactform}
-            label="Type"
-            placeholder="Type"
-          >
-            <SelectItem value="fixed">Fixed</SelectItem>
-            <SelectItem value="percentage">Percentage</SelectItem>
-          </FormSelect>
-          <Button className="mb-4.5" variant="destructive" size="icon" onClick={() => remove(index)} type="button">
-            <TrashIcon />
-          </Button>
+        <div className="flex flex-col items-center gap-2 sm:flex-row" key={field.id}>
+          <div className="flex w-full flex-row gap-2 sm:w-fit">
+            <FormInput
+              name={`${name}.${index}.label`}
+              reactform={reactform}
+              label="Label"
+              isOptional={true}
+              sublabel="Tax/Discount/Other"
+              placeholder="Label"
+            />
+            <FormSelect name={`${name}.${index}.type`} reactform={reactform} label="Type" placeholder="Type">
+              <SelectItem value="fixed">Fixed</SelectItem>
+              <SelectItem value="percentage">Percentage</SelectItem>
+            </FormSelect>
+          </div>
+          <div className="flex w-full flex-row items-end gap-2 sm:w-fit">
+            <FormInput
+              type="number"
+              name={`${name}.${index}.value`}
+              reactform={reactform}
+              label="Value"
+              placeholder="Value"
+            />
+            <Button variant="destructive" size="icon" onClick={() => remove(index)} type="button">
+              <TrashIcon />
+            </Button>
+          </div>
         </div>
       ))}
       <Button className="w-full border-dashed" variant="outline" onClick={addNewField} type="button">

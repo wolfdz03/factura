@@ -7,6 +7,7 @@ import {
 } from "@/zod-schemas/invoice/create-invoice";
 import { ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import InvoiceOptions from "./invoiceOptionHelpers/invoice-options";
+import PdfWorkerProvider from "@/providers/pdf-worker-provider";
 import { ImperativePanelHandle } from "react-resizable-panels";
 import { invoiceTabAtom } from "@/global/atoms/invoice-atom";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -85,7 +86,9 @@ const Page = () => {
           defaultSize={50}
           ref={invoicePreviewPanelRef}
         >
-          <InvoicePreview form={form} />
+          <PdfWorkerProvider>
+            <InvoicePreview form={form} />
+          </PdfWorkerProvider>
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>
