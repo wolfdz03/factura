@@ -39,21 +39,36 @@ const Page = () => {
 
     if (isMobile && invoiceTab === "both") {
       setInvoiceTab("form");
+      return;
     }
 
     switch (invoiceTab) {
       case "form":
-        return invoicePreviewPanelRef.current?.collapse();
+        if (invoicePanel.isCollapsed()) {
+          invoicePanel.expand();
+        }
+        invoicePreviewPanel.collapse();
+        invoicePanel.resize(100);
+        break;
       case "preview":
-        return invoiceFormPanelRef.current?.collapse();
+        if (invoicePreviewPanel.isCollapsed()) {
+          invoicePreviewPanel.expand();
+        }
+        invoicePanel.collapse();
+        invoicePreviewPanel.resize(100);
+        break;
       case "both":
+        // Ensure both panels are expanded
         if (invoicePanel.isCollapsed()) {
           invoicePanel.expand();
         }
         if (invoicePreviewPanel.isCollapsed()) {
           invoicePreviewPanel.expand();
         }
-        return;
+        // Explicitly set sizes for "both" view
+        invoicePanel.resize(50);
+        invoicePreviewPanel.resize(50);
+        break;
     }
   }, [invoiceTab, isMobile, setInvoiceTab]);
 

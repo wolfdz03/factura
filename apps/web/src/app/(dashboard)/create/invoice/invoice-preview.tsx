@@ -12,6 +12,8 @@ import InvoicePDF from "./pdf-document";
 import { useSetAtom } from "jotai";
 import { debounce } from "lodash";
 
+const PDF_VIEWER_PADDING = 18;
+
 // Custom PDF viewer component that handles displaying a PDF document
 const PDFViewer = ({ url, width }: { url: string | null; width: number }) => {
   const [error, setError] = useState<Error | null>(null);
@@ -35,7 +37,7 @@ const PDFViewer = ({ url, width }: { url: string | null; width: number }) => {
         {!error && (
           <Page
             pageNumber={1}
-            width={width > 600 ? 600 - 32 : width - 32}
+            width={width > 600 ? 600 - PDF_VIEWER_PADDING : width - PDF_VIEWER_PADDING}
             renderTextLayer={false}
             renderAnnotationLayer={false}
           />
