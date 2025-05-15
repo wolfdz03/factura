@@ -4,6 +4,7 @@ import { ZodCreateInvoiceSchema, createInvoiceSchemaDefaultValues } from "@/zod-
 import InvoiceFieldKeyStringValuesSection from "./invoiceHelpers/invoice-field-key-string-value-section";
 import InvoiceFieldKeyNumberValuesSection from "./invoiceHelpers/invoice-field-key-number-value-section";
 import { InvoiceAccordionContent, InvoiceAccordionTrigger } from "./invoiceHelpers/invoice-accordions";
+import { FormSignatureInput } from "@/components/ui/form/form-signature-input";
 import InvoiceItemsSection from "./invoiceHelpers/invoice-items-section";
 import { FormColorPicker } from "@/components/ui/form/form-color-picker";
 import { FormImageInput } from "@/components/ui/form/form-image-input";
@@ -48,7 +49,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                       form.setValue("companyDetails.logoBase64", base64);
                     }}
                   />
-                  <FormImageInput
+                  <FormSignatureInput
                     label="Company Signature"
                     name="companyDetails.signature"
                     reactform={form}
