@@ -170,7 +170,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.16.7, @babel/runtime@npm:^7.20.13, @babel/runtime@npm:^7.20.6, @babel/runtime@npm:^7.23.2":
+"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.16.7, @babel/runtime@npm:^7.17.9, @babel/runtime@npm:^7.20.13, @babel/runtime@npm:^7.20.6, @babel/runtime@npm:^7.23.2":
   version: 7.27.1
   resolution: "@babel/runtime@npm:7.27.1"
   checksum: 10c0/530a7332f86ac5a7442250456823a930906911d895c0b743bf1852efc88a20a016ed4cd26d442d0ca40ae6d5448111e02a08dd638a4f1064b47d080e2875dc05
@@ -3393,6 +3393,13 @@ __metadata:
   version: 1.20.6
   resolution: "@types/resolve@npm:1.20.6"
   checksum: 10c0/a9b0549d816ff2c353077365d865a33655a141d066d0f5a3ba6fd4b28bc2f4188a510079f7c1f715b3e7af505a27374adce2a5140a3ece2a059aab3d6e1a4244
+  languageName: node
+  linkType: hard
+
+"@types/signature_pad@npm:^2.3.0":
+  version: 2.3.6
+  resolution: "@types/signature_pad@npm:2.3.6"
+  checksum: 10c0/67bd91a078c90b51a7e0b4b75f306bf8e1ffccc7b20bd097902d4fb299953fc513981a1444c09d9a9a890fd04c624c3f6599b9d64f5cd39cc663cb3354f7e478
   languageName: node
   linkType: hard
 
@@ -10572,6 +10579,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-signature-canvas@npm:^1.1.0-alpha.2":
+  version: 1.1.0-alpha.2
+  resolution: "react-signature-canvas@npm:1.1.0-alpha.2"
+  dependencies:
+    "@babel/runtime": "npm:^7.17.9"
+    "@types/signature_pad": "npm:^2.3.0"
+    signature_pad: "npm:^2.3.2"
+    trim-canvas: "npm:^0.1.0"
+  peerDependencies:
+    "@types/prop-types": ^15.7.3
+    "@types/react": 0.14 - 19
+    prop-types: ^15.5.8
+    react: 0.14 - 19
+    react-dom: 0.14 - 19
+  peerDependenciesMeta:
+    "@types/prop-types":
+      optional: true
+    "@types/react":
+      optional: true
+  checksum: 10c0/96c60771a42c3bbd5093271c7064ba86edbd606b804006e9486cb510f9c55fc1edcf56d90177adcb53fe0e72806a8a2359d5bb774b33070abfb4e2d9bc171f15
+  languageName: node
+  linkType: hard
+
 "react-style-singleton@npm:^2.2.2, react-style-singleton@npm:^2.2.3":
   version: 2.2.3
   resolution: "react-style-singleton@npm:2.2.3"
@@ -11417,6 +11447,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"signature_pad@npm:^2.3.2":
+  version: 2.3.2
+  resolution: "signature_pad@npm:2.3.2"
+  checksum: 10c0/ab888873b294f76757a44f60614974cb9f3d34cdd51b464206ee59cb115b3f0219d8c04943a2d53ef8a49b5b1170502e930f2a8544b668e08f211eeb80112d6a
+  languageName: node
+  linkType: hard
+
 "simple-concat@npm:^1.0.0":
   version: 1.0.1
   resolution: "simple-concat@npm:1.0.1"
@@ -12004,6 +12041,13 @@ __metadata:
   version: 3.0.0
   resolution: "toml@npm:3.0.0"
   checksum: 10c0/8d7ed3e700ca602e5419fca343e1c595eb7aa177745141f0761a5b20874b58ee5c878cd045c408da9d130cb2b611c639912210ba96ce2f78e443569aa8060c18
+  languageName: node
+  linkType: hard
+
+"trim-canvas@npm:^0.1.0":
+  version: 0.1.2
+  resolution: "trim-canvas@npm:0.1.2"
+  checksum: 10c0/dddc2ac30f22f1e8b7f390fe2c688fa843e97e5d99610f08931776ce7ebf795c369809bb4b1fee6ff234151d2de450b03b49f9c8043d4639fc94ab30e695978b
   languageName: node
   linkType: hard
 
@@ -12856,6 +12900,7 @@ __metadata:
     react-pdf: "npm:^9.2.1"
     react-resizable-panels: "npm:^3.0.0"
     react-scan: "npm:^0.3.3"
+    react-signature-canvas: "npm:^1.1.0-alpha.2"
     rehype-autolink-headings: "npm:^7.1.0"
     rehype-slug: "npm:^6.0.0"
     sonner: "npm:^2.0.3"

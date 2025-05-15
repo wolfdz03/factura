@@ -71,7 +71,7 @@ export default function RootLayout({
             <JotaiProvider>
               <ThemeProvider attribute="class" defaultTheme="system" storageKey="invoicely-theme">
                 <ReactScanProvider />
-                <Toaster />
+                <Toaster richColors position="top-right" />
                 {children}
               </ThemeProvider>
             </JotaiProvider>
