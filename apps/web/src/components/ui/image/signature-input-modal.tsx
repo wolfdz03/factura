@@ -55,7 +55,7 @@ export default function SignatureInputModal({
   // Handle and Save signature
   const handleSave = () => {
     //   get the signature canvas
-    const signatureCanvasUri = signaturePadRef.current?.getTrimmedCanvas().toDataURL("image/png");
+    const signatureCanvasUri = signaturePadRef.current?.toDataURL("image/png");
 
     if (!signatureCanvasUri) {
       toast.error("No signature found", {

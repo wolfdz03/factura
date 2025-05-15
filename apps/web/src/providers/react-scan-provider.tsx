@@ -6,7 +6,7 @@ import { scan } from "react-scan";
 export const ReactScanProvider = () => {
   useEffect(() => {
     scan({
-      enabled: true,
+      enabled: false,
     });
   }, []);
   return <></>;
