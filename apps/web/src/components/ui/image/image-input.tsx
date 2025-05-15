@@ -20,7 +20,7 @@ interface ImageInputProps {
 }
 
 export default function ImageInput({
-  title = "Drop your image here or click to browse",
+  title = "Drag & Drop or Click to Upload",
   maxSizeMB = 5,
   className,
   onFileUpload,
@@ -77,13 +77,13 @@ export default function ImageInput({
           ) : (
             <div className="flex flex-col items-center justify-center px-4 py-3 text-center">
               <div
-                className="bg-muted mb-2 flex size-11 shrink-0 items-center justify-center rounded-full"
+                className="bg-muted mb-2 flex size-8 shrink-0 items-center justify-center rounded-full sm:size-11"
                 aria-hidden="true"
               >
                 <ImageSparkleIcon className="size-4" />
               </div>
-              <p className="mb-1.5 text-xs font-medium">{title}</p>
-              <p className="text-muted-foreground text-[10px]">Max size: {maxSizeMB}MB (PNG, JPG, JPEG)</p>
+              <p className="text-[10px] font-medium sm:mb-1.5 sm:text-xs">{title}</p>
+              <p className="text-muted-foreground text-[10px]">Max size: {maxSizeMB}MB (PNG, JPG)</p>
             </div>
           )}
         </div>

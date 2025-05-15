@@ -402,6 +402,7 @@ const styles = StyleSheet.create({
     fontSize: 8,
     fontWeight: "normal",
     color: "#71717B",
+    marginBottom: 4,
   },
   signatureImage: {
     height: 80,
