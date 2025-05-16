@@ -4,7 +4,9 @@
 import { Document, Page, Text, View, StyleSheet, Image, Font } from "@react-pdf/renderer";
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
 import { getSubTotalValue, getTotalValue } from "@/constants/pdf-helpers";
+import { GEIST_MONO_FONT, QUICKSAND_FONT } from "@/constants/pdf-fonts";
 import { formatCurrencyText } from "@/constants/currency";
+import { createTw } from "react-pdf-tailwind";
 import { toWords } from "number-to-words";
 import { format } from "date-fns";
 import React from "react";
@@ -12,42 +14,12 @@ import React from "react";
 // Register fonts
 Font.register({
   family: "GeistMono",
-  fonts: [
-    {
-      src: "/fonts/geistmono/GeistMono-Light.ttf",
-      fontWeight: "light",
-    },
-    {
-      src: "/fonts/geistmono/GeistMono-Regular.ttf",
-      fontWeight: "normal",
-    },
-  ],
+  fonts: GEIST_MONO_FONT,
 });
 
 Font.register({
   family: "Quicksand",
-  fonts: [
-    {
-      src: "/fonts/quicksand/Quicksand-Regular.ttf",
-      fontWeight: "normal",
-    },
-    {
-      src: "/fonts/quicksand/Quicksand-Bold.ttf",
-      fontWeight: "bold",
-    },
-    {
-      src: "/fonts/quicksand/Quicksand-Medium.ttf",
-      fontWeight: "medium",
-    },
-    {
-      src: "/fonts/quicksand/Quicksand-SemiBold.ttf",
-      fontWeight: "semibold",
-    },
-    {
-      src: "/fonts/quicksand/Quicksand-Light.ttf",
-      fontWeight: "light",
-    },
-  ],
+  fonts: QUICKSAND_FONT,
 });
 
 // Invoice PDF Document component
@@ -65,7 +37,7 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
       creator={data.companyDetails.name}
       producer="Invoicely"
     >
-      <Page size="A4" style={styles.page}>
+      <Page size="A4" style={tw("p-6 font-default text-sm")}>
         <View style={styles.header}>
           <View style={styles.invoiceTitle}>
             <Text style={themeColor}>
@@ -460,5 +432,18 @@ const styles = StyleSheet.create({
   totalWordsValue: {
     fontSize: 10,
     fontWeight: "normal",
+  },
+});
+
+const tw = createTw({
+  theme: {
+    fontFamily: {
+      default: ["Quicksand"],
+    },
+    extend: {
+      colors: {
+        custom: "#bada55",
+      },
+    },
   },
 });
