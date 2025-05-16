@@ -51,7 +51,7 @@ Font.register({
 });
 
 // Invoice PDF Document component
-const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
+const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
   // Calculate totals
   const subtotal = getSubTotalValue(data);
   const total = getTotalValue(data);
@@ -225,7 +225,7 @@ const InvoicePDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
   );
 };
 
-export default InvoicePDF;
+export default DefaultPDF;
 
 // Define styles for the PDF
 const styles = StyleSheet.create({
