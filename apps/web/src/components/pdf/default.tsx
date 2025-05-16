@@ -70,7 +70,7 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
             <Text
               style={tw(
                 cn(
-                  "font-semibold font-jetbrainsmono",
+                  "font-semibold font-jetbrainsmono tracking-tighter",
                   darkMode ? "text-white" : `text-[${data.invoiceDetails.theme.baseColor}]`,
                 ),
               )}
@@ -82,7 +82,7 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
         </View>
         <View style={tw("flex flex-row justify-between mt-2")}>
           {/* Invoice Details */}
-          <View style={tw("flex flex-col gap-1.5")}>
+          <View style={tw("flex flex-col gap-1")}>
             <View style={tw("flex flex-row items-center gap-1")}>
               <Text style={tw("text-2xs font-semibold min-w-[100px]")}>Serial Number</Text>
               <Text style={tw("text-2xs font-normal text-neutral-500")}>{data.invoiceDetails.serialNumber}</Text>
@@ -193,16 +193,16 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
                 )}
               >
                 <View style={tw("flex flex-col w-[60%]")}>
-                  <Text style={tw("w-full")}>{item.name}</Text>
+                  <Text style={tw("w-full font-semibold")}>{item.name}</Text>
                   <Text style={tw("text-xs font-normal text-neutral-600")}>{item.description}</Text>
                 </View>
-                <Text style={tw("w-[10%] text-center font-geistmono tracking-tighter font-light")}>
+                <Text style={tw("w-[10%] text-center font-geistmono tracking-tighter font-semibold")}>
                   {item.quantity}
                 </Text>
-                <Text style={tw("w-[15%] text-right font-geistmono tracking-tighter font-light")}>
+                <Text style={tw("w-[15%] text-right font-geistmono tracking-tighter font-semibold")}>
                   {formatCurrencyText(data.invoiceDetails.currency, item.unitPrice)}
                 </Text>
-                <Text style={tw("w-[15%] text-right font-geistmono tracking-tighter font-light")}>
+                <Text style={tw("w-[15%] text-right font-geistmono tracking-tighter font-semibold")}>
                   {formatCurrencyText(data.invoiceDetails.currency, item.quantity * item.unitPrice)}
                 </Text>
               </View>
