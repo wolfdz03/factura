@@ -22,12 +22,13 @@ interface FormSignatureInputProps<
 > {
   className?: string;
   name: TName;
-  onBase64Change?: (base64: string) => void;
+  onBase64Change?: (base64: string | undefined) => void;
   label?: string | undefined;
   description?: string | undefined;
   reactform: UseFormReturn<TFieldValues>;
   sublabel?: string | undefined;
   isOptional?: boolean;
+  isDarkMode?: boolean;
 }
 
 export const FormSignatureInput = <
@@ -60,6 +61,7 @@ export const FormSignatureInput = <
             ) : null}
             <FormControl>
               <SignatureInputModal
+                isDarkMode={props.isDarkMode}
                 className={cn(
                   className,
                   Boolean(error) && "focus-visible:ring-destructive !border-destructive ring-transparent duration-200",
@@ -74,8 +76,8 @@ export const FormSignatureInput = <
                   }
                 }}
                 onFileRemove={() => {
-                  // remove the file from the field
-                  field.onChange(undefined);
+                  // reset field value
+                  field.onChange("");
                 }}
                 {...props}
                 {...field}

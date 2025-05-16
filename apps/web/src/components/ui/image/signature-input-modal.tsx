@@ -1,4 +1,3 @@
-// Image Component by OriginUI.com
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
@@ -30,8 +29,9 @@ interface SignatureInputModalProps {
   className?: string;
   onSignatureChange?: (signature: string) => void;
   defaultUrl?: string;
-  onBase64Change?: (base64: string) => void;
+  onBase64Change?: (base64: string | undefined) => void;
   onFileRemove?: () => void;
+  isDarkMode?: boolean;
 }
 
 export default function SignatureInputModal({
@@ -41,6 +41,7 @@ export default function SignatureInputModal({
   defaultUrl,
   onBase64Change,
   onFileRemove,
+  isDarkMode = false,
 }: SignatureInputModalProps) {
   const [type, setType] = useState<"signature" | "upload" | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -205,6 +206,9 @@ export default function SignatureInputModal({
                 if (onFileRemove) {
                   onFileRemove();
                 }
+                if (onBase64Change) {
+                  onBase64Change(undefined);
+                }
               }}
               aria-label="Remove image"
             >
@@ -242,11 +246,11 @@ export default function SignatureInputModal({
                 </motion.div>
               )}
               <SignatureCanvas
-                key="signature-canvas"
+                key={`signature-canvas-${isDarkMode}`}
                 ref={signaturePadRef}
                 onBegin={() => setIsSignatureEmpty(false)}
-                penColor="black"
-                backgroundColor="#ffffff"
+                penColor={isDarkMode ? "white" : "black"}
+                backgroundColor={isDarkMode ? "#181818" : "#ffffff"}
                 canvasProps={{ width: 330, height: 330, className: "signature-canvas" }}
               />
             </div>

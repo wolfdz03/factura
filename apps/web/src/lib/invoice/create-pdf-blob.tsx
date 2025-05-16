@@ -1,5 +1,5 @@
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
-import InvoicePDF from "@/app/(dashboard)/create/invoice/pdf-document";
+import { DefaultPDF } from "@/components/pdf";
 import { pdf } from "@react-pdf/renderer";
 
 interface CreatePdfBlobProps {
@@ -7,7 +7,7 @@ interface CreatePdfBlobProps {
 }
 
 export const createPdfBlob = async ({ invoiceData }: CreatePdfBlobProps) => {
-  const pdfDocument = <InvoicePDF data={invoiceData} />;
+  const pdfDocument = <DefaultPDF data={invoiceData} />;
   const blob = await pdf(pdfDocument).toBlob();
 
   return blob;

@@ -50,6 +50,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                     }}
                   />
                   <FormSignatureInput
+                    isDarkMode={form.watch("invoiceDetails.theme.mode") === "dark"}
                     label="Company Signature"
                     name="companyDetails.signature"
                     reactform={form}
@@ -119,11 +120,25 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                       </SelectItem>
                     ))}
                   </FormSelect>
+                  <FormSelect
+                    name="invoiceDetails.theme.mode"
+                    description="Dark mode for the invoice"
+                    defaultValue="dark"
+                    label="Dark Mode"
+                    reactform={form}
+                  >
+                    <SelectItem value="dark">
+                      <span>Dark</span>
+                    </SelectItem>
+                    <SelectItem value="light">
+                      <span>Light</span>
+                    </SelectItem>
+                  </FormSelect>
                   <FormColorPicker
                     name="invoiceDetails.theme.baseColor"
                     label="Theme Color"
                     reactform={form}
-                    description="Color of the invoice theme"
+                    description="Works in white mode only"
                   />
                 </FormRow>
                 <FormRow>
