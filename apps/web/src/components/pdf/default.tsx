@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/alt-text */
 "use client";
 
+import { GEIST_MONO_FONT, JETBRAINS_MONO_FONT, QUICKSAND_FONT } from "@/constants/pdf-fonts";
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
 import { Document, Page, Text, View, Image, Font } from "@react-pdf/renderer";
 import { getSubTotalValue, getTotalValue } from "@/constants/pdf-helpers";
-import { GEIST_MONO_FONT, QUICKSAND_FONT } from "@/constants/pdf-fonts";
 import { formatCurrencyText } from "@/constants/currency";
 import { createTw } from "react-pdf-tailwind";
 import { toWords } from "number-to-words";
@@ -23,11 +23,17 @@ Font.register({
   fonts: QUICKSAND_FONT,
 });
 
+Font.register({
+  family: "JetBrainsMono",
+  fonts: JETBRAINS_MONO_FONT,
+});
+
 const tw = createTw({
   theme: {
     fontFamily: {
       default: ["Quicksand"],
       geistmono: ["GeistMono"],
+      jetbrainsmono: ["JetBrainsMono"],
     },
     extend: {
       colors: {
@@ -62,7 +68,12 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
         <View style={tw("flex flex-row")}>
           <View style={tw("text-2xl font-semibold font-geistmono tracking-tighter")}>
             <Text
-              style={tw(cn("font-semibold", darkMode ? "text-white" : `text-[${data.invoiceDetails.theme.baseColor}]`))}
+              style={tw(
+                cn(
+                  "font-semibold font-jetbrainsmono",
+                  darkMode ? "text-white" : `text-[${data.invoiceDetails.theme.baseColor}]`,
+                ),
+              )}
             >
               Invoice {data.invoiceDetails.prefix}
               {data.invoiceDetails.serialNumber}
