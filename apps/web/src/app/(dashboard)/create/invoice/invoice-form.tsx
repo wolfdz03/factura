@@ -35,7 +35,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
     <div className="scroll-bar-hidden flex h-full flex-col overflow-y-scroll">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <Accordion type="single" collapsible defaultValue="company-details" className="w-full divide-y border-b">
+          <Accordion type="single" collapsible defaultValue="invoice-details" className="w-full divide-y border-b">
             {/* Company Details */}
             <AccordionItem value="company-details">
               <InvoiceAccordionTrigger>Company Details</InvoiceAccordionTrigger>
@@ -52,6 +52,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                   <FormSignatureInput
                     label="Company Signature"
                     name="companyDetails.signature"
+                    isDarkMode={form.watch("invoiceDetails.theme.mode") === "dark"}
                     reactform={form}
                     onBase64Change={(base64) => {
                       form.setValue("companyDetails.signatureBase64", base64);
@@ -119,11 +120,25 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                       </SelectItem>
                     ))}
                   </FormSelect>
+                  <FormSelect
+                    name="invoiceDetails.theme.mode"
+                    description="Dark mode for the invoice"
+                    defaultValue="dark"
+                    label="Dark Mode"
+                    reactform={form}
+                  >
+                    <SelectItem value="dark">
+                      <span>Dark</span>
+                    </SelectItem>
+                    <SelectItem value="light">
+                      <span>Light</span>
+                    </SelectItem>
+                  </FormSelect>
                   <FormColorPicker
                     name="invoiceDetails.theme.baseColor"
                     label="Theme Color"
                     reactform={form}
-                    description="Color of the invoice theme"
+                    description="Works in white mode only"
                   />
                 </FormRow>
                 <FormRow>

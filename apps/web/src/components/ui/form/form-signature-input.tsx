@@ -28,6 +28,7 @@ interface FormSignatureInputProps<
   reactform: UseFormReturn<TFieldValues>;
   sublabel?: string | undefined;
   isOptional?: boolean;
+  isDarkMode?: boolean;
 }
 
 export const FormSignatureInput = <
@@ -36,6 +37,7 @@ export const FormSignatureInput = <
 >({
   className,
   isOptional = false,
+  isDarkMode = false,
   ...props
 }: FormSignatureInputProps<TFieldValues, TName>) => {
   return (
@@ -60,6 +62,7 @@ export const FormSignatureInput = <
             ) : null}
             <FormControl>
               <SignatureInputModal
+                isDarkMode={isDarkMode}
                 className={cn(
                   className,
                   Boolean(error) && "focus-visible:ring-destructive !border-destructive ring-transparent duration-200",

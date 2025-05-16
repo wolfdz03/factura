@@ -1,14 +1,15 @@
 /* eslint-disable jsx-a11y/alt-text */
 "use client";
 
-import { Document, Page, Text, View, StyleSheet, Image, Font } from "@react-pdf/renderer";
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
+import { Document, Page, Text, View, Image, Font } from "@react-pdf/renderer";
 import { getSubTotalValue, getTotalValue } from "@/constants/pdf-helpers";
 import { GEIST_MONO_FONT, QUICKSAND_FONT } from "@/constants/pdf-fonts";
 import { formatCurrencyText } from "@/constants/currency";
 import { createTw } from "react-pdf-tailwind";
 import { toWords } from "number-to-words";
 import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 import React from "react";
 
 // Register fonts
@@ -22,13 +23,30 @@ Font.register({
   fonts: QUICKSAND_FONT,
 });
 
+const tw = createTw({
+  theme: {
+    fontFamily: {
+      default: ["Quicksand"],
+      geistmono: ["GeistMono"],
+    },
+    extend: {
+      colors: {
+        darkmode: "#181818",
+      },
+      fontSize: {
+        "2xs": "0.625rem",
+        "3xs": "0.5rem",
+      },
+    },
+  },
+});
+
 // Invoice PDF Document component
 const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
+  const darkMode = data.invoiceDetails.theme.mode === "dark";
   // Calculate totals
   const subtotal = getSubTotalValue(data);
   const total = getTotalValue(data);
-
-  const themeColor = { color: data.invoiceDetails.theme.baseColor, fontWeight: 500 };
 
   return (
     <Document
@@ -37,106 +55,162 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
       creator={data.companyDetails.name}
       producer="Invoicely"
     >
-      <Page size="A4" style={tw("p-6 font-default text-sm")}>
-        <View style={styles.header}>
-          <View style={styles.invoiceTitle}>
-            <Text style={themeColor}>
+      <Page
+        size="A4"
+        style={tw(cn("p-6 font-default text-sm", darkMode ? "text-white bg-darkmode" : "text-black bg-white"))}
+      >
+        <View style={tw("flex flex-row")}>
+          <View style={tw("text-2xl font-semibold font-geistmono tracking-tighter")}>
+            <Text
+              style={tw(cn("font-semibold", darkMode ? "text-white" : `text-[${data.invoiceDetails.theme.baseColor}]`))}
+            >
               Invoice {data.invoiceDetails.prefix}
               {data.invoiceDetails.serialNumber}
             </Text>
           </View>
         </View>
-        <View style={styles.flexRowSpaceBetween}>
+        <View style={tw("flex flex-row justify-between mt-2")}>
           {/* Invoice Details */}
-          <View style={styles.flexColumnGap}>
-            <View style={styles.detailsRow}>
-              <Text style={styles.detailsTitleWithWidth}>Serial Number</Text>
-              <Text style={styles.detailsValue}>{data.invoiceDetails.serialNumber}</Text>
+          <View style={tw("flex flex-col gap-1.25")}>
+            <View style={tw("flex flex-row items-center gap-1")}>
+              <Text style={tw("text-2xs font-semibold min-w-[100px]")}>Serial Number</Text>
+              <Text style={tw("text-2xs font-normal text-neutral-500")}>{data.invoiceDetails.serialNumber}</Text>
             </View>
-            <View style={styles.detailsRow}>
-              <Text style={styles.detailsTitleWithWidth}>Date</Text>
-              <Text style={styles.detailsValue}>{format(data.invoiceDetails.date, "dd/MM/yyyy")}</Text>
+            <View style={tw("flex flex-row items-center gap-1")}>
+              <Text style={tw("text-2xs font-semibold min-w-[100px]")}>Date</Text>
+              <Text style={tw("text-2xs font-normal text-neutral-500")}>
+                {format(data.invoiceDetails.date, "dd/MM/yyyy")}
+              </Text>
             </View>
-            <View style={styles.detailsRow}>
-              <Text style={styles.detailsTitleWithWidth}>Due Date</Text>
-              <Text style={styles.detailsValue}>{format(data.invoiceDetails.dueDate, "dd/MM/yyyy")}</Text>
+            <View style={tw("flex flex-row items-center gap-1")}>
+              <Text style={tw("text-2xs font-semibold min-w-[100px]")}>Due Date</Text>
+              <Text style={tw("text-2xs font-normal text-neutral-500")}>
+                {format(data.invoiceDetails.dueDate, "dd/MM/yyyy")}
+              </Text>
             </View>
-            <View style={styles.detailsRow}>
-              <Text style={styles.detailsTitleWithWidth}>Payment Terms</Text>
-              <Text style={styles.detailsValue}>{data.invoiceDetails.paymentTerms}</Text>
+            <View style={tw("flex flex-row items-center gap-1")}>
+              <Text style={tw("text-2xs font-semibold min-w-[100px]")}>Payment Terms</Text>
+              <Text style={tw("text-2xs font-normal text-neutral-500")}>{data.invoiceDetails.paymentTerms}</Text>
             </View>
-            <View style={styles.detailsRow}>
-              <Text style={styles.detailsTitleWithWidth}>Currency</Text>
-              <Text style={styles.detailsValue}>{data.invoiceDetails.currency}</Text>
+            <View style={tw("flex flex-row items-center gap-1")}>
+              <Text style={tw("text-2xs font-semibold min-w-[100px]")}>Currency</Text>
+              <Text style={tw("text-2xs font-normal text-neutral-500")}>{data.invoiceDetails.currency}</Text>
             </View>
           </View>
           {/* Invoice Logo */}
           {data.companyDetails.logo && (
-            <View style={styles.flexCenter}>
-              <Image style={styles.logo} src={data.companyDetails.logo} />
+            <View style={tw("flex items-center justify-center")}>
+              <Image style={tw("w-20 h-20 aspect-square rounded-lg")} src={data.companyDetails.logo} />
             </View>
           )}
         </View>
         {/* Invoice billing details */}
-        <View style={styles.billingDetailsContainer}>
-          <View style={styles.billingBox}>
-            <Text style={themeColor}>Billed By</Text>
-            <Text style={styles.billingName}>{data.companyDetails.name}</Text>
-            <Text style={styles.detailsValue}>{data.companyDetails.address.value}</Text>
+        <View style={tw("flex flex-row mt-[18px] w-full gap-2.5")}>
+          <View
+            style={tw(cn("flex flex-col gap-1.5 p-2.5 w-1/2 rounded", darkMode ? "bg-neutral-800" : "bg-neutral-100"))}
+          >
+            <Text
+              style={tw(cn("font-semibold", darkMode ? "text-white" : `text-[${data.invoiceDetails.theme.baseColor}]`))}
+            >
+              Billed By
+            </Text>
+            <Text style={tw("text-2xs font-semibold")}>{data.companyDetails.name}</Text>
+            <Text style={tw("text-2xs font-normal text-neutral-500")}>{data.companyDetails.address.value}</Text>
             {data.companyDetails.metadata.map((metadata) => (
-              <View key={metadata.label} style={styles.detailsRow}>
-                <Text style={styles.detailsTitle}>{metadata.label}</Text>
-                <Text style={styles.detailsValue}>{metadata.value}</Text>
+              <View key={metadata.label} style={tw("flex flex-row items-center gap-1")}>
+                <Text style={tw("text-2xs font-semibold")}>{metadata.label}</Text>
+                <Text style={tw("text-2xs font-normal text-neutral-500")}>{metadata.value}</Text>
               </View>
             ))}
           </View>
-          <View style={styles.billingBox}>
-            <Text style={themeColor}>Billed To</Text>
-            <Text style={styles.billingName}>{data.clientDetails.name}</Text>
-            <Text style={styles.detailsValue}>{data.clientDetails.address.value}</Text>
+          <View
+            style={tw(cn("flex flex-col gap-1.5 p-2.5 w-1/2 rounded", darkMode ? "bg-neutral-800" : "bg-neutral-100"))}
+          >
+            <Text
+              style={tw(cn("font-semibold", darkMode ? "text-white" : `text-[${data.invoiceDetails.theme.baseColor}]`))}
+            >
+              Billed To
+            </Text>
+            <Text style={tw("text-2xs font-semibold")}>{data.clientDetails.name}</Text>
+            <Text style={tw("text-2xs font-normal text-neutral-500")}>{data.clientDetails.address.value}</Text>
             {data.clientDetails.metadata.map((metadata) => (
-              <View key={metadata.label} style={styles.detailsRow}>
-                <Text style={styles.detailsTitle}>{metadata.label}</Text>
-                <Text style={styles.detailsValue}>{metadata.value}</Text>
+              <View key={metadata.label} style={tw("flex flex-row items-center gap-1")}>
+                <Text style={tw("text-2xs font-semibold")}>{metadata.label}</Text>
+                <Text style={tw("text-2xs font-normal text-neutral-500")}>{metadata.value}</Text>
               </View>
             ))}
           </View>
         </View>
         {/* Items Table */}
-        <View style={styles.itemsTable}>
-          <View style={{ ...styles.tableHeader, backgroundColor: data.invoiceDetails.theme.baseColor, color: "#fff" }}>
-            <Text style={styles.tableHeaderItemName}>Item</Text>
-            <Text style={styles.tableHeaderItemQty}>Qty</Text>
-            <Text style={styles.tableHeaderItemPrice}>Price</Text>
-            <Text style={styles.tableHeaderItemTotal}>Total</Text>
+        <View style={tw("mt-5 mb-[30px] grow")}>
+          <View
+            style={[
+              tw(
+                cn(
+                  "flex-row flex items-center px-2 pt-2.5 pb-1.5 font-bold text-2xs rounded-md text-white",
+                  darkMode ? "bg-neutral-700" : `bg-[${data.invoiceDetails.theme.baseColor}]`,
+                ),
+              ),
+            ]}
+          >
+            <Text style={tw("w-[60%]")}>Item</Text>
+            <Text style={tw("w-[10%] text-center")}>Qty</Text>
+            <Text style={tw("w-[15%] text-right")}>Price</Text>
+            <Text style={tw("w-[15%] text-right")}>Total</Text>
           </View>
-          {data.items.map((item, index) => (
-            <View key={index} style={styles.tableRow}>
-              <View style={styles.itemNameContainer}>
-                <Text style={styles.itemName}>{item.name}</Text>
-                <Text style={styles.detailsValue}>{item.description}</Text>
+          <View style={tw("flex flex-col mt-1")}>
+            {data.items.map((item, index) => (
+              <View
+                key={index}
+                style={tw(
+                  cn(
+                    "flex-row p-2 text-2xs rounded-md",
+                    index % 2 === 0
+                      ? darkMode
+                        ? "bg-darkmode"
+                        : "bg-white"
+                      : darkMode
+                        ? "bg-neutral-800"
+                        : "bg-neutral-100",
+                  ),
+                )}
+              >
+                <View style={tw("flex flex-col w-[60%]")}>
+                  <Text style={tw("w-full")}>{item.name}</Text>
+                  <Text style={tw("text-xs font-normal text-neutral-600")}>{item.description}</Text>
+                </View>
+                <Text style={tw("w-[10%] text-center font-geistmono tracking-tighter font-light")}>
+                  {item.quantity}
+                </Text>
+                <Text style={tw("w-[15%] text-right font-geistmono tracking-tighter font-light")}>
+                  {formatCurrencyText(data.invoiceDetails.currency, item.unitPrice)}
+                </Text>
+                <Text style={tw("w-[15%] text-right font-geistmono tracking-tighter font-light")}>
+                  {formatCurrencyText(data.invoiceDetails.currency, item.quantity * item.unitPrice)}
+                </Text>
               </View>
-              <Text style={styles.itemQty}>{item.quantity}</Text>
-              <Text style={styles.itemPrice}>{formatCurrencyText(data.invoiceDetails.currency, item.unitPrice)}</Text>
-              <Text style={styles.itemTotal}>
-                {formatCurrencyText(data.invoiceDetails.currency, item.quantity * item.unitPrice)}
-              </Text>
-            </View>
-          ))}
+            ))}
+          </View>
         </View>
         {/* Invoice meta data and pricing */}
-        <View style={styles.metadataPricingContainer}>
-          <View style={styles.metadataContainer}>
+        <View style={tw("flex flex-row gap-[50px]")}>
+          <View style={tw("flex flex-col gap-[15px] justify-end w-1/2")}>
             {/* Payment Information */}
             {data.metadata.paymentInformation.length ? (
-              <View style={styles.sectionContainer}>
-                <Text style={themeColor}>Payment Information</Text>
-                <View style={styles.flexColumnGapSm}>
+              <View style={tw("flex flex-col gap-0.5 pr-2.5")}>
+                <Text
+                  style={tw(
+                    cn("font-semibold", darkMode ? "text-white" : `text-[${data.invoiceDetails.theme.baseColor}]`),
+                  )}
+                >
+                  Payment Information
+                </Text>
+                <View style={tw("flex flex-col gap-0.5 mt-1")}>
                   {data.metadata.paymentInformation.map((paymentInformation, index) => {
                     return (
-                      <View key={index} style={styles.detailsRow}>
-                        <Text style={styles.detailsTitleWithWidth}>{paymentInformation.label}</Text>
-                        <Text style={styles.detailsValue}>{paymentInformation.value}</Text>
+                      <View key={index} style={tw("flex flex-row items-center gap-1")}>
+                        <Text style={tw("text-2xs font-semibold min-w-[100px]")}>{paymentInformation.label}</Text>
+                        <Text style={tw("text-2xs font-normal text-neutral-500")}>{paymentInformation.value}</Text>
                       </View>
                     );
                   })}
@@ -145,50 +219,72 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
             ) : null}
             {/* Terms and conditions */}
             {data.metadata.terms.value && (
-              <View style={styles.sectionContainer}>
-                <Text style={themeColor}>Terms</Text>
-                <Text style={styles.metadataDescription}>{data.metadata.terms.value}</Text>
+              <View style={tw("flex flex-col gap-0.5 pr-2.5")}>
+                <Text
+                  style={tw(
+                    cn("font-semibold", darkMode ? "text-white" : `text-[${data.invoiceDetails.theme.baseColor}]`),
+                  )}
+                >
+                  Terms
+                </Text>
+                <Text style={tw("text-2xs font-normal text-neutral-500 mt-1")}>{data.metadata.terms.value}</Text>
               </View>
             )}
             {/* Notes */}
             {data.metadata.notes.value && (
-              <View style={styles.sectionContainer}>
-                <Text style={themeColor}>Notes</Text>
-                <Text style={styles.metadataDescription}>{data.metadata.notes.value}</Text>
+              <View style={tw("flex flex-col gap-0.5 pr-2.5")}>
+                <Text
+                  style={tw(
+                    cn("font-semibold", darkMode ? "text-white" : `text-[${data.invoiceDetails.theme.baseColor}]`),
+                  )}
+                >
+                  Notes
+                </Text>
+                <Text style={tw("text-2xs font-normal text-neutral-500 mt-1")}>{data.metadata.notes.value}</Text>
               </View>
             )}
           </View>
           {/* Pricing  */}
-          <View style={styles.pricingContainer}>
+          <View style={tw("flex flex-col gap-1.5 p-2.5 w-1/2 min-w-[50%] justify-end")}>
             {/* Signature */}
             {data.companyDetails.signature && (
-              <View style={styles.signatureContainer}>
-                <Text style={styles.signatureName}>Verified by {data.companyDetails.name}</Text>
-                <Image style={styles.signatureImage} src={data.companyDetails.signature} />
+              <View style={tw("flex flex-col gap-1 mb-1.5 items-end w-full")}>
+                <Text style={tw("text-3xs font-normal text-neutral-500")}>Verified by {data.companyDetails.name}</Text>
+                <Image
+                  style={tw("h-20 w-20 aspect-square rounded-lg object-cover")}
+                  src={data.companyDetails.signature}
+                />
               </View>
             )}
-            <View style={styles.pricingRow}>
-              <Text style={styles.pricingLabel}>Subtotal</Text>
-              <Text style={styles.pricingValue}>{formatCurrencyText(data.invoiceDetails.currency, subtotal)}</Text>
+            <View style={tw("flex flex-row items-center justify-between")}>
+              <Text style={tw("text-2xs font-semibold")}>Subtotal</Text>
+              <Text style={tw("text-2xs font-geistmono tracking-tighter text-neutral-500")}>
+                {formatCurrencyText(data.invoiceDetails.currency, subtotal)}
+              </Text>
             </View>
+            {/* Billing Details */}
             {data.invoiceDetails.billingDetails.map((billingDetail, index) => {
               return (
-                <View key={index} style={styles.pricingRow}>
-                  <Text style={styles.pricingLabel}>{billingDetail.label}</Text>
-                  <Text style={styles.pricingValue}>
+                <View key={index} style={tw("flex flex-row items-center justify-between")}>
+                  <Text style={tw("text-2xs font-semibold")}>{billingDetail.label}</Text>
+                  <Text style={tw("text-2xs font-geistmono tracking-tighter text-neutral-500")}>
                     {formatCurrencyText(data.invoiceDetails.currency, billingDetail.value)}
                   </Text>
                 </View>
               );
             })}
-            <View style={styles.hr}></View>
-            <View style={styles.pricingRow}>
-              <Text style={styles.pricingTotal}>Total</Text>
-              <Text style={styles.pricingTotalValue}>{formatCurrencyText(data.invoiceDetails.currency, total)}</Text>
+            <View
+              style={tw(cn("border-b mt-1.25 mb-1.25", darkMode ? "border-neutral-800" : "border-neutral-200"))}
+            ></View>
+            <View style={tw("flex flex-row items-center justify-between")}>
+              <Text style={tw("text-xs font-semibold")}>Total</Text>
+              <Text style={tw("text-lg font-semibold font-geistmono tracking-tighter")}>
+                {formatCurrencyText(data.invoiceDetails.currency, total)}
+              </Text>
             </View>
-            <View style={styles.totalWordsContainer}>
-              <Text style={styles.totalWordsLabel}>Invoice Total (in words)</Text>
-              <Text style={styles.totalWordsValue}>{toWords(total)}</Text>
+            <View style={tw("flex flex-col gap-0.5 mt-1")}>
+              <Text style={tw("text-3xs font-normal text-neutral-500")}>Invoice Total (in words)</Text>
+              <Text style={tw("text-2xs font-normal")}>{toWords(total)}</Text>
             </View>
           </View>
         </View>
@@ -198,252 +294,3 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
 };
 
 export default DefaultPDF;
-
-// Define styles for the PDF
-const styles = StyleSheet.create({
-  // Common styles
-  page: {
-    padding: 20,
-    fontSize: 12,
-    fontFamily: "Quicksand",
-    backgroundColor: "white",
-  },
-  flexRowSpaceBetween: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 18,
-  },
-  flexColumnGap: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 5,
-  },
-  flexColumnGapSm: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 2,
-    marginTop: 4,
-  },
-  flexCenter: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  detailsRow: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-  },
-  detailsTitle: {
-    fontSize: 10,
-    fontWeight: 600,
-  },
-  detailsTitleWithWidth: {
-    fontSize: 10,
-    fontWeight: 600,
-    minWidth: 100,
-  },
-  detailsValue: {
-    fontSize: 10,
-    fontWeight: "normal",
-    color: "#71717B",
-  },
-  sectionContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 2,
-    paddingRight: 10,
-  },
-  displayNone: {
-    display: "none",
-    height: 0,
-    margin: 0,
-    overflow: "hidden",
-  },
-  hr: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
-    marginTop: 5,
-    marginBottom: 5,
-  },
-
-  // Header styles
-  header: {
-    display: "flex",
-    flexDirection: "row",
-  },
-  invoiceTitle: {
-    fontSize: 24,
-    fontWeight: "semibold",
-    fontFamily: "GeistMono",
-    letterSpacing: -1,
-  },
-  logo: {
-    width: 80,
-    height: 80,
-    aspectRatio: 1,
-    borderRadius: 8,
-  },
-  // Billing styles
-  billingDetailsContainer: {
-    display: "flex",
-    flexDirection: "row",
-    marginTop: 18,
-    width: "100%",
-    gap: 10,
-  },
-  billingBox: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 6,
-    padding: 10,
-    backgroundColor: "#f0f0f0",
-    width: "50%",
-    borderRadius: 4,
-  },
-  billingName: {
-    fontSize: 10,
-    fontWeight: "semibold",
-  },
-
-  // Items table styles
-  itemsTable: {
-    marginTop: 20,
-    marginBottom: 30,
-    flexGrow: 1,
-  },
-  tableHeader: {
-    flexDirection: "row",
-    backgroundColor: "#f0f0f0",
-    padding: 8,
-    fontWeight: "bold",
-    fontSize: 10,
-    borderTopRightRadius: 4,
-    borderTopLeftRadius: 4,
-  },
-  tableRow: {
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
-    padding: 8,
-    fontSize: 10,
-  },
-  itemNameContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 2,
-    width: "60%",
-  },
-  tableHeaderItemName: { width: "60%" },
-  tableHeaderItemQty: { width: "10%", textAlign: "center" },
-  tableHeaderItemPrice: { width: "15%", textAlign: "right" },
-  tableHeaderItemTotal: { width: "15%", textAlign: "right" },
-  itemName: { width: "60%" },
-  itemQty: { width: "10%", textAlign: "center", fontFamily: "GeistMono", letterSpacing: -1, fontWeight: "light" },
-  itemPrice: { width: "15%", textAlign: "right", fontFamily: "GeistMono", letterSpacing: -1, fontWeight: "light" },
-  itemTotal: { width: "15%", textAlign: "right", fontFamily: "GeistMono", letterSpacing: -1, fontWeight: "light" },
-
-  // Metadata and pricing styles
-  metadataPricingContainer: {
-    display: "flex",
-    flexDirection: "row",
-    gap: 50,
-  },
-  metadataContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 15,
-    justifyContent: "flex-end",
-    width: "50%",
-  },
-  metadataDescription: {
-    fontSize: 10,
-    fontWeight: "normal",
-    color: "#71717B",
-    marginTop: 4,
-  },
-  signatureContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-end",
-    width: "100%",
-  },
-  signatureName: {
-    fontSize: 8,
-    fontWeight: "normal",
-    color: "#71717B",
-    marginBottom: 4,
-  },
-  signatureImage: {
-    height: 80,
-    width: 80,
-    aspectRatio: 1,
-    borderRadius: 8,
-    objectFit: "cover",
-  },
-  pricingContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 6,
-    padding: 10,
-    width: "50%",
-    minWidth: "50%",
-    justifyContent: "flex-end",
-  },
-  pricingRow: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  pricingLabel: {
-    fontSize: 10,
-    fontWeight: "semibold",
-  },
-  pricingValue: {
-    fontSize: 10,
-    fontFamily: "GeistMono",
-    letterSpacing: -1,
-    color: "#71717B",
-  },
-  pricingTotal: {
-    fontSize: 12,
-    fontWeight: "semibold",
-  },
-  pricingTotalValue: {
-    fontSize: 18,
-    fontWeight: "semibold",
-    fontFamily: "GeistMono",
-    letterSpacing: -1,
-  },
-  totalWordsContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 2,
-    marginTop: 4,
-  },
-  totalWordsLabel: {
-    fontSize: 8,
-    fontWeight: "normal",
-    color: "#71717B",
-  },
-  totalWordsValue: {
-    fontSize: 10,
-    fontWeight: "normal",
-  },
-});
-
-const tw = createTw({
-  theme: {
-    fontFamily: {
-      default: ["Quicksand"],
-    },
-    extend: {
-      colors: {
-        custom: "#bada55",
-      },
-    },
-  },
-});

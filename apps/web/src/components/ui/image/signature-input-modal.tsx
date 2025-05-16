@@ -32,6 +32,7 @@ interface SignatureInputModalProps {
   defaultUrl?: string;
   onBase64Change?: (base64: string) => void;
   onFileRemove?: () => void;
+  isDarkMode?: boolean;
 }
 
 export default function SignatureInputModal({
@@ -41,6 +42,7 @@ export default function SignatureInputModal({
   defaultUrl,
   onBase64Change,
   onFileRemove,
+  isDarkMode = false,
 }: SignatureInputModalProps) {
   const [type, setType] = useState<"signature" | "upload" | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -245,8 +247,8 @@ export default function SignatureInputModal({
                 key="signature-canvas"
                 ref={signaturePadRef}
                 onBegin={() => setIsSignatureEmpty(false)}
-                penColor="black"
-                backgroundColor="#ffffff"
+                penColor={isDarkMode ? "white" : "black"}
+                backgroundColor={isDarkMode ? "#181818" : "#ffffff"}
                 canvasProps={{ width: 330, height: 330, className: "signature-canvas" }}
               />
             </div>
