@@ -16,6 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import OpenSourceBadge from "@/components/ui/open-source-badge";
 import { Button } from "@/components/ui/button";
 import type { ISidebarUser } from "@/types";
+import { toast } from "sonner";
 
 export function NavigationUser({ user }: { user: ISidebarUser | null }) {
   // if user is null, return a login state
@@ -29,7 +30,12 @@ export function NavigationUser({ user }: { user: ISidebarUser | null }) {
             <p className="text-muted-foreground text-xs">
               Login to your account to save your data and access your data anywhere
             </p>
-            <Button className="mt-2 h-5 w-fit rounded-sm px-2 text-xs" variant="default" size="sm">
+            <Button
+              onClick={() => toast.error("Login is not available yet")}
+              className="mt-2 h-5 w-fit rounded-sm px-2 text-xs"
+              variant="default"
+              size="sm"
+            >
               Login
             </Button>
           </div>
