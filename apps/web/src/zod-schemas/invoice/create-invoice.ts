@@ -190,7 +190,7 @@ export const createInvoiceSchemaDefaultValues: ZodCreateInvoiceSchema = {
   invoiceDetails: {
     theme: {
       baseColor: "#635CFF",
-      mode: "dark",
+      mode: "light",
     },
     currency: "USD",
     prefix: "INV-",

@@ -35,7 +35,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
     <div className="scroll-bar-hidden flex h-full flex-col overflow-y-scroll">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <Accordion type="single" collapsible defaultValue="invoice-details" className="w-full divide-y border-b">
+          <Accordion type="single" collapsible defaultValue="company-details" className="w-full divide-y border-b">
             {/* Company Details */}
             <AccordionItem value="company-details">
               <InvoiceAccordionTrigger>Company Details</InvoiceAccordionTrigger>
@@ -50,9 +50,9 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                     }}
                   />
                   <FormSignatureInput
+                    isDarkMode={form.watch("invoiceDetails.theme.mode") === "dark"}
                     label="Company Signature"
                     name="companyDetails.signature"
-                    isDarkMode={form.watch("invoiceDetails.theme.mode") === "dark"}
                     reactform={form}
                     onBase64Change={(base64) => {
                       form.setValue("companyDetails.signatureBase64", base64);

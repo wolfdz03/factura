@@ -1,4 +1,3 @@
-// Image Component by OriginUI.com
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
@@ -30,7 +29,7 @@ interface SignatureInputModalProps {
   className?: string;
   onSignatureChange?: (signature: string) => void;
   defaultUrl?: string;
-  onBase64Change?: (base64: string) => void;
+  onBase64Change?: (base64: string | undefined) => void;
   onFileRemove?: () => void;
   isDarkMode?: boolean;
 }
@@ -207,6 +206,9 @@ export default function SignatureInputModal({
                 if (onFileRemove) {
                   onFileRemove();
                 }
+                if (onBase64Change) {
+                  onBase64Change(undefined);
+                }
               }}
               aria-label="Remove image"
             >
@@ -244,7 +246,7 @@ export default function SignatureInputModal({
                 </motion.div>
               )}
               <SignatureCanvas
-                key="signature-canvas"
+                key={`signature-canvas-${isDarkMode}`}
                 ref={signaturePadRef}
                 onBegin={() => setIsSignatureEmpty(false)}
                 penColor={isDarkMode ? "white" : "black"}

@@ -71,7 +71,7 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
         </View>
         <View style={tw("flex flex-row justify-between mt-2")}>
           {/* Invoice Details */}
-          <View style={tw("flex flex-col gap-1.25")}>
+          <View style={tw("flex flex-col gap-1.5")}>
             <View style={tw("flex flex-row items-center gap-1")}>
               <Text style={tw("text-2xs font-semibold min-w-[100px]")}>Serial Number</Text>
               <Text style={tw("text-2xs font-normal text-neutral-500")}>{data.invoiceDetails.serialNumber}</Text>
@@ -100,7 +100,13 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
           {/* Invoice Logo */}
           {data.companyDetails.logo && (
             <View style={tw("flex items-center justify-center")}>
-              <Image style={tw("w-20 h-20 aspect-square rounded-lg")} src={data.companyDetails.logo} />
+              <Image
+                style={{
+                  aspectRatio: 16 / 9,
+                  ...tw("w-20 h-20 object-contain object-right"),
+                }}
+                src={data.companyDetails.logo}
+              />
             </View>
           )}
         </View>
@@ -142,12 +148,12 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
           </View>
         </View>
         {/* Items Table */}
-        <View style={tw("mt-5 mb-[30px] grow")}>
+        <View style={tw("mt-5 grow")}>
           <View
             style={[
               tw(
                 cn(
-                  "flex-row flex items-center px-2 pt-2.5 pb-1.5 font-bold text-2xs rounded-md text-white",
+                  "flex-row flex items-center px-2.5 pt-2.5 pb-1.5 font-bold text-2xs rounded text-white",
                   darkMode ? "bg-neutral-700" : `bg-[${data.invoiceDetails.theme.baseColor}]`,
                 ),
               ),
@@ -164,7 +170,7 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
                 key={index}
                 style={tw(
                   cn(
-                    "flex-row p-2 text-2xs rounded-md",
+                    "flex-row p-2 text-2xs rounded",
                     index % 2 === 0
                       ? darkMode
                         ? "bg-darkmode"
@@ -251,7 +257,10 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
               <View style={tw("flex flex-col gap-1 mb-1.5 items-end w-full")}>
                 <Text style={tw("text-3xs font-normal text-neutral-500")}>Verified by {data.companyDetails.name}</Text>
                 <Image
-                  style={tw("h-20 w-20 aspect-square rounded-lg object-cover")}
+                  style={{
+                    aspectRatio: 1 / 1,
+                    ...tw("h-20 w-20 rounded-lg object-cover"),
+                  }}
                   src={data.companyDetails.signature}
                 />
               </View>
@@ -274,7 +283,7 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
               );
             })}
             <View
-              style={tw(cn("border-b mt-1.25 mb-1.25", darkMode ? "border-neutral-800" : "border-neutral-200"))}
+              style={tw(cn("border-b mt-1.5 mb-1.5", darkMode ? "border-neutral-800" : "border-neutral-200"))}
             ></View>
             <View style={tw("flex flex-row items-center justify-between")}>
               <Text style={tw("text-xs font-semibold")}>Total</Text>
