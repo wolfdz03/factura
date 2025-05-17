@@ -1,15 +1,9 @@
 import { usePostHog } from "posthog-js/react";
+import { IAnalytics } from "@/types";
 import * as React from "react";
 
-type AnalyticsEventSuffix = "-click" | "-action" | "-submit" | "-download" | "-toggle" | "-select" | "-open" | "-close";
-
-type Analytics = {
-  name: `${string}${AnalyticsEventSuffix}`;
-  group?: string;
-};
-
 interface PostHogAnalyticsProps extends React.HTMLAttributes<HTMLDivElement> {
-  analytics?: Analytics;
+  analytics?: IAnalytics;
   as?: React.ElementType;
 }
 
