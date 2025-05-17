@@ -26,8 +26,8 @@ export default function Home() {
         {!error && (
           <Link href={LINKS.SOCIALS.GITHUB} target="_blank">
             <div className="bg-secondary-foreground/5 relative mb-4 flex items-center gap-2 rounded-lg px-4 py-1">
-              <span className="urbanist absolute -top-6 left-32 size-full -rotate-[25deg] text-xs opacity-15">
-                Give Star <br /> please :3
+              <span className="urbanist absolute -top-6 left-32 size-full -rotate-[34deg] text-xs opacity-15">
+                Give Star <br /> please :3 <br /> for cookie
               </span>
               <ScribbledArrowToRight className="absolute top-4 left-18 size-full rotate-[190deg] opacity-15" />
               <StarFilledIcon className="size-5 text-yellow-500" />
