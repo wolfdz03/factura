@@ -46,10 +46,6 @@ const InvoiceErrorsModal = () => {
       <Dialog>
         <DialogTrigger asChild>
           <Button
-            analytics={{
-              name: "invoice-errors-modal-action",
-              group: "create-invoice-page",
-            }}
             id="invoice-err-btn"
             disabled={invoiceErrors.length === 0}
             variant={invoiceErrors.length > 0 ? "destructive" : "secondary"}
