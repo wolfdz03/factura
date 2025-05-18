@@ -170,7 +170,6 @@ export function getColumnOptions<TData, TType extends ColumnDataType, TVal>(
     const memoizedTransform = memo(
       () => [models],
       (deps) => deps[0].map((m) => column.transformOptionFn!(m as ElementType<NonNullable<TVal>>)),
-      { key: `transform-${column.id}` },
     );
     return memoizedTransform();
   }
@@ -193,7 +192,6 @@ export function getColumnValues<TData, TType extends ColumnDataType, TVal>(
       deps[0]
         .flatMap(column.accessor)
         .filter((v): v is NonNullable<TVal> => v !== undefined && v !== null) as ElementType<NonNullable<TVal>>[],
-    { key: `accessor-${column.id}` },
   );
 
   const raw = memoizedAccessor();
@@ -212,7 +210,6 @@ export function getColumnValues<TData, TType extends ColumnDataType, TVal>(
     const memoizedTransform = memo(
       () => [raw],
       (deps) => deps[0].map((v) => column.transformOptionFn!(v) as ElementType<NonNullable<TVal>>),
-      { key: `transform-values-${column.id}` },
     );
     return memoizedTransform();
   }
@@ -295,25 +292,21 @@ export function createColumns<TData>(
     const getOptions: () => ColumnOption[] = memo(
       () => [data, strategy, columnConfig.options],
       ([data, strategy]) => getColumnOptions(columnConfig, data as any, strategy as any),
-      { key: `options-${columnConfig.id}` },
     );
 
     const getValues: () => ElementType<NonNullable<any>>[] = memo(
       () => [data, strategy],
       () => (strategy === "client" ? getColumnValues(columnConfig, data) : []),
-      { key: `values-${columnConfig.id}` },
     );
 
     const getUniqueValues: () => Map<string, number> | undefined = memo(
       () => [getValues(), strategy],
       ([values, strategy]) => getFacetedUniqueValues(columnConfig, values as any, strategy as any),
-      { key: `faceted-${columnConfig.id}` },
     );
 
     const getMinMaxValues: () => [number, number] | undefined = memo(
       () => [data, strategy],
       () => getFacetedMinMaxValues(columnConfig, data, strategy),
-      { key: `minmax-${columnConfig.id}` },
     );
 
     // Create the Column instance
