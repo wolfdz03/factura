@@ -1,23 +1,18 @@
-'use client'
+"use client";
 
-import { useIsMobile } from '@/hooks/use-mobile'
-import type {
-  Column,
-  DataTableFilterActions,
-  FilterStrategy,
-  FiltersState,
-} from '../core/types'
-import type { Locale } from '../lib/i18n'
-import { ActiveFilters, ActiveFiltersMobileContainer } from './active-filters'
-import { FilterActions } from './filter-actions'
-import { FilterSelector } from './filter-selector'
+import type { Column, DataTableFilterActions, FilterStrategy, FiltersState } from "../core/types";
+import { ActiveFilters, ActiveFiltersMobileContainer } from "./active-filters";
+import { FilterSelector } from "./filter-selector";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { FilterActions } from "./filter-actions";
+import type { Locale } from "../lib/i18n";
 
 interface DataTableFilterProps<TData> {
-  columns: Column<TData>[]
-  filters: FiltersState
-  actions: DataTableFilterActions
-  strategy: FilterStrategy
-  locale?: Locale
+  columns: Column<TData>[];
+  filters: FiltersState;
+  actions: DataTableFilterActions;
+  strategy: FilterStrategy;
+  locale?: Locale;
 }
 
 export function DataTableFilter<TData>({
@@ -25,62 +20,30 @@ export function DataTableFilter<TData>({
   filters,
   actions,
   strategy,
-  locale = 'en',
+  locale = "en",
 }: DataTableFilterProps<TData>) {
-  const isMobile = useIsMobile()
+  const isMobile = useIsMobile();
   if (isMobile) {
     return (
       <div className="flex w-full items-start justify-between gap-2">
         <div className="flex gap-1">
-          <FilterSelector
-            columns={columns}
-            filters={filters}
-            actions={actions}
-            strategy={strategy}
-            locale={locale}
-          />
-          <FilterActions
-            hasFilters={filters.length > 0}
-            actions={actions}
-            locale={locale}
-          />
+          <FilterSelector columns={columns} filters={filters} actions={actions} strategy={strategy} locale={locale} />
+          <FilterActions hasFilters={filters.length > 0} actions={actions} locale={locale} />
         </div>
         <ActiveFiltersMobileContainer>
-          <ActiveFilters
-            columns={columns}
-            filters={filters}
-            actions={actions}
-            strategy={strategy}
-            locale={locale}
-          />
+          <ActiveFilters columns={columns} filters={filters} actions={actions} strategy={strategy} locale={locale} />
         </ActiveFiltersMobileContainer>
       </div>
-    )
+    );
   }
 
   return (
     <div className="flex w-full items-start justify-between gap-2">
-      <div className="flex md:flex-wrap gap-2 w-full flex-1">
-        <FilterSelector
-          columns={columns}
-          filters={filters}
-          actions={actions}
-          strategy={strategy}
-          locale={locale}
-        />
-        <ActiveFilters
-          columns={columns}
-          filters={filters}
-          actions={actions}
-          strategy={strategy}
-          locale={locale}
-        />
+      <div className="flex w-full flex-1 gap-2 md:flex-wrap">
+        <FilterSelector columns={columns} filters={filters} actions={actions} strategy={strategy} locale={locale} />
+        <ActiveFilters columns={columns} filters={filters} actions={actions} strategy={strategy} locale={locale} />
       </div>
-      <FilterActions
-        hasFilters={filters.length > 0}
-        actions={actions}
-        locale={locale}
-      />
+      <FilterActions hasFilters={filters.length > 0} actions={actions} locale={locale} />
     </div>
-  )
+  );
 }
