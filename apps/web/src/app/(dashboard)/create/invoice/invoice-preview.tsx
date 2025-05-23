@@ -39,7 +39,7 @@ const PDFViewer = ({ url, width }: { url: string | null; width: number }) => {
           console.error("[ERROR]: Error loading PDF:", error);
           setError(error);
         }}
-        className="scroll-bar-hidden dark:bg-background flex max-h-full w-full justify-center overflow-y-scroll py-[18px]"
+        className="scroll-bar-hidden dark:bg-background flex h-full max-h-full w-full items-center justify-center overflow-y-scroll py-[18px]"
       >
         {!error && (
           <Page
