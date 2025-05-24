@@ -22,12 +22,13 @@ interface FormImageInputProps<
 > {
   className?: string;
   name: TName;
-  onBase64Change?: (base64: string) => void;
+  onBase64Change?: (base64: string | undefined) => void;
   label?: string | undefined;
   description?: string | undefined;
   reactform: UseFormReturn<TFieldValues>;
   sublabel?: string | undefined;
   isOptional?: boolean;
+  maxSizeMB?: number;
 }
 
 export const FormImageInput = <
@@ -36,6 +37,7 @@ export const FormImageInput = <
 >({
   className,
   isOptional = false,
+  maxSizeMB = 5,
   ...props
 }: FormImageInputProps<TFieldValues, TName>) => {
   return (
@@ -65,6 +67,7 @@ export const FormImageInput = <
                   Boolean(error) && "focus-visible:ring-destructive !border-destructive ring-transparent duration-200",
                 )}
                 onFileUpload={(file) => {
+                  console.log("file", file);
                   field.onChange(file);
                 }}
                 defaultUrl={field.value}
@@ -77,6 +80,7 @@ export const FormImageInput = <
                   // remove the file from the field
                   field.onChange("");
                 }}
+                maxSizeMB={maxSizeMB}
                 {...props}
                 {...field}
               />

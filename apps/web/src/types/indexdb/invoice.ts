@@ -1,17 +1,19 @@
+import type { InvoiceTypeType, InvoiceStatusType } from "@invoicely/db/schema/invoice";
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
-
-export enum INVOICE_STATUS {
-  PENDING = "pending",
-  SUCCESS = "success",
-  ERROR = "error",
-  EXPIRED = "expired",
-  REFUNDED = "refunded",
-}
 
 export interface IDBInvoice {
   id: string;
+  type: InvoiceTypeType;
   createdAt: Date;
-  status: INVOICE_STATUS;
+  updatedAt: Date;
+  status: InvoiceStatusType;
   paidAt: Date | null;
-  data: ZodCreateInvoiceSchema;
+  invoiceFields: ZodCreateInvoiceSchema;
+}
+
+export interface IDBImage {
+  id: string;
+  type: "logo" | "signature";
+  createdAt: Date;
+  base64: string;
 }

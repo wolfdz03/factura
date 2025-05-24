@@ -1,9 +1,14 @@
-"use client";
-
+import { serverAuth } from "@/lib/auth";
+import { headers } from "next/headers";
+import InvoicesPage from "./invoices";
 import React from "react";
 
-const Page = () => {
-  return <div className="dash-page p-10"></div>;
+const Page = async () => {
+  const session = await serverAuth.api.getSession({
+    headers: await headers(),
+  });
+
+  return <InvoicesPage user={session?.user} />;
 };
 
 export default Page;

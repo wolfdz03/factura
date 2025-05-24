@@ -37,7 +37,7 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
         ))}
       </SidebarContent>
       <SidebarFooter>
-        <NavigationUser user={null} />
+        <NavigationUser />
       </SidebarFooter>
     </Sidebar>
   );

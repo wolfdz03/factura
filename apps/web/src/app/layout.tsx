@@ -15,7 +15,9 @@ import {
   OpenPanelProvider,
 } from "@/providers";
 import { defaultWebsiteMetadata, defaultWebsiteViewport } from "@/constants";
+import { TanstackProvider } from "@/providers/tanstack-provider";
 import { TOAST_ICONS, TOAST_OPTIONS } from "@/constants/toast";
+import { TRPCProvider } from "@/trpc/client";
 import { ThemeProvider } from "next-themes";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
@@ -89,25 +91,29 @@ export default function RootLayout({
           "antialiased",
         )}
       >
-        <OpenPanelProvider>
-          <OneDollarStatsProvider>
-            <PostHogProvider>
-              <JotaiProvider>
-                <ThemeProvider attribute="class" defaultTheme="system" storageKey="invoicely-theme">
-                  <ReactScanProvider />
-                  <Toaster
-                    richColors
-                    position="top-right"
-                    toastOptions={TOAST_OPTIONS}
-                    icons={TOAST_ICONS}
-                    visibleToasts={4}
-                  />
-                  {children}
-                </ThemeProvider>
-              </JotaiProvider>
-            </PostHogProvider>
-          </OneDollarStatsProvider>
-        </OpenPanelProvider>
+        <TanstackProvider>
+          <TRPCProvider>
+            <OpenPanelProvider>
+              <OneDollarStatsProvider>
+                <PostHogProvider>
+                  <JotaiProvider>
+                    <ThemeProvider attribute="class" defaultTheme="system" storageKey="invoicely-theme">
+                      <ReactScanProvider />
+                      <Toaster
+                        richColors
+                        position="top-center"
+                        toastOptions={TOAST_OPTIONS}
+                        icons={TOAST_ICONS}
+                        visibleToasts={4}
+                      />
+                      {children}
+                    </ThemeProvider>
+                  </JotaiProvider>
+                </PostHogProvider>
+              </OneDollarStatsProvider>
+            </OpenPanelProvider>
+          </TRPCProvider>
+        </TanstackProvider>
       </body>
     </html>
   );
