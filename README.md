@@ -1,4 +1,4 @@
-# Invoicely
+# Invoicely - (Contributions Accepted)
 
 Modern, open-source invoice generation platform built with Next.js, tRPC, and TypeScript.
 
