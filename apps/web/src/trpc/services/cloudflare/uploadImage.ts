@@ -1,6 +1,7 @@
 import { getFileSizeFromBase64 } from "@/lib/invoice/get-file-size-from-base64";
 import { getUserImagesCount } from "@/lib/cloudflare/r2/getUserImagesCount";
 import { authorizedProcedure } from "@/trpc/procedures/authorizedProcedure";
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "@/constants/issues";
 import { awsS3Middleware } from "@/trpc/middlewares/awsS3Middleware";
 import { parseCatchError } from "@/lib/neverthrow/parseCatchError";
 import { uploadImage } from "@/lib/cloudflare/r2/uploadImage";
@@ -26,7 +27,7 @@ export const uploadImageFile = authorizedProcedure
     if (!ctx.auth.user.allowedSavingData) {
       throw new TRPCError({
         code: "FORBIDDEN",
-        message: "You are not allowed to save data",
+        message: ERROR_MESSAGES.NOT_ALLOWED_TO_SAVE_DATA,
       });
     }
 
@@ -36,7 +37,7 @@ export const uploadImageFile = authorizedProcedure
       if (userImagesCount >= 25) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "You have reached the maximum number of images in your account! Try deleting some images.",
+          message: ERROR_MESSAGES.MAX_IMAGES_REACHED,
         });
       }
 
@@ -54,18 +55,19 @@ export const uploadImageFile = authorizedProcedure
       if (!image) {
         throw new TRPCError({
           code: "SERVICE_UNAVAILABLE",
-          message: "Failed to upload image",
+          message: ERROR_MESSAGES.UPLOADING_IMAGE,
         });
       }
 
       return {
+        success: true,
+        message: SUCCESS_MESSAGES.IMAGE_UPLOADED,
         image: image,
       };
     } catch (error) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
-        message: parseCatchError(error) || "Failed to fetch images",
-        cause: parseCatchError(error),
+        message: parseCatchError(error),
       });
     }
   });

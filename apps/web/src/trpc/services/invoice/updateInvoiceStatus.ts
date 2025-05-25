@@ -1,4 +1,5 @@
 import { authorizedProcedure } from "@/trpc/procedures/authorizedProcedure";
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "@/constants/issues";
 import { parseCatchError } from "@/lib/neverthrow/parseCatchError";
 import { invoiceStatusEnum } from "@invoicely/db/schema/invoice";
 import { db, schema } from "@invoicely/db";
@@ -21,18 +22,18 @@ export const updateInvoiceStatus = authorizedProcedure
       });
 
       if (!invoice) {
-        return {
-          success: false,
-          message: "Invoice not found! Please try again.",
-        };
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: ERROR_MESSAGES.INVOICE_NOT_FOUND,
+        });
       }
 
       // Checking if current invoice status is same as the new status
       if (invoice.status === input.status) {
-        return {
-          success: false,
-          message: "Try updating to a different status. Current status is same as the new status.",
-        };
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: ERROR_MESSAGES.TRY_UPDATING_TO_DIFFERENT_STATUS,
+        });
       }
 
       // Updating the invoice status
@@ -46,13 +47,12 @@ export const updateInvoiceStatus = authorizedProcedure
 
       return {
         success: true,
-        message: "The status of the invoice has been updated successfully.",
+        message: SUCCESS_MESSAGES.INVOICE_STATUS_UPDATED,
       };
     } catch (error) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to update invoice status",
-        cause: parseCatchError(error),
+        message: parseCatchError(error),
       });
     }
   });

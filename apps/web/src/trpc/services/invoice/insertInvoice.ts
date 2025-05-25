@@ -1,6 +1,7 @@
 import { insertInvoiceQuery } from "@/lib/db-queries/invoice/insertInvoice";
 import { authorizedProcedure } from "@/trpc/procedures/authorizedProcedure";
 import { createInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "@/constants/issues";
 import { parseCatchError } from "@/lib/neverthrow/parseCatchError";
 import { TRPCError } from "@trpc/server";
 
@@ -15,10 +16,10 @@ export const insertInvoice = authorizedProcedure
   .mutation<MutationResponse>(async ({ ctx, input }) => {
     // If user didn't allow saving data in db then return error
     if (!ctx.auth.user.allowedSavingData) {
-      return {
-        success: false,
-        message: "User has not enabled data saving in their preferences",
-      };
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: ERROR_MESSAGES.NOT_ALLOWED_TO_SAVE_DATA,
+      });
     }
 
     try {
@@ -26,14 +27,13 @@ export const insertInvoice = authorizedProcedure
 
       return {
         success: true,
-        message: "Invoice saved successfully",
+        message: SUCCESS_MESSAGES.INVOICE_SAVED,
         invoiceId,
       };
     } catch (error) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to insert invoice",
-        cause: parseCatchError(error),
+        message: parseCatchError(error),
       });
     }
   });
