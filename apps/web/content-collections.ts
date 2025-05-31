@@ -14,6 +14,7 @@ const writings = defineCollection({
     title: z.string(),
     summary: z.string(),
     thumbnail: z.string(),
+    ogImage: z.string().optional(),
   }),
   transform: async (document, context) => {
     const mdx = await compileMDX(context, document, {
