@@ -1,11 +1,14 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
+import { Skeleton } from "@/components/ui/skeleton";
+import { useMounted } from "@mantine/hooks";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import React from "react";
 
 const MDXImage = ({ src, className, ...props }: React.ImgHTMLAttributes<HTMLImageElement>) => {
   const { resolvedTheme } = useTheme();
+  const isMounted = useMounted();
   const isDark = resolvedTheme === "dark";
 
   const darkImageSrc = getDarkImageSrc(src);
@@ -19,6 +22,10 @@ const MDXImage = ({ src, className, ...props }: React.ImgHTMLAttributes<HTMLImag
       (e.target as HTMLImageElement).src = src as string;
     }
   };
+
+  if (!isMounted) {
+    return <Skeleton className="h-64 animate-pulse rounded-lg" />;
+  }
 
   return (
     <div className="-mx-12 my-12 border-y border-dashed p-4">
