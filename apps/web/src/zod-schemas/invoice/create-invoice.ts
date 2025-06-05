@@ -138,7 +138,7 @@ export const createInvoiceSchemaDefaultValues: ZodCreateInvoiceSchema = {
       mode: "light",
     },
     currency: "USD",
-    prefix: "INV-",
+    prefix: "Invoice INV-",
     serialNumber: "0001",
     date: new Date(), // now
     dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day from now

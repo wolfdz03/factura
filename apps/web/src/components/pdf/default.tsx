@@ -75,7 +75,7 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
                 ),
               )}
             >
-              Invoice {data.invoiceDetails.prefix}
+              {data.invoiceDetails.prefix}
               {data.invoiceDetails.serialNumber}
             </Text>
           </View>
