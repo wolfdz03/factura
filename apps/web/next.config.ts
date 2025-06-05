@@ -1,5 +1,5 @@
 import { withContentCollections } from "@content-collections/next";
-import withBundleAnalyzer from "@next/bundle-analyzer";
+// import withBundleAnalyzer from "@next/bundle-analyzer";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -35,6 +35,8 @@ const nextConfig: NextConfig = {
   devIndicators: false,
 };
 
-export default withBundleAnalyzer({
-  enabled: process.env.CONFIG_BUILD_ANALYZE === "true",
-})(withContentCollections(nextConfig));
+export default withContentCollections(nextConfig);
+
+// export default withBundleAnalyzer({
+//   enabled: process.env.CONFIG_BUILD_ANALYZE === "true",
+// })(withContentCollections(nextConfig));
