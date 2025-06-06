@@ -9,7 +9,6 @@ import { getImagesWithKey } from "@/lib/manage-assets/getImagesWithKey";
 import EmptySection from "@/components/ui/icon-placeholder";
 import { InvoiceImageType } from "@/types/common/invoice";
 import { IDBImage } from "@/types/indexdb/invoice";
-import type { _Object } from "@aws-sdk/client-s3";
 import { useParams } from "next/navigation";
 import { R2_PUBLIC_URL } from "@/constants";
 import { AuthUser } from "@/types/auth";
@@ -21,7 +20,7 @@ interface InvoiceImageSelectorSheetProps {
   type: InvoiceImageType;
   isLoading?: boolean;
   idbImages: IDBImage[];
-  serverImages: _Object[];
+  serverImages: string[];
   user: AuthUser | undefined;
   onUrlChange: (url: string) => void;
   onBase64Change: (base64?: string) => void;
@@ -69,7 +68,7 @@ export const InvoiceImageSelectorSheet = ({
           </div>
         ) : (
           <div className="flex flex-col gap-4 p-4">
-            {user && user.allowedSavingData && (
+            {user && (getImagesWithKey(serverImages, type).length > 0 || user.allowedSavingData) && (
               <div className="flex flex-col gap-4">
                 <div>
                   <div className="instrument-serif text-xl font-bold">Server {type}</div>
@@ -78,17 +77,17 @@ export const InvoiceImageSelectorSheet = ({
                   </p>
                 </div>
                 <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-                  {type === "logo" && <UploadLogoAsset disableIcon type="server" />}
-                  {type === "signature" && <UploadSignatureAsset disableIcon type="server" />}
+                  {type === "logo" && user.allowedSavingData && <UploadLogoAsset disableIcon type="server" />}
+                  {type === "signature" && user.allowedSavingData && <UploadSignatureAsset disableIcon type="server" />}
                   {getImagesWithKey(serverImages, type).map((image) => (
                     <div
-                      key={image.Key}
+                      key={image}
                       className="bg-border/30 relative cursor-pointer rounded-md"
-                      onClick={() => handleImageSelect(image.Key ?? "", "server")}
+                      onClick={() => handleImageSelect(image, "server")}
                     >
                       <Image
-                        src={`${R2_PUBLIC_URL}/${image.Key}`}
-                        alt={image.Key ?? "Image"}
+                        src={`${R2_PUBLIC_URL}/${image}`}
+                        alt={image}
                         width={200}
                         height={200}
                         className="aspect-square w-full rounded-md border object-cover"

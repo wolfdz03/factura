@@ -43,18 +43,12 @@ const AssetsPage = ({ user }: { user: AuthUser | undefined }) => {
   const images = useQuery({
     ...trpc.cloudflare.listImages.queryOptions(),
     enabled: !!user,
-    refetchOnWindowFocus: true,
-    refetchOnMount: true,
-    refetchOnReconnect: true,
   });
 
   //   Fetch images from indexedDB
   const imagesFromIndexedDB = useQuery({
     queryKey: ["idb-images"],
     queryFn: getAllImages,
-    refetchOnWindowFocus: true,
-    refetchOnMount: true,
-    refetchOnReconnect: true,
   });
 
   //   Delete image from server
@@ -140,7 +134,7 @@ const AssetsPage = ({ user }: { user: AuthUser | undefined }) => {
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              {user && (
+              {user && (getImagesWithKey(images.data?.images, type.key).length > 0 || user.allowedSavingData) && (
                 <>
                   <div>
                     <div className="instrument-serif text-xl font-bold">Server {type.title}</div>
@@ -150,22 +144,22 @@ const AssetsPage = ({ user }: { user: AuthUser | undefined }) => {
                   </div>
                   {/* List Images */}
                   <div className="mt-2 grid grid-cols-2 gap-4 md:grid-cols-5">
-                    {type.key === "logo" && <UploadLogoAsset type="server" />}
-                    {type.key === "signature" && <UploadSignatureAsset type="server" />}
-                    {getImagesWithKey(images.data?.images ?? [], type.key).map((image) => (
-                      <div key={image.Key} className="bg-border/30 relative rounded-md">
+                    {type.key === "logo" && user.allowedSavingData && <UploadLogoAsset type="server" />}
+                    {type.key === "signature" && user.allowedSavingData && <UploadSignatureAsset type="server" />}
+                    {getImagesWithKey(images.data?.images, type.key).map((image) => (
+                      <div key={image} className="bg-border/30 relative rounded-md">
                         <Button
                           disabled={deleteServerImageMutation.isPending}
                           variant="ghost"
                           size="xs"
                           className="absolute top-2 right-2 !px-0.5 text-red-500 hover:!bg-red-500 hover:!text-white"
-                          onClick={() => handleDeleteImage(image.Key ?? "", "server")}
+                          onClick={() => handleDeleteImage(image, "server")}
                         >
                           <TrashIcon />
                         </Button>
                         <Image
-                          src={`${R2_PUBLIC_URL}/${image.Key}`}
-                          alt={image.Key ?? "Image"}
+                          src={`${R2_PUBLIC_URL}/${image}`}
+                          alt={image}
                           width={200}
                           height={200}
                           className="aspect-square w-full rounded-md object-cover"

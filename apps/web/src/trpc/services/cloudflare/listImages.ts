@@ -1,21 +1,24 @@
+import { cloudflareContextMiddleware } from "@/trpc/middlewares/cloudflareContextMiddleware";
 import { authorizedProcedure } from "@/trpc/procedures/authorizedProcedure";
-import { awsS3Middleware } from "@/trpc/middlewares/awsS3Middleware";
 import { parseCatchError } from "@/lib/neverthrow/parseCatchError";
-import { getUserImages } from "@/lib/cloudflare/r2/getUserImages";
 import { SUCCESS_MESSAGES } from "@/constants/issues";
 import { TRPCError } from "@trpc/server";
 
-export const listImages = authorizedProcedure.use(awsS3Middleware).query(async ({ ctx }) => {
+export const listImages = authorizedProcedure.use(cloudflareContextMiddleware).query(async ({ ctx }) => {
   const userId = ctx.auth.user.id;
 
   try {
-    const images = await getUserImages(ctx.s3, userId);
+    const images = await ctx.cloudflareEnv.R2_IMAGES.list({
+      prefix: `${userId}/`,
+    });
+
+    const mappedImageKeys = images.objects.map((image) => image.key);
 
     return {
       success: true,
       message: SUCCESS_MESSAGES.IMAGES_FETCHED,
-      images: images,
-      count: images.length,
+      images: mappedImageKeys,
+      count: images.objects.length,
     };
   } catch (error) {
     throw new TRPCError({
