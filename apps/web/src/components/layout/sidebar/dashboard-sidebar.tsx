@@ -15,6 +15,7 @@ import { NavigationItem } from "@/components/layout/sidebar/navigation-item";
 import { NavigationUser } from "@/components/layout/sidebar/navigation-user";
 import LogoIcon from "@/components/assets/logo-icon";
 import { SIDEBAR_ITEMS } from "@/constants/sidebar";
+import OpenSourceBadge from "@/components/ui/open-source-badge";
 
 export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -37,6 +38,7 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
         ))}
       </SidebarContent>
       <SidebarFooter>
+        <OpenSourceBadge />
         <NavigationUser />
       </SidebarFooter>
     </Sidebar>
