@@ -1,7 +1,7 @@
 import { Metadata, Viewport } from "next";
 
 export const defaultWebsiteViewport: Viewport = {
-  themeColor: "#0F0F0F",
+  themeColor: "#242429",
   maximumScale: 1,
   initialScale: 1,
   width: "device-width",
