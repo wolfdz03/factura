@@ -3,7 +3,7 @@ import { middleware } from "@/trpc/init";
 import { serverAuth } from "@/lib/auth";
 import { headers } from "next/headers";
 
-export const betterAuthMiddleware = middleware(async function isAuthorized(options) {
+export const betterAuthMiddleware = middleware(async function (options) {
   // Getting Betterauth Session
   const betterAuthSession = await serverAuth.api.getSession({
     headers: await headers(),
