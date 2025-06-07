@@ -38,5 +38,8 @@ export const serverAuth = betterAuth({
     database: {
       generateId: false,
     },
+    ipAddress: {
+      ipAddressHeaders: ["cf-connecting-ip"],
+    },
   },
 });
