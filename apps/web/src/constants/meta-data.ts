@@ -1,7 +1,7 @@
 import { Metadata, Viewport } from "next";
 
 export const defaultWebsiteViewport: Viewport = {
-  themeColor: "#242429",
+  themeColor: "#323237",
   maximumScale: 1,
   initialScale: 1,
   width: "device-width",
@@ -17,7 +17,7 @@ export const defaultWebsiteMetadata: Metadata = {
     icon: "/official/invoicely-logo.png",
   },
   openGraph: {
-    images: "/official/banner.png",
+    images: "/official/og-banner.png",
   },
   // This is chatgpt aah generated shit lmao :3
   keywords: [
