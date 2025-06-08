@@ -99,8 +99,6 @@ export default function RootLayout({
                   <JotaiProvider>
                     <ThemeProvider
                       attribute="class"
-                      defaultTheme="system"
-                      storageKey="invoicely-theme"
                       scriptProps={{
                         "data-cfasync": "false",
                       }}
