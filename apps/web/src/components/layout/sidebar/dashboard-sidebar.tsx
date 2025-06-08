@@ -13,9 +13,9 @@ import {
 } from "@/components/ui/sidebar";
 import { NavigationItem } from "@/components/layout/sidebar/navigation-item";
 import { NavigationUser } from "@/components/layout/sidebar/navigation-user";
+import OpenSourceBadge from "@/components/ui/open-source-badge";
 import LogoIcon from "@/components/assets/logo-icon";
 import { SIDEBAR_ITEMS } from "@/constants/sidebar";
-import OpenSourceBadge from "@/components/ui/open-source-badge";
 
 export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
