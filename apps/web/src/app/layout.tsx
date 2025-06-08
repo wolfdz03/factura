@@ -97,9 +97,15 @@ export default function RootLayout({
               <OpenPanelProvider>
                 <OneDollarStatsProvider>
                   <JotaiProvider>
-                    <ThemeProvider attribute="class" defaultTheme="system" storageKey="invoicely-theme">
+                    <ThemeProvider
+                      attribute="class"
+                      defaultTheme="system"
+                      storageKey="invoicely-theme"
+                      scriptProps={{
+                        "data-cfasync": "false",
+                      }}
+                    >
                       <ReactScanProvider />
-
                       <ReactScanProvider />
                       <Toaster
                         richColors
