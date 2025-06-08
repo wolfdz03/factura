@@ -2,6 +2,8 @@ main = ".open-next/worker.js"
 name = "invoicely-web"
 compatibility_date = "2025-05-05"
 compatibility_flags = ["nodejs_compat"]
+# Disable keeping names for the worker i.e next-theme to prevent theme flashing
+keep_names = false
 
 [assets]
 directory = ".open-next/assets"
@@ -15,3 +17,4 @@ bucket_name = "invoicely"
 # To enable logging in Cloudflare Logs
 [observability.logs]
 enabled = true
+
