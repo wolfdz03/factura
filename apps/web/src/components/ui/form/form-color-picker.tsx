@@ -12,10 +12,12 @@ import {
 import { FieldPath, FieldValues, UseFormReturn } from "react-hook-form";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover";
 import { InfoIcon, TriangleAlertIcon } from "lucide-react";
+import { useResizeObserver } from "@mantine/hooks";
 import { HexColorPicker } from "react-colorful";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "../button";
 import { cn } from "@/lib/utils";
+import { Input } from "../input";
 import React from "react";
 
 interface FormColorPickerProps<
@@ -38,6 +40,8 @@ export const FormColorPicker = <
   isOptional = false,
   ...props
 }: FormColorPickerProps<TFieldValues, TName>) => {
+  const [resizeRef, container] = useResizeObserver();
+
   return (
     <FormField
       control={props.reactform.control}
@@ -59,20 +63,24 @@ export const FormColorPicker = <
               </FormLabel>
             ) : null}
             <FormControl>
-              <div className={cn(className, "flex flex-row items-center")}>
+              <div ref={resizeRef} className={cn(className, "flex flex-row items-center gap-1.5")}>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
+                      size="icon"
                       style={{
                         backgroundColor: field.value,
                       }}
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !field.value && "text-muted-foreground",
-                      )}
+                      className={cn("justify-start text-left font-normal", !field.value && "text-muted-foreground")}
                     ></Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="center">
+                  <PopoverContent
+                    className="p-0"
+                    align="start"
+                    style={{
+                      width: "width" in container ? container.width : "180px",
+                    }}
+                  >
                     <HexColorPicker
                       style={{
                         width: "auto",
@@ -82,6 +90,7 @@ export const FormColorPicker = <
                     />
                   </PopoverContent>
                 </Popover>
+                <Input type="text" value={field.value} onChange={field.onChange} />
               </div>
             </FormControl>
             {/* i.e Render form error message or form description Give priority to error else description */}
