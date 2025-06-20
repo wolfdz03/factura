@@ -3,6 +3,7 @@
 import { PostHogAnalytics } from "@/components/ui/posthog-analytics";
 import OpenSourceBadge from "@/components/ui/open-source-badge";
 import { useGithubStars } from "@/hooks/use-github-stars";
+import CloudflareIcon from "@/assets/icons/cloudflare";
 import { StarFilledIcon } from "@radix-ui/react-icons";
 import { ScribbledArrowToRight } from "@/assets/svgs";
 import LogoIcon from "@/components/assets/logo-icon";
@@ -18,6 +19,11 @@ export default function Home() {
 
   return (
     <div className="flex h-screen items-center justify-center">
+      <div className="text-muted-foreground absolute bottom-26 flex flex-row items-center gap-2 text-sm">
+        <span>Backed by</span>
+        <CloudflareIcon width={24} height={24} />
+        <span>Cloudflare OSS</span>
+      </div>
       <hr className="absolute top-12 left-0 h-px w-full border-dashed sm:top-24" />
       <hr className="absolute bottom-12 left-0 h-px w-full border-dashed sm:bottom-24" />
       <hr className="absolute top-0 left-12 h-full w-px border-l border-dashed sm:left-24" />

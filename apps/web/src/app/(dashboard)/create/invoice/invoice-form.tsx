@@ -35,20 +35,16 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
   const [resizeRef, container] = useResizeObserver();
 
   const { data: session } = useSession();
+
   // fetching images from indexedDB
   const idbImages = useQuery({
     queryKey: ["idb-images"],
     queryFn: () => getAllImages(),
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
   });
   // Fetching Server Images
   const serverImages = useQuery({
     ...trpc.cloudflare.listImages.queryOptions(),
     enabled: !!session?.user,
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
-    retry: false,
   });
 
   return (
