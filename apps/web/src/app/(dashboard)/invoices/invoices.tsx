@@ -6,17 +6,18 @@ import { getAllInvoices } from "@/lib/indexdb-queries/invoice";
 import { DataTable } from "@/components/ui/data-table";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
+import { useSession } from "@/lib/client-auth";
 import { useTRPC } from "@/trpc/client";
-import { AuthUser } from "@/types/auth";
 import React from "react";
 
-const InvoicesPage = ({ user }: { user: AuthUser | undefined }) => {
+const InvoicesPage = () => {
   const trpc = useTRPC();
+  const { data: session } = useSession();
 
   // Fetching Invoices from the Postgres (Server)
   const trpcData = useQuery({
     ...trpc.invoice.list.queryOptions(),
-    enabled: !!user, // Only fetch if user is logged in
+    enabled: !!session?.user, // Only fetch if user is logged in
   });
 
   // Fetching Invoices from the LocalDB

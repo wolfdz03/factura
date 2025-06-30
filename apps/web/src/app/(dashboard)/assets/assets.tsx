@@ -11,9 +11,9 @@ import EmptySection from "@/components/ui/icon-placeholder";
 import UploadSignatureAsset from "./upload-signature.asset";
 import UploadLogoAsset from "./upload-logo-asset";
 import { Button } from "@/components/ui/button";
+import { useSession } from "@/lib/client-auth";
 import { R2_PUBLIC_URL } from "@/constants";
 import { useTRPC } from "@/trpc/client";
-import { AuthUser } from "@/types/auth";
 import Image from "next/image";
 import { toast } from "sonner";
 import React from "react";
@@ -35,14 +35,15 @@ const typeOfImages = [
   },
 ];
 
-const AssetsPage = ({ user }: { user: AuthUser | undefined }) => {
+const AssetsPage = () => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const { data: session } = useSession();
 
   //   Fetch images from server
   const images = useQuery({
     ...trpc.cloudflare.listImages.queryOptions(),
-    enabled: !!user,
+    enabled: !!session?.user,
   });
 
   //   Fetch images from indexedDB
@@ -110,7 +111,7 @@ const AssetsPage = ({ user }: { user: AuthUser | undefined }) => {
   }
 
   const handleDeleteImage = async (imageId: string, type: "server" | "local") => {
-    if (user && type === "server") {
+    if (session?.user && type === "server") {
       // Delete image from  server
       deleteServerImageMutation.mutate({ key: imageId });
     } else {
@@ -134,42 +135,45 @@ const AssetsPage = ({ user }: { user: AuthUser | undefined }) => {
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              {user && (getImagesWithKey(images.data?.images, type.key).length > 0 || user.allowedSavingData) && (
-                <>
-                  <div>
-                    <div className="instrument-serif text-xl font-bold">Server {type.title}</div>
-                    <p className="text-muted-foreground text-xs">
-                      Manage the {type.key}s that are stored on the server.
-                    </p>
-                  </div>
-                  {/* List Images */}
-                  <div className="mt-2 grid grid-cols-2 gap-4 md:grid-cols-5">
-                    {type.key === "logo" && user.allowedSavingData && <UploadLogoAsset type="server" />}
-                    {type.key === "signature" && user.allowedSavingData && <UploadSignatureAsset type="server" />}
-                    {getImagesWithKey(images.data?.images, type.key).map((image) => (
-                      <div key={image} className="bg-border/30 relative rounded-md">
-                        <Button
-                          disabled={deleteServerImageMutation.isPending}
-                          variant="ghost"
-                          size="xs"
-                          className="absolute top-2 right-2 !px-0.5 text-red-500 hover:!bg-red-500 hover:!text-white"
-                          onClick={() => handleDeleteImage(image, "server")}
-                        >
-                          <TrashIcon />
-                        </Button>
-                        <Image
-                          src={`${R2_PUBLIC_URL}/${image}`}
-                          alt={image}
-                          width={200}
-                          height={200}
-                          className="aspect-square w-full rounded-md object-cover"
-                          unoptimized
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
+              {session?.user &&
+                (getImagesWithKey(images.data?.images, type.key).length > 0 || session.user.allowedSavingData) && (
+                  <>
+                    <div>
+                      <div className="instrument-serif text-xl font-bold">Server {type.title}</div>
+                      <p className="text-muted-foreground text-xs">
+                        Manage the {type.key}s that are stored on the server.
+                      </p>
+                    </div>
+                    {/* List Images */}
+                    <div className="mt-2 grid grid-cols-2 gap-4 md:grid-cols-5">
+                      {type.key === "logo" && session.user.allowedSavingData && <UploadLogoAsset type="server" />}
+                      {type.key === "signature" && session.user.allowedSavingData && (
+                        <UploadSignatureAsset type="server" />
+                      )}
+                      {getImagesWithKey(images.data?.images, type.key).map((image) => (
+                        <div key={image} className="bg-border/30 relative rounded-md">
+                          <Button
+                            disabled={deleteServerImageMutation.isPending}
+                            variant="ghost"
+                            size="xs"
+                            className="absolute top-2 right-2 !px-0.5 text-red-500 hover:!bg-red-500 hover:!text-white"
+                            onClick={() => handleDeleteImage(image, "server")}
+                          >
+                            <TrashIcon />
+                          </Button>
+                          <Image
+                            src={`${R2_PUBLIC_URL}/${image}`}
+                            alt={image}
+                            width={200}
+                            height={200}
+                            className="aspect-square w-full rounded-md object-cover"
+                            unoptimized
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
               <div>
                 <div className="instrument-serif text-xl font-bold">Local {type.title}</div>
                 <p className="text-muted-foreground text-xs">Manage the {type.key}s that are stored on your device.</p>
