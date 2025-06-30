@@ -11,8 +11,8 @@ import {
 } from "@/components/ui/form/form";
 import { FieldPath, FieldValues, UseFormReturn } from "react-hook-form";
 import { InfoIcon, TriangleAlertIcon } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import React from "react";
 

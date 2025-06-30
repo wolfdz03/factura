@@ -6,11 +6,11 @@ import { Accordion, AccordionItem, AccordionContent, AccordionTrigger } from "@/
 import SheetImageSelectorTrigger from "@/components/ui/image/sheet-image-selector-trigger";
 import { InvoiceImageSelectorSheet } from "./invoiceHelpers/invoice-image-selector-sheet";
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
-import InvoiceItemsSection from "./invoiceHelpers/invoice-items-section";
 import { FormColorPicker } from "@/components/ui/form/form-color-picker";
+import InvoiceItemsSection from "./invoiceHelpers/invoice-items-section";
 import { FormDatePicker } from "@/components/ui/form/form-date-picker";
-import { FormTextarea } from "@/components/ui/form/form-textarea";
 import { getAllImages } from "@/lib/indexdb-queries/getAllImages";
+import { FormTextarea } from "@/components/ui/form/form-textarea";
 import { FormSelect } from "@/components/ui/form/form-select";
 import { currenciesWithSymbols } from "@/constants/currency";
 import { FormInput } from "@/components/ui/form/form-input";
