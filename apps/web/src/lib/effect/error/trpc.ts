@@ -1,10 +1,22 @@
 import { Data } from "effect";
 
 /**
+ * Error thrown when a resource is not found.
+ * Used to handle and report failures in resource retrieval, such as when a resource is not found.
+ * @requires message - The error message to be displayed to the user.
+ */
+export class NotFoundError extends Data.TaggedError("NotFoundError")<{
+  message: string;
+}> {}
+
+/**
  * Error thrown when a user attempts to access or modify a resource they don't own.
  * Used in authorization checks to prevent unauthorized access to user-specific resources.
+ * @requires message - The error message to be displayed to the user.
  */
-export class NotOwnerError extends Data.TaggedError("NotOwnerError") {}
+export class NotOwnerError extends Data.TaggedError("NotOwnerError")<{
+  message: string;
+}> {}
 
 /**
  * Error thrown when a storage operation fails.
@@ -48,5 +60,14 @@ export class ServiceUnavailableError extends Data.TaggedError("ServiceUnavailabl
  * @requires message - The error message to be displayed to the user.
  */
 export class InternalServerError extends Data.TaggedError("InternalServerError")<{
+  message: string;
+}> {}
+
+/**
+ * Error thrown when a bad request is made.
+ * Used to handle and report failures in bad requests, such as when a bad request is made.
+ * @requires message - The error message to be displayed to the user.
+ */
+export class BadRequestError extends Data.TaggedError("BadRequestError")<{
   message: string;
 }> {}

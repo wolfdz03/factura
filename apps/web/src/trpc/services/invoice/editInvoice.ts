@@ -1,3 +1,4 @@
+import { InternalServerError, NotFoundError } from "@/lib/effect/error/trpc";
 import { deleteInvoiceQuery } from "@/lib/db-queries/invoice/deleteInvoice";
 import { insertInvoiceQuery } from "@/lib/db-queries/invoice/insertInvoice";
 import { authorizedProcedure } from "@/trpc/procedures/authorizedProcedure";
@@ -6,6 +7,7 @@ import { getInvoiceQuery } from "@/lib/db-queries/invoice/getInvoice";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "@/constants/issues";
 import { parseCatchError } from "@/lib/neverthrow/parseCatchError";
 import { TRPCError } from "@trpc/server";
+import { Effect } from "effect";
 import { z } from "zod";
 
 const EditInvoiceSchema = z.object({
@@ -16,27 +18,39 @@ const EditInvoiceSchema = z.object({
 export const editInvoice = authorizedProcedure.input(EditInvoiceSchema).mutation(async ({ input, ctx }) => {
   const { id, invoice } = input;
 
-  try {
-    const oldInvoice = await getInvoiceQuery(id, ctx.auth.user.id);
+  const editInvoiceEffect = Effect.gen(function* () {
+    const oldInvoice = yield* Effect.tryPromise({
+      try: () => getInvoiceQuery(id, ctx.auth.user.id),
+      catch: (error) => new InternalServerError({ message: parseCatchError(error) }),
+    });
 
     if (!oldInvoice) {
-      throw new TRPCError({ code: "NOT_FOUND", message: ERROR_MESSAGES.INVOICE_NOT_FOUND });
+      return yield* new NotFoundError({ message: ERROR_MESSAGES.INVOICE_NOT_FOUND });
     }
 
-    //   now as we found old invoice , we will delete it from the database ( yea im pro :3)
-    await deleteInvoiceQuery(id, ctx.auth.user.id);
+    yield* Effect.tryPromise({
+      try: () => deleteInvoiceQuery(id, ctx.auth.user.id),
+      catch: (error) => new InternalServerError({ message: parseCatchError(error) }),
+    });
 
-    //   now we will insert the new invoice with same id
-    await insertInvoiceQuery(invoice, ctx.auth.user.id, oldInvoice.id);
+    yield* Effect.tryPromise({
+      try: () => insertInvoiceQuery(invoice, ctx.auth.user.id, oldInvoice.id),
+      catch: (error) => new InternalServerError({ message: parseCatchError(error) }),
+    });
 
     return {
       success: true,
       message: SUCCESS_MESSAGES.INVOICE_EDITED,
     };
-  } catch (error) {
-    throw new TRPCError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: parseCatchError(error),
-    });
-  }
+  });
+
+  return Effect.runPromise(
+    editInvoiceEffect.pipe(
+      Effect.catchTags({
+        NotFoundError: (error) => Effect.fail(new TRPCError({ code: "NOT_FOUND", message: error.message })),
+        InternalServerError: (error) =>
+          Effect.fail(new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: error.message })),
+      }),
+    ),
+  );
 });

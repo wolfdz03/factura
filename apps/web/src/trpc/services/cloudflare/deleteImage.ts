@@ -19,7 +19,7 @@ export const deleteImageFile = authorizedProcedure
 
     const deleteCloudflareImage = Effect.gen(function* () {
       if (!input.key.startsWith(userId)) {
-        return yield* new NotOwnerError();
+        return yield* new NotOwnerError({ message: ERROR_MESSAGES.NOT_ALLOWED_TO_DELETE_IMAGE });
       }
 
       yield* Effect.tryPromise({
@@ -36,22 +36,9 @@ export const deleteImageFile = authorizedProcedure
     return Effect.runPromise(
       deleteCloudflareImage.pipe(
         Effect.catchTags({
-          NotOwnerError: () =>
-            Effect.fail(
-              () =>
-                new TRPCError({
-                  code: "BAD_REQUEST",
-                  message: ERROR_MESSAGES.NOT_ALLOWED_TO_DELETE_IMAGE,
-                }),
-            ),
+          NotOwnerError: (error) => Effect.fail(new TRPCError({ code: "BAD_REQUEST", message: error.message })),
           R2StorageError: (error) =>
-            Effect.fail(
-              () =>
-                new TRPCError({
-                  code: "INTERNAL_SERVER_ERROR",
-                  message: error.message,
-                }),
-            ),
+            Effect.fail(new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: error.message })),
         }),
       ),
     );
