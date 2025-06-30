@@ -84,7 +84,6 @@ Modern, open-source invoice generation platform built with Next.js, tRPC, and Ty
 ### File Storage & PDF
 
 - **Cloudflare R2** - Object storage
-- **AWS SDK** - S3-compatible storage client
 - **React PDF 9.2.1** - PDF generation
 
 ### Development Tools

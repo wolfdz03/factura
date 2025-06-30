@@ -89,7 +89,6 @@
     "@content-collections/mdx": "^0.2.2",
     "@content-collections/next": "^0.2.6",
     "@eslint/eslintrc": "^3",
-    "@invoicely/utilities": "workspace:*",
     "@tailwindcss/postcss": "^4",
     "@types/lodash": "^4",
     "@types/node": "^20",
