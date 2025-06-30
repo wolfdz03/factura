@@ -1,3 +1,4 @@
+import { ForbiddenError, PayloadTooLargeError, R2StorageError, ServiceUnavailableError } from "@/lib/effect/error/trpc";
 import { cloudflareContextMiddleware } from "@/trpc/middlewares/cloudflareContextMiddleware";
 import { getFileSizeFromBase64 } from "@/lib/invoice/get-file-size-from-base64";
 import { getUserImagesCount } from "@/lib/cloudflare/r2/getUserImagesCount";
@@ -6,6 +7,7 @@ import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "@/constants/issues";
 import { parseCatchError } from "@/lib/neverthrow/parseCatchError";
 import { uploadImage } from "@/lib/cloudflare/r2/uploadImage";
 import { TRPCError } from "@trpc/server";
+import { Effect } from "effect";
 import { z } from "zod";
 
 const fileSizes = {
@@ -24,39 +26,37 @@ export const uploadImageFile = authorizedProcedure
   .mutation(async ({ ctx, input }) => {
     const userId = ctx.auth.user.id;
 
-    if (!ctx.auth.user.allowedSavingData) {
-      throw new TRPCError({
-        code: "FORBIDDEN",
-        message: ERROR_MESSAGES.NOT_ALLOWED_TO_SAVE_DATA,
-      });
-    }
+    const uploadImageEffect = Effect.gen(function* () {
+      if (!ctx.auth.user.allowedSavingData) {
+        return yield* new ForbiddenError({ message: ERROR_MESSAGES.NOT_ALLOWED_TO_SAVE_DATA });
+      }
 
-    try {
-      const userImagesCount = await getUserImagesCount(ctx.cloudflareEnv, userId);
+      const userImagesCount = yield* Effect.tryPromise({
+        try: () => getUserImagesCount(ctx.cloudflareEnv, userId),
+        catch: (error) => new R2StorageError({ message: parseCatchError(error) }),
+      });
 
       if (userImagesCount >= 25) {
-        throw new TRPCError({
-          code: "FORBIDDEN",
-          message: ERROR_MESSAGES.MAX_IMAGES_REACHED,
-        });
+        return yield* new ForbiddenError({ message: ERROR_MESSAGES.MAX_IMAGES_REACHED });
       }
 
       const size = getFileSizeFromBase64(input.base64);
 
-      if (size > fileSizes[input.type]) {
-        throw new TRPCError({
-          code: "PAYLOAD_TOO_LARGE",
-          message: `Image is too large. ${input.type} can only be below ${Math.round(fileSizes[input.type] / 1000)} KB`,
+      const typeSize = fileSizes[input.type];
+
+      if (size > typeSize) {
+        return yield* new PayloadTooLargeError({
+          message: `Image is too large. ${input.type} can only be below ${Math.round(typeSize / 1000)} KB`,
         });
       }
 
-      const image = await uploadImage(ctx.cloudflareEnv, input.base64, userId, input.type);
+      const image = yield* Effect.tryPromise({
+        try: () => uploadImage(ctx.cloudflareEnv, input.base64, userId, input.type),
+        catch: (error) => new R2StorageError({ message: parseCatchError(error) }),
+      });
 
       if (!image) {
-        throw new TRPCError({
-          code: "SERVICE_UNAVAILABLE",
-          message: ERROR_MESSAGES.UPLOADING_IMAGE,
-        });
+        return yield* new ServiceUnavailableError({ message: ERROR_MESSAGES.UPLOADING_IMAGE });
       }
 
       return {
@@ -64,10 +64,19 @@ export const uploadImageFile = authorizedProcedure
         message: SUCCESS_MESSAGES.IMAGE_UPLOADED,
         image: image,
       };
-    } catch (error) {
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: parseCatchError(error),
-      });
-    }
+    });
+
+    return Effect.runPromise(
+      uploadImageEffect.pipe(
+        Effect.catchTags({
+          ForbiddenError: (error) => Effect.fail(new TRPCError({ code: "FORBIDDEN", message: error.message })),
+          PayloadTooLargeError: (error) =>
+            Effect.fail(new TRPCError({ code: "PAYLOAD_TOO_LARGE", message: error.message })),
+          R2StorageError: (error) =>
+            Effect.fail(new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: error.message })),
+          ServiceUnavailableError: (error) =>
+            Effect.fail(new TRPCError({ code: "SERVICE_UNAVAILABLE", message: error.message })),
+        }),
+      ),
+    );
   });

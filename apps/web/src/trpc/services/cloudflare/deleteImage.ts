@@ -1,8 +1,10 @@
 import { cloudflareContextMiddleware } from "@/trpc/middlewares/cloudflareContextMiddleware";
 import { authorizedProcedure } from "@/trpc/procedures/authorizedProcedure";
+import { NotOwnerError, R2StorageError } from "@/lib/effect/error/trpc";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "@/constants/issues";
 import { parseCatchError } from "@/lib/neverthrow/parseCatchError";
 import { TRPCError } from "@trpc/server";
+import { Effect } from "effect";
 import { z } from "zod";
 
 export const deleteImageFile = authorizedProcedure
@@ -15,26 +17,29 @@ export const deleteImageFile = authorizedProcedure
   .mutation(async ({ ctx, input }) => {
     const userId = ctx.auth.user.id;
 
-    try {
-      // Check if the image is owned by the user
+    const deleteCloudflareImage = Effect.gen(function* () {
       if (!input.key.startsWith(userId)) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: ERROR_MESSAGES.NOT_ALLOWED_TO_DELETE_IMAGE,
-        });
+        return yield* new NotOwnerError({ message: ERROR_MESSAGES.NOT_ALLOWED_TO_DELETE_IMAGE });
       }
 
-      //    delete image from r2
-      await ctx.cloudflareEnv.R2_IMAGES.delete(input.key);
+      yield* Effect.tryPromise({
+        try: () => ctx.cloudflareEnv.R2_IMAGES.delete(input.key),
+        catch: (error) => new R2StorageError({ message: parseCatchError(error) }),
+      });
 
       return {
         success: true,
         message: SUCCESS_MESSAGES.IMAGE_DELETED,
       };
-    } catch (error) {
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: parseCatchError(error),
-      });
-    }
+    });
+
+    return Effect.runPromise(
+      deleteCloudflareImage.pipe(
+        Effect.catchTags({
+          NotOwnerError: (error) => Effect.fail(new TRPCError({ code: "BAD_REQUEST", message: error.message })),
+          R2StorageError: (error) =>
+            Effect.fail(new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: error.message })),
+        }),
+      ),
+    );
   });

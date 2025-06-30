@@ -1,8 +1,10 @@
+import { InternalServerError, NotFoundError } from "@/lib/effect/error/trpc";
 import { authorizedProcedure } from "@/trpc/procedures/authorizedProcedure";
 import { getInvoiceQuery } from "@/lib/db-queries/invoice/getInvoice";
 import { parseCatchError } from "@/lib/neverthrow/parseCatchError";
 import { ERROR_MESSAGES } from "@/constants/issues";
 import { TRPCError } from "@trpc/server";
+import { Effect } from "effect";
 import { z } from "zod";
 
 const getInvoiceSchema = z.object({
@@ -10,14 +12,14 @@ const getInvoiceSchema = z.object({
 });
 
 export const getInvoice = authorizedProcedure.input(getInvoiceSchema).query(async ({ input, ctx }) => {
-  try {
-    const invoice = await getInvoiceQuery(input.id, ctx.auth.user.id);
+  const getInvoiceEffect = Effect.gen(function* () {
+    const invoice = yield* Effect.tryPromise({
+      try: () => getInvoiceQuery(input.id, ctx.auth.user.id),
+      catch: (error) => new InternalServerError({ message: parseCatchError(error) }),
+    });
 
     if (!invoice) {
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: ERROR_MESSAGES.INVOICE_NOT_FOUND,
-      });
+      return yield* new NotFoundError({ message: ERROR_MESSAGES.INVOICE_NOT_FOUND });
     }
 
     return {
@@ -37,10 +39,15 @@ export const getInvoice = authorizedProcedure.input(getInvoiceSchema).query(asyn
         },
       },
     };
-  } catch (error) {
-    throw new TRPCError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: parseCatchError(error),
-    });
-  }
+  });
+
+  return Effect.runPromise(
+    getInvoiceEffect.pipe(
+      Effect.catchTags({
+        NotFoundError: (error) => Effect.fail(new TRPCError({ code: "NOT_FOUND", message: error.message })),
+        InternalServerError: (error) =>
+          Effect.fail(new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: error.message })),
+      }),
+    ),
+  );
 });
