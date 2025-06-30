@@ -18,32 +18,39 @@ const EditInvoiceSchema = z.object({
 export const editInvoice = authorizedProcedure.input(EditInvoiceSchema).mutation(async ({ input, ctx }) => {
   const { id, invoice } = input;
 
+  // Edit Invoice Effect
   const editInvoiceEffect = Effect.gen(function* () {
+    // Get the old invoice
     const oldInvoice = yield* Effect.tryPromise({
       try: () => getInvoiceQuery(id, ctx.auth.user.id),
       catch: (error) => new InternalServerError({ message: parseCatchError(error) }),
     });
 
+    // Check if the invoice exists
     if (!oldInvoice) {
       return yield* new NotFoundError({ message: ERROR_MESSAGES.INVOICE_NOT_FOUND });
     }
 
+    // Delete the old invoice
     yield* Effect.tryPromise({
       try: () => deleteInvoiceQuery(id, ctx.auth.user.id),
       catch: (error) => new InternalServerError({ message: parseCatchError(error) }),
     });
 
+    // Insert the new invoice
     yield* Effect.tryPromise({
       try: () => insertInvoiceQuery(invoice, ctx.auth.user.id, oldInvoice.id),
       catch: (error) => new InternalServerError({ message: parseCatchError(error) }),
     });
 
+    // Return the success message
     return {
       success: true,
       message: SUCCESS_MESSAGES.INVOICE_EDITED,
     };
   });
 
+  // Run the effect
   return Effect.runPromise(
     editInvoiceEffect.pipe(
       Effect.catchTags({
