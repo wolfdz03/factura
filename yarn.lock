@@ -1822,6 +1822,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@effect/language-service@npm:^0.23.3":
+  version: 0.23.3
+  resolution: "@effect/language-service@npm:0.23.3"
+  checksum: 10c0/8bb7e4b5ded3f2384a1c21931f015e00a6b0055cd0aeaa824fb6d422172fc62786364c84e8691955ecd42599d567c3cfc69fd1578f4c4b5ee167c9056153b01f
+  languageName: node
+  linkType: hard
+
 "@emnapi/core@npm:^1.4.0, @emnapi/core@npm:^1.4.3":
   version: 1.4.3
   resolution: "@emnapi/core@npm:1.4.3"
@@ -11646,6 +11653,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "invoicely@workspace:."
   dependencies:
+    "@effect/language-service": "npm:^0.23.3"
     "@invoicely/eslint-config": "workspace:*"
     "@invoicely/typescript-config": "workspace:*"
     "@t3-oss/env-nextjs": "npm:^0.13.4"
