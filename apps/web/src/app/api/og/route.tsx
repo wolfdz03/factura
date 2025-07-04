@@ -16,11 +16,11 @@ export async function GET(request: NextRequest) {
       (
         <div tw="flex flex-col items-center justify-center h-full">
           {/* Background Image */}
-          <img src="https://invoicely.gg/official/blog-banner.png" alt="Invoicely" width={1200} height={630} />
+          <img src="https://assets.invoicely.gg/blog-banner.png" alt="Invoicely" width={1200} height={630} />
           {/* Image Content */}
           <h1
             style={{ fontFamily: "Instrument Serif" }}
-            tw="text-7xl font-medium leading-none max-w-[950px] absolute top-[300px] left-[94px] text-white"
+            tw="text-7xl font-medium leading-none max-w-[900px] absolute top-[300px] left-[94px] text-white"
           >
             {title}
           </h1>
