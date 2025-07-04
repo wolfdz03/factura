@@ -21,6 +21,7 @@ import { TRPCProvider } from "@/trpc/client";
 import { ThemeProvider } from "next-themes";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
+import "./theme-swtch.css";
 import "./globals.css";
 import "./fonts.css";
 
