@@ -1,5 +1,6 @@
 "use client";
 
+import ThemeSwitch from "@/components/table-columns/theme-switch";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { AnimatePresence, motion } from "motion/react";
 import { Separator } from "@/components/ui/separator";
@@ -17,7 +18,7 @@ const DashboardSidebarHeader = ({ children }: ISidebarHeader) => {
     .find((item) => item.url === pathname);
 
   return (
-    <header className="bg-background sticky top-0 flex h-12 shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear select-none group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+    <header className="bg-background sticky top-0 flex h-12 shrink-0 items-center justify-between gap-2 border-b transition-[width,height] ease-linear select-none group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
       <div className="flex items-center gap-2 px-4">
         <SidebarTrigger className="-ml-1" />
         {route ? <Separator orientation="vertical" className="mr-2 min-h-4" /> : null}
@@ -41,6 +42,9 @@ const DashboardSidebarHeader = ({ children }: ISidebarHeader) => {
             </motion.div>
           ) : null}
         </AnimatePresence>
+      </div>
+      <div className="flex items-center gap-2 px-4">
+        <ThemeSwitch />
       </div>
     </header>
   );
