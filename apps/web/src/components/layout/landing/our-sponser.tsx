@@ -10,6 +10,7 @@ interface Sponser {
   name: string;
   image: string | null;
   description: string;
+  invert?: boolean;
   label?: string;
   link?: string;
 }
@@ -25,6 +26,7 @@ const sponsers: Sponser[] = [
   {
     name: "Vercel",
     label: "Open Source Program",
+    invert: true,
     image: "https://assets.invoicely.gg/vercel-logo.png",
     description:
       "Vercel is a platform for building modern web applications. It provides a seamless development experience with a focus on performance and scalability. Vercel provides the developer tools and cloud infrastructure to build, scale, and secure a faster, more personalized web.",
@@ -73,7 +75,7 @@ const OurSponser = () => {
             >
               {sponser.image ? (
                 <Image
-                  className="h-20 w-40 object-contain"
+                  className={cn("h-20 w-40 object-contain", sponser.invert && "invert dark:invert-0")}
                   src={sponser.image}
                   alt={sponser.name}
                   width={254}
