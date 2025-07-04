@@ -1,10 +1,11 @@
 import { PostHogAnalytics } from "./posthog-analytics";
+import { AnalyticsEventGroup } from "@/types";
 import { GithubIcon } from "@/assets/icons";
 import { LINKS } from "@/constants/links";
 import Link from "next/link";
 import React from "react";
 
-const OpenSourceBadge = ({ group = "landing-page" }: { group?: string }) => {
+const OpenSourceBadge = ({ group = "landing-page" }: { group?: AnalyticsEventGroup }) => {
   return (
     <PostHogAnalytics
       analytics={{

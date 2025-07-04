@@ -8,7 +8,9 @@ export type AnalyticsEventSuffix =
   | "-open"
   | "-close";
 
+export type AnalyticsEventGroup = "create-invoice-page" | "edit-invoice-page" | "landing-page";
+
 export interface IAnalytics {
   name: `${string}${AnalyticsEventSuffix}`;
-  group?: string;
+  group?: AnalyticsEventGroup;
 }

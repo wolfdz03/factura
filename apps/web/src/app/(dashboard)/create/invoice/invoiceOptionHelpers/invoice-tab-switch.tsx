@@ -3,7 +3,6 @@
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { EyeScannerIcon, FileFeatherIcon, FileTreeIcon } from "@/assets/icons";
 import { type InvoiceTab, invoiceTabAtom } from "@/global/atoms/invoice-atom";
-import { PostHogAnalytics } from "@/components/ui/posthog-analytics";
 import { useIsMobile } from "@/hooks/use-mobile";
 import React, { useEffect } from "react";
 import { useAtom } from "jotai";
@@ -26,16 +25,9 @@ const InvoiceTabSwitch = () => {
 
   return (
     <Select onValueChange={handleTabChange} value={tab} defaultValue={tab}>
-      <PostHogAnalytics
-        analytics={{
-          name: "invoice-tab-select",
-          group: "create-invoice-page",
-        }}
-      >
-        <SelectTrigger className="w-32">
-          <SelectValue placeholder="Select a tab" />
-        </SelectTrigger>
-      </PostHogAnalytics>
+      <SelectTrigger className="w-32">
+        <SelectValue placeholder="Select a tab" />
+      </SelectTrigger>
       <SelectContent align="end">
         <SelectGroup>
           <SelectItem value="form">
