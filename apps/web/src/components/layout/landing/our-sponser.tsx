@@ -50,7 +50,9 @@ const OurSponser = () => {
         {sponsers.map((sponser, index) => (
           <div
             key={sponser.name}
-            className={cn("grid grid-flow-row grid-cols-1 border-b border-dashed sm:h-[150px] sm:grid-cols-3")}
+            className={cn(
+              "grid grid-flow-row grid-cols-1 border-b border-dashed last:border-b-0 sm:h-[150px] sm:grid-cols-3",
+            )}
           >
             <ModernCardContainer className={cn("flex flex-col p-6 sm:col-span-2", index % 2 === 0 && "sm:order-1")}>
               <ModernCardTitle label={sponser.label}>{sponser.name}</ModernCardTitle>
