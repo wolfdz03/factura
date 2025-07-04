@@ -69,6 +69,7 @@ const OurSponser = () => {
             </ModernCardContainer>
             <ModernCardContainer
               className={cn(
+                index === sponsers.length - 1 && "!p-2",
                 index % 2 === 0 ? "sm:border-r" : "sm:border-l",
                 "flex flex-col items-center justify-center border-none p-6 sm:border-dashed",
               )}
@@ -82,8 +83,10 @@ const OurSponser = () => {
                   height={254}
                 />
               ) : (
-                <div className="flex h-20 w-40 items-center justify-center rounded-md px-10 py-5">
-                  <span className="jetbrains-mono text-muted-foreground text-center text-xs">Your Image Here</span>
+                <div className="bg-dashed flex h-full w-full items-center justify-center rounded-md px-10 py-5">
+                  <span className="jetbrains-mono bg-background text-muted-foreground rounded-sm px-2 py-1 text-center text-xs">
+                    Your Image Here
+                  </span>
                 </div>
               )}
             </ModernCardContainer>
