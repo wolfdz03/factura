@@ -1,3 +1,5 @@
+"use client";
+
 import { CircleOpenArrowRight, GithubIcon, Star } from "@/assets/icons";
 import { PostHogAnalytics } from "@/components/ui/posthog-analytics";
 import { useGithubStars } from "@/hooks/use-github-stars";
@@ -17,12 +19,10 @@ const Hero = () => {
       <div className="absolute inset-0 h-full w-full overflow-hidden">
         <Image
           className="h-full min-h-full w-full object-cover object-left invert dark:invert-0"
-          src="https://assets.invoicely.gg/invoicely-masked-background.png"
+          src="/official/invoicely-masked-background.png"
           alt="Hero"
           width={1920}
           height={1080}
-          priority
-          fetchPriority="high"
         />
       </div>
       <div className="z-10 flex flex-col gap-4">
