@@ -16,7 +16,7 @@ const Header = () => {
       <div className="flex flex-row items-center gap-3">
         <ThemeSwitch />
         <Link href={LINKS.CREATE.INVOICE}>
-          <Button variant="white">
+          <Button variant="secondary">
             <span>Invoice It</span>
             <CircleOpenArrowRight className="text-muted-foreground -rotate-45" />
           </Button>
