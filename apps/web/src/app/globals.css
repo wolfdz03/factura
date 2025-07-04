@@ -215,5 +215,5 @@ li::marker {
 }
 
 .new-container {
-  @apply mx-auto flex min-h-screen max-w-[1000px] flex-col border-x border-dashed;
+  @apply mx-auto flex max-w-[1000px] flex-col border-x border-dashed;
 }
