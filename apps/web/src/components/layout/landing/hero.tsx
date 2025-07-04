@@ -39,10 +39,10 @@ const Hero = () => {
           </div>
         </div>
         <div className="instrument-serif flex flex-col gap-2 px-6 text-6xl">
-          <h1 className="dark:text-primary-foreground/60 text-secondary-foreground/60">
+          <h1 className="dark:text-primary-foreground/30 text-secondary-foreground/50">
             Create <span className="dark:text-primary-foreground text-secondary-foreground">Beautiful</span> Invoices
           </h1>
-          <h2 className="dark:text-primary-foreground/60 text-secondary-foreground/60">
+          <h2 className="dark:text-primary-foreground/30 text-secondary-foreground/50">
             Not <span className="dark:text-primary-foreground text-secondary-foreground">Ugly</span> Ones
           </h2>
         </div>

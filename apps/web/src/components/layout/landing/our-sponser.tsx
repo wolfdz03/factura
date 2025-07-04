@@ -80,7 +80,7 @@ const OurSponser = () => {
                   height={254}
                 />
               ) : (
-                <div className="bg-muted/20 flex h-20 w-40 items-center justify-center rounded-md px-10 py-5">
+                <div className="flex h-20 w-40 items-center justify-center rounded-md px-10 py-5">
                   <span className="jetbrains-mono text-muted-foreground text-center text-xs">Your Image Here</span>
                 </div>
               )}
