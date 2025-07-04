@@ -11,7 +11,7 @@ interface GithubStarsResponse {
 }
 
 export function useGithubStars() {
-  const [stars, setStars] = useState<number>(0);
+  const [stars, setStars] = useState<number>(999);
   const [error, setError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 

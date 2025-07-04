@@ -38,3 +38,7 @@ export { default as FileRefreshIcon } from "./file-refresh";
 export { default as FingerprintIcon } from "./fingerprint";
 export { default as VersionsIcon } from "./versions";
 export { default as FolderFeatherIcon } from "./folder-feather";
+export { default as CircleOpenArrowRight } from "./circle-open-arrow-right";
+export { default as Star } from "./star";
+export { default as Sun } from "./sun";
+export { default as Moon } from "./moon";

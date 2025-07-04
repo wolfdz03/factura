@@ -29,6 +29,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "storage.invoicely.gg", // Cloudflare R2 Storage
       },
+      {
+        protocol: "https",
+        hostname: "assets.invoicely.gg", // Cloudflare R2 Storage
+      },
     ],
   },
   // This is required to support PostHog trailing slash API requests
