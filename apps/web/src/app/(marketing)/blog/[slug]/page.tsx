@@ -21,7 +21,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: {
       title: post.title,
       description: post.summary,
-      images: post.ogImage ? [{ url: post.ogImage }] : undefined,
+      images: [
+        {
+          url: `https://invoicely.gg/api/og?title=${post.title}&link=${post.slug}`,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
     },
   };
 }
