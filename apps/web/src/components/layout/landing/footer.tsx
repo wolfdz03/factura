@@ -104,7 +104,11 @@ const Footer = () => {
   };
 
   return (
-    <div onMouseMove={handleMouseMove} onMouseOut={handleMouseOut}>
+    <div
+      className="flex h-[130px] items-center overflow-hidden px-4 sm:h-auto sm:px-0"
+      onMouseMove={handleMouseMove}
+      onMouseOut={handleMouseOut}
+    >
       <svg width="100%" height="213" viewBox="0 0 932 213" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g stroke="#2C2C2C" strokeLinejoin="round">
           <path

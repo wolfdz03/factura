@@ -1,5 +1,6 @@
 "use client";
 
+// import OurSponser from "@/components/layout/landing/our-sponser";
 import Features from "@/components/layout/landing/features";
 import Header from "@/components/layout/landing/header";
 import Footer from "@/components/layout/landing/footer";
@@ -11,6 +12,7 @@ export default function Home() {
       <Header />
       <Hero />
       <Features />
+      {/* <OurSponser /> */}
       <Footer />
     </div>
   );
