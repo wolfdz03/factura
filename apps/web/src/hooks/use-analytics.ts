@@ -1,1 +1,4 @@
-export { usePostHog as useAnalytics } from "posthog-js/react";
+import { usePostHog } from "posthog-js/react";
+
+// Export the usePostHog hook
+export { usePostHog as useAnalytics };

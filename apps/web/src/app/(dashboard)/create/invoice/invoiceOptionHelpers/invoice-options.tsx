@@ -17,6 +17,7 @@ import { useAnalytics } from "@/hooks/use-analytics";
 import InvoiceTabSwitch from "./invoice-tab-switch";
 import { Button } from "@/components/ui/button";
 import { UseFormReturn } from "react-hook-form";
+import { AnalyticsEventGroup } from "@/types";
 import { useParams } from "next/navigation";
 import { useUser } from "@/hooks/use-user";
 import { useTRPC } from "@/trpc/client";
@@ -45,8 +46,8 @@ const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
     });
 
     // track the action
-    analytics.capture("invoice-download-action", {
-      elementGroup: "create-invoice-page",
+    analytics.capture("download-invoice-action", {
+      elementGroup: "create-invoice-page" satisfies AnalyticsEventGroup,
     });
 
     switch (action) {
