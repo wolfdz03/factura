@@ -91,6 +91,32 @@ export const defaultWebsiteMetadata: Metadata = {
     "online invoice builder",
     "invoice generator no registration",
     "generate invoice in minutes",
+    // Popular search terms
+    "invoice generator",
+    "online invoice generator",
+    "free invoice generator",
+    "invoice generator online",
+    "invoice generator free",
+    "online invoice generator free",
+    "zoho invoice generator",
+    "gst invoice generator",
+    "free invoice generator online",
+    "invoice generator online free",
+    "best free invoice generator",
+    "free gst invoice generator",
+    // AI-related keywords
+    "ai invoice generator",
+    "ai powered invoice generator",
+    "intelligent invoice generator",
+    "automated invoice generator",
+    // Payment-specific keywords
+    "paypal invoice generator",
+    "payment invoice generator",
+    "secure invoice generator",
+    // Additional popular search terms
+    "invoice generator online free",
+    "free online invoice generator",
+    "free invoice generator online",
   ],
 };
 

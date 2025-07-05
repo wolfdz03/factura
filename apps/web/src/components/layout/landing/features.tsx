@@ -3,7 +3,7 @@ import React from "react";
 
 const Features = () => {
   return (
-    <div className="grid grid-flow-row grid-cols-1 sm:h-[150px] sm:grid-cols-3">
+    <div className="grid h-[150px] sm:grid-cols-3">
       <div className="flex h-40 flex-col gap-3 border-b border-dashed p-4 sm:h-auto">
         <ModernCardTitle>Beautiful</ModernCardTitle>
         <ModernCardDescription>
