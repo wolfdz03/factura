@@ -19,7 +19,7 @@ export const listImages = authorizedProcedure.use(awsS3Middleware).query(({ ctx 
     });
 
     // Map the image objects to their keys
-    const mappedImageKeys = images.map((image) => image.Key);
+    const mappedImageKeys = images.map((image) => image.Key).filter((key) => key !== undefined);
 
     // Return the success response with image data
     return {
