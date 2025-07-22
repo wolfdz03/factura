@@ -176,7 +176,7 @@ const VercelPdf: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
             {/* Payment Information */}
             {data.metadata.paymentInformation.length ? (
               <View style={tw("flex flex-col gap-0.5 pr-2.5 p-4")}>
-                <Text style={tw(cn("text-white"))}>Payment Information</Text>
+                <Text style={tw(cn("text-white text-sm"))}>Payment Information</Text>
                 <View style={tw("flex flex-col gap-0.5 mt-1.5")}>
                   {data.metadata.paymentInformation.map((paymentInformation, index) => {
                     return (
@@ -192,14 +192,14 @@ const VercelPdf: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
             {/* Terms and conditions */}
             {data.metadata.terms && (
               <View style={tw("flex flex-col gap-0.5 p-4 border-t border-borderColor")}>
-                <Text style={tw(cn("text-white"))}>Terms</Text>
+                <Text style={tw(cn("text-white text-sm"))}>Terms</Text>
                 <Text style={tw("text-2xs font-normal text-neutral-500 mt-1")}>{data.metadata.terms}</Text>
               </View>
             )}
             {/* Notes */}
             {data.metadata.notes && (
               <View style={tw("flex flex-col gap-0.5 p-4 border-t border-borderColor")}>
-                <Text style={tw(cn("text-white"))}>Notes</Text>
+                <Text style={tw(cn("text-white text-sm"))}>Notes</Text>
                 <Text style={tw("text-2xs font-normal text-neutral-500 mt-1")}>{data.metadata.notes}</Text>
               </View>
             )}
