@@ -108,10 +108,10 @@ export const createInvoiceSchema = z.object({
         }),
         mode: z.enum(["dark", "light"], { invalid_type_error: "Mode must be either 'dark' or 'light'" }),
         template: z
-          .enum(["Default", "Vercel"], {
-            invalid_type_error: "Template must be either 'Default' or 'Vercel'",
+          .enum(["default", "vercel"], {
+            invalid_type_error: "Template must be either 'default' or 'vercel'",
           })
-          .default("Default")
+          .default("default")
           .optional(),
       }),
       currency: z
@@ -156,7 +156,7 @@ export const createInvoiceSchemaDefaultValues: ZodCreateInvoiceSchema = {
   },
   invoiceDetails: {
     theme: {
-      template: "Default",
+      template: "default",
       baseColor: "#635CFF",
       mode: "light",
     },

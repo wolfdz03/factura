@@ -20,6 +20,7 @@ interface FormSelectProps<
   description?: string | undefined;
   isOptional?: boolean;
   sublabel?: string | undefined;
+  alingContent?: "center" | "start" | "end" | undefined;
 }
 
 export const FormSelect = <
@@ -28,6 +29,7 @@ export const FormSelect = <
 >({
   className,
   isOptional = false,
+  alingContent = "center",
   ...props
 }: FormSelectProps<TFieldValues, TName>) => {
   return (
@@ -64,7 +66,7 @@ export const FormSelect = <
                   <SelectValue placeholder={props.placeholder} />
                 </SelectTrigger>
               </FormControl>
-              <SelectContent>{props.children}</SelectContent>
+              <SelectContent align={alingContent}>{props.children}</SelectContent>
             </Select>
             {/* i.e Render form error message or form description Give priority to error else description */}
             {error || props.description ? (

@@ -172,7 +172,7 @@ const VercelPdf: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
         </View>
         {/* Invoice meta data and pricing */}
         <View style={tw("flex flex-row border-t border-borderColor")}>
-          <View style={tw("flex flex-col w-1/2 min-w-1/2 border-r border-borderColor")}>
+          <View style={tw("flex flex-col w-1/2 border-r border-borderColor")}>
             {/* Payment Information */}
             {data.metadata.paymentInformation.length ? (
               <View style={tw("flex flex-col gap-0.5 pr-2.5 p-4")}>
@@ -205,7 +205,7 @@ const VercelPdf: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
             )}
           </View>
           {/* Pricing  */}
-          <View style={tw("flex flex-col w-1/2 min-w-1/2")}>
+          <View style={tw("flex flex-col w-1/2")}>
             {/* Signature */}
             {data.companyDetails.signature && (
               <View style={tw("flex flex-col items-end")}>
