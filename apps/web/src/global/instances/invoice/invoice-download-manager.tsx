@@ -20,7 +20,9 @@ export class InvoiceDownloadManager {
     // Initialize the invoice data
     this.invoiceData = invoice;
     this.invoiceName = generateInvoiceName({ invoiceData: invoice, extension: "pdf" });
-    this.blob = await createPdfBlob({ invoiceData: this.isInvoiceDataInitialized() });
+
+    const invoiceData = this.isInvoiceDataInitialized();
+    this.blob = await createPdfBlob({ invoiceData, template: invoiceData.invoiceDetails.theme.template });
   }
 
   // Preview the PDF - we dont save data on preview
