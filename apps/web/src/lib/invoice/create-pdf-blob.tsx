@@ -4,7 +4,7 @@ import { DefaultPDF, VercelPDF } from "@/components/pdf";
 import { pdf } from "@react-pdf/renderer";
 
 interface CreatePdfBlobProps {
-  template: PdfTemplateName | undefined;
+  template: PdfTemplateName;
   invoiceData: ZodCreateInvoiceSchema;
 }
 

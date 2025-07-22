@@ -6,7 +6,7 @@ import { UseFormReturn } from "react-hook-form";
 import { TriangleIcon } from "lucide-react";
 import { BoxIcon } from "@/assets/icons";
 
-export type PdfTemplateName = "default" | "vercel";
+export type PdfTemplateName = "default" | "vercel" | undefined;
 
 interface PdfTemplate {
   name: PdfTemplateName;
@@ -41,12 +41,17 @@ export const InvoiceTemplateSelector = ({ form }: { form: UseFormReturn<ZodCreat
       alingContent="end"
       className="min-w-34"
     >
-      {availablePdfTemplates.map((template) => (
-        <SelectItem key={template.name} value={template.name}>
-          <div className="flex flex-row items-center gap-2">{template.icon}</div>
-          <span>{template.label}</span>
-        </SelectItem>
-      ))}
+      {availablePdfTemplates.map((template) => {
+        // if the template is undefined, don't render it
+        if (!template.name) return null;
+
+        return (
+          <SelectItem key={template.name} value={template.name}>
+            <div className="flex flex-row items-center gap-2">{template.icon}</div>
+            <span>{template.label}</span>
+          </SelectItem>
+        );
+      })}
     </FormSelect>
   );
 };
