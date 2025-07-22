@@ -56,10 +56,11 @@ const VercelPdf: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
     >
       <Page size="A4" style={tw(cn("font-default text-sm text-black bg-background border border-borderColor"))}>
         <View style={tw("flex flex-row border-b border-borderColor p-4")}>
-          <Text
-            style={tw(cn("font-medium text-[40px] leading-[40px] font-geistmono tracking-tighter text-neutral-100"))}
-          >
-            {data.invoiceDetails.prefix} {data.invoiceDetails.serialNumber}
+          <Text style={tw(cn("font-medium text-[40px] leading-[40px] tracking-tighter text-neutral-100"))}>
+            {data.invoiceDetails.prefix}
+            <Text style={tw(cn("font-geistmono tracking-tighter text-neutral-100"))}>
+              {data.invoiceDetails.serialNumber}
+            </Text>
           </Text>
         </View>
         <View style={tw("flex flex-row justify-between border-b border-borderColor")}>
@@ -208,7 +209,7 @@ const VercelPdf: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
           <View style={tw("flex flex-col w-1/2")}>
             {/* Signature */}
             {data.companyDetails.signature && (
-              <View style={tw("flex flex-col items-end")}>
+              <View style={tw("flex flex-col items-end border-b border-borderColor")}>
                 <Image
                   style={{
                     aspectRatio: 1 / 1,
@@ -218,7 +219,7 @@ const VercelPdf: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
                 />
               </View>
             )}
-            <View style={tw("flex flex-col gap-1 p-4 border-t border-borderColor")}>
+            <View style={tw("flex flex-col gap-1 p-4")}>
               <View style={tw("flex flex-row items-center justify-between")}>
                 <Text style={tw("text-2xs text-neutral-500")}>Subtotal</Text>
                 <Text style={tw("text-2xs font-geistmono tracking-tight text-neutral-400 leading-[10px]")}>
