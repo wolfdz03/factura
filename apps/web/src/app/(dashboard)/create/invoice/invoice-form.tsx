@@ -53,7 +53,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
       <Form {...form}>
         <form>
           <div className="flex h-14 flex-row items-center justify-between border-b px-4">
-            <span className="text-muted-foreground text-sm font-medium">Invoice Template</span>
+            <span className="text-sm font-medium">Invoice Template</span>
             <div className="">
               <InvoiceTemplateSelector form={form} />
             </div>
