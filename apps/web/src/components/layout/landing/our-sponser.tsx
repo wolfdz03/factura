@@ -10,6 +10,7 @@ interface Sponser {
   name: string;
   image: string | null;
   description: string;
+  imageClass: string;
   invert?: boolean;
   label?: string;
   link?: string;
@@ -17,24 +18,36 @@ interface Sponser {
 
 const sponsers: Sponser[] = [
   {
-    name: "Cloudflare",
-    label: "Open Source Program",
-    image: "https://assets.invoicely.gg/cloudflare-logo.png",
-    description:
-      "Cloudflare is a global CDN that provides a secure and fast way to deliver content to your users. Cloudflare make websites, apps, and networks faster and more secure. Our developer platform is the best place to build modern apps and deliver AI initiatives.",
-  },
-  {
     name: "Vercel",
     label: "Open Source Program",
     invert: true,
+    imageClass: "h-20 w-40",
     image: "https://assets.invoicely.gg/vercel-logo.png",
     description:
       "Vercel is a platform for building modern web applications. It provides a seamless development experience with a focus on performance and scalability. Vercel provides the developer tools and cloud infrastructure to build, scale, and secure a faster, more personalized web.",
+  },
+  {
+    name: "v0.Dev",
+    label: "#1 Design Tool",
+    invert: true,
+    imageClass: "h-20 w-22",
+    image: "https://assets.invoicely.gg/v0-logo.png",
+    description:
+      "Generate UI, build full-stack apps, ask questions, and more. v0.Dev is the best way to build your next project. ",
+  },
+  {
+    name: "Cloudflare",
+    label: "Open Source Program",
+    imageClass: "h-20 w-40",
+    image: "https://assets.invoicely.gg/cloudflare-logo.png",
+    description:
+      "Cloudflare is a global CDN that provides a secure and fast way to deliver content to your users. Cloudflare make websites, apps, and networks faster and more secure. Our developer platform is the best place to build modern apps and deliver AI initiatives.",
   },
   // Add Company Here
   {
     name: "Your Company Here",
     label: "Free Sponser",
+    imageClass: "h-20 w-40",
     image: null,
     description:
       "Invoicely is free for everyone—forever. If you'd like to sponsor us with a service that benefits our platform and users, contact us below.",
@@ -74,7 +87,7 @@ const OurSponser = () => {
             >
               {sponser.image ? (
                 <Image
-                  className={cn("h-20 w-40 object-contain", sponser.invert && "invert dark:invert-0")}
+                  className={cn("object-contain", sponser.invert && "invert dark:invert-0", sponser.imageClass)}
                   src={sponser.image}
                   alt={sponser.name}
                   width={254}

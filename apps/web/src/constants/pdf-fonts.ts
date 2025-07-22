@@ -68,12 +68,79 @@ export const INTER_FONT: PdfFont[] = [
 
 export const GEIST_MONO_FONT: PdfFont[] = [
   {
+    src: "/fonts/geistmono/GeistMono-Thin.ttf",
+    fontWeight: "thin",
+  },
+  {
+    src: "/fonts/geistmono/GeistMono-ExtraLight.ttf",
+    fontWeight: "ultralight",
+  },
+  {
     src: "/fonts/geistmono/GeistMono-Light.ttf",
     fontWeight: "light",
   },
   {
     src: "/fonts/geistmono/GeistMono-Regular.ttf",
     fontWeight: "normal",
+  },
+  {
+    src: "/fonts/geistmono/GeistMono-Medium.ttf",
+    fontWeight: "medium",
+  },
+  {
+    src: "/fonts/geistmono/GeistMono-SemiBold.ttf",
+    fontWeight: "semibold",
+  },
+  {
+    src: "/fonts/geistmono/GeistMono-Bold.ttf",
+    fontWeight: "bold",
+  },
+  {
+    src: "/fonts/geistmono/GeistMono-ExtraBold.ttf",
+    fontWeight: "ultrabold",
+  },
+  {
+    src: "/fonts/geistmono/GeistMono-Black.ttf",
+    fontWeight: "heavy",
+  },
+];
+
+export const GEIST_FONT: PdfFont[] = [
+  {
+    src: "/fonts/geist/Geist-Thin.ttf",
+    fontWeight: "thin",
+  },
+  {
+    src: "/fonts/geist/Geist-ExtraLight.ttf",
+    fontWeight: "ultralight",
+  },
+  {
+    src: "/fonts/geist/Geist-Light.ttf",
+    fontWeight: "light",
+  },
+  {
+    src: "/fonts/geist/Geist-Regular.ttf",
+    fontWeight: "normal",
+  },
+  {
+    src: "/fonts/geist/Geist-Medium.ttf",
+    fontWeight: "medium",
+  },
+  {
+    src: "/fonts/geist/Geist-SemiBold.ttf",
+    fontWeight: "semibold",
+  },
+  {
+    src: "/fonts/geist/Geist-Bold.ttf",
+    fontWeight: "bold",
+  },
+  {
+    src: "/fonts/geist/Geist-ExtraBold.ttf",
+    fontWeight: "ultrabold",
+  },
+  {
+    src: "/fonts/geist/Geist-Black.ttf",
+    fontWeight: "heavy",
   },
 ];
 

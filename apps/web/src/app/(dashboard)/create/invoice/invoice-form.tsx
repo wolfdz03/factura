@@ -6,6 +6,7 @@ import { Accordion, AccordionItem, AccordionContent, AccordionTrigger } from "@/
 import SheetImageSelectorTrigger from "@/components/ui/image/sheet-image-selector-trigger";
 import { InvoiceImageSelectorSheet } from "./invoiceHelpers/invoice-image-selector-sheet";
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
+import { InvoiceTemplateSelector } from "./invoiceHelpers/invoice-templates";
 import { FormColorPicker } from "@/components/ui/form/form-color-picker";
 import InvoiceItemsSection from "./invoiceHelpers/invoice-items-section";
 import { FormDatePicker } from "@/components/ui/form/form-date-picker";
@@ -50,7 +51,13 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
   return (
     <div className="scroll-bar-hidden flex h-full flex-col overflow-y-scroll">
       <Form {...form}>
-        <form className="space-y-8">
+        <form>
+          <div className="flex h-14 flex-row items-center justify-between border-b px-4">
+            <span className="text-muted-foreground text-sm font-medium">Invoice Template</span>
+            <div className="">
+              <InvoiceTemplateSelector form={form} />
+            </div>
+          </div>
           <Accordion type="single" collapsible defaultValue="company-details" className="w-full divide-y border-b">
             {/* Company Details */}
             <AccordionItem value="company-details">
@@ -167,26 +174,30 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                       </SelectItem>
                     ))}
                   </FormSelect>
-                  <FormSelect
-                    name="invoiceDetails.theme.mode"
-                    description="Dark mode for the invoice"
-                    defaultValue="dark"
-                    label="Dark Mode"
-                    reactform={form}
-                  >
-                    <SelectItem value="dark">
-                      <span>Dark</span>
-                    </SelectItem>
-                    <SelectItem value="light">
-                      <span>Light</span>
-                    </SelectItem>
-                  </FormSelect>
-                  <FormColorPicker
-                    name="invoiceDetails.theme.baseColor"
-                    label="Theme Color"
-                    reactform={form}
-                    description="Works in white mode only"
-                  />
+                  {form.watch("invoiceDetails.theme.template") !== "vercel" && (
+                    <>
+                      <FormSelect
+                        name="invoiceDetails.theme.mode"
+                        description="Dark mode for the invoice"
+                        defaultValue="dark"
+                        label="Dark Mode"
+                        reactform={form}
+                      >
+                        <SelectItem value="dark">
+                          <span>Dark</span>
+                        </SelectItem>
+                        <SelectItem value="light">
+                          <span>Light</span>
+                        </SelectItem>
+                      </FormSelect>
+                      <FormColorPicker
+                        name="invoiceDetails.theme.baseColor"
+                        label="Theme Color"
+                        reactform={form}
+                        description="Works in white mode only"
+                      />
+                    </>
+                  )}
                 </FormRow>
                 <FormRow>
                   <FormInput

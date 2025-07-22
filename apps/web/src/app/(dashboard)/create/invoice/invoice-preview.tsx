@@ -110,7 +110,7 @@ const InvoicePreview = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
 
     (async () => {
       try {
-        const blob = await createPdfBlob({ invoiceData: data });
+        const blob = await createPdfBlob({ invoiceData: data, template: form.watch("invoiceDetails.theme.template") });
         const newUrl = createBlobUrl({ blob });
 
         setGeneratedPdfUrl(newUrl);
