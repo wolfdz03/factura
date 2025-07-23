@@ -16,6 +16,7 @@ import {
   Bricolage_Grotesque,
 } from "next/font/google";
 import { defaultWebsiteMetadata, defaultWebsiteViewport } from "@/constants/meta-data";
+import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
 import { TOAST_ICONS, TOAST_OPTIONS } from "@/constants/toast";
 import { TRPCProvider } from "@/trpc/client";
 import { ThemeProvider } from "next-themes";
@@ -106,6 +107,7 @@ export default function RootLayout({
                     >
                       <ReactScanProvider />
                       <ReactScanProvider />
+                      <VercelAnalytics />
                       <Toaster
                         richColors
                         position="top-center"
