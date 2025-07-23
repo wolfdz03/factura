@@ -1,4 +1,11 @@
+ 
+<a href="https://vercel.com/oss">
+  <img alt="Vercel OSS Program" src="https://vercel.com/oss/program-badge.svg" />
+</a>
+
+ 
 # Invoicely - (Contributions Accepted)
+ 
 
 Modern, open-source invoice generation platform built with Next.js, tRPC, and TypeScript.
 
