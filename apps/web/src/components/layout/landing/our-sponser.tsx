@@ -17,15 +17,31 @@ interface Sponser {
 }
 
 const sponsers: Sponser[] = [
-  // {
-  //   name: "Vercel",
-  //   label: "Open Source Program",
-  //   invert: true,
-  //   imageClass: "h-20 w-40",
-  //   image: "https://assets.invoicely.gg/vercel-logo.png",
-  //   description:
-  //     "Vercel is a platform for building modern web applications. It provides a seamless development experience with a focus on performance and scalability. Vercel provides the developer tools and cloud infrastructure to build, scale, and secure a faster, more personalized web.",
-  // },
+  {
+    name: "Vercel",
+    label: "Open Source Program",
+    invert: true,
+    imageClass: "h-20 w-40",
+    image: "https://assets.invoicely.gg/vercel-logo.png",
+    description:
+      "Vercel is a platform for building modern web applications. It provides a seamless development experience with a focus on performance and scalability. Vercel provides the developer tools and cloud infrastructure to build, scale, and secure a faster, more personalized web.",
+  },
+  {
+    name: "NeonDB",
+    label: "Best Database Service",
+    imageClass: "h-20 w-40",
+    image: "/social/neondb.svg",
+    description:
+      "NeonDB is a modern, open-source database that provides a seamless database. The database developers trust, on a serverless platform designed to help you build reliable and scalable applications faster.",
+  },
+  {
+    name: "Cloudflare",
+    label: "Open Source Program",
+    imageClass: "h-20 w-40",
+    image: "https://assets.invoicely.gg/cloudflare-logo.png",
+    description:
+      "Cloudflare is a global CDN that provides a secure and fast way to deliver content to your users. Cloudflare make websites, apps, and networks faster and more secure. Our developer platform is the best place to build modern apps and deliver AI initiatives.",
+  },
   // {
   //   name: "v0.Dev",
   //   label: "#1 Design Tool",
@@ -35,14 +51,6 @@ const sponsers: Sponser[] = [
   //   description:
   //     "Generate UI, build full-stack apps, ask questions, and more. v0.Dev is the best way to build your next project. ",
   // },
-  {
-    name: "Cloudflare",
-    label: "Open Source Program",
-    imageClass: "h-20 w-40",
-    image: "https://assets.invoicely.gg/cloudflare-logo.png",
-    description:
-      "Cloudflare is a global CDN that provides a secure and fast way to deliver content to your users. Cloudflare make websites, apps, and networks faster and more secure. Our developer platform is the best place to build modern apps and deliver AI initiatives.",
-  },
   // Add Company Here
   {
     name: "Your Company Here",
