@@ -17,24 +17,24 @@ interface Sponser {
 }
 
 const sponsers: Sponser[] = [
-  {
-    name: "Vercel",
-    label: "Open Source Program",
-    invert: true,
-    imageClass: "h-20 w-40",
-    image: "https://assets.invoicely.gg/vercel-logo.png",
-    description:
-      "Vercel is a platform for building modern web applications. It provides a seamless development experience with a focus on performance and scalability. Vercel provides the developer tools and cloud infrastructure to build, scale, and secure a faster, more personalized web.",
-  },
-  {
-    name: "v0.Dev",
-    label: "#1 Design Tool",
-    invert: true,
-    imageClass: "h-20 w-22",
-    image: "https://assets.invoicely.gg/v0-logo.png",
-    description:
-      "Generate UI, build full-stack apps, ask questions, and more. v0.Dev is the best way to build your next project. ",
-  },
+  // {
+  //   name: "Vercel",
+  //   label: "Open Source Program",
+  //   invert: true,
+  //   imageClass: "h-20 w-40",
+  //   image: "https://assets.invoicely.gg/vercel-logo.png",
+  //   description:
+  //     "Vercel is a platform for building modern web applications. It provides a seamless development experience with a focus on performance and scalability. Vercel provides the developer tools and cloud infrastructure to build, scale, and secure a faster, more personalized web.",
+  // },
+  // {
+  //   name: "v0.Dev",
+  //   label: "#1 Design Tool",
+  //   invert: true,
+  //   imageClass: "h-20 w-22",
+  //   image: "https://assets.invoicely.gg/v0-logo.png",
+  //   description:
+  //     "Generate UI, build full-stack apps, ask questions, and more. v0.Dev is the best way to build your next project. ",
+  // },
   {
     name: "Cloudflare",
     label: "Open Source Program",
