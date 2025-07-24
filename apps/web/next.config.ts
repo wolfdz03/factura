@@ -37,9 +37,10 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["@react-pdf/renderer", "jotai-devtools"],
   productionBrowserSourceMaps: true,
   devIndicators: false,
+  reactStrictMode: true,
 };
 
-export default withSentryConfig(withContentCollections(nextConfig), {
+const configWithSentry = withSentryConfig(nextConfig, {
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
@@ -70,3 +71,6 @@ export default withSentryConfig(withContentCollections(nextConfig), {
   // https://vercel.com/docs/cron-jobs
   automaticVercelMonitors: true,
 });
+
+// Exporting the config with Sentry and Content Collections
+export default withContentCollections(configWithSentry);
