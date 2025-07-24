@@ -67,10 +67,10 @@ const Hero = () => {
                 </Button>
               </Link>
             </PostHogAnalytics>
-            <span className="jetbrains-mono text-muted-foreground/20 absolute -top-10 left-40 size-full -rotate-[34deg] text-[10px]">
+            <span className="jetbrains-mono text-muted-foreground/20 pointer-events-none absolute -top-10 left-40 size-full -rotate-[34deg] text-[10px]">
               Give Star <br /> please :3 <br /> for cookie
             </span>
-            <ScribbledArrowToRight className="text-muted-foreground/20 absolute top-2 left-22 size-full rotate-[190deg]" />
+            <ScribbledArrowToRight className="text-muted-foreground/20 pointer-events-none absolute top-2 left-22 size-full rotate-[190deg]" />
           </div>
         </div>
       </div>
