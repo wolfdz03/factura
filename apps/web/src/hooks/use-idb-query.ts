@@ -1,5 +1,6 @@
 import { asyncTryCatch } from "@/lib/neverthrow/tryCatch";
 import { useState, useEffect } from "react";
+import * as Sentry from "@sentry/nextjs";
 
 type UseIDBQueryResult<T> = {
   data: T | never[];
@@ -24,6 +25,9 @@ export function useIDBQuery<T>(queryFn: () => Promise<T>): UseIDBQueryResult<T> 
         setData(data);
         setIsLoading(false);
       } else {
+        Sentry.captureException(error, {
+          level: "debug",
+        });
         setError(error);
         setData([]);
         setIsLoading(false);
