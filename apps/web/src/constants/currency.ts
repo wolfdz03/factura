@@ -4,5 +4,5 @@ import getSymbolFromCurrency from "currency-symbol-map";
 export const currenciesWithSymbols: Record<string, string> = currencyToSymbolMap;
 
 export const formatCurrencyText = (currency: string, amount: number) => {
-  return `${getSymbolFromCurrency(currency)} ${amount.toFixed(2)}`;
+  return `${getSymbolFromCurrency(currency)}${amount.toFixed(2)}`;
 };

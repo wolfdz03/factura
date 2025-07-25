@@ -193,16 +193,14 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
                 )}
               >
                 <View style={tw("flex flex-col w-[60%]")}>
-                  <Text style={tw("w-full font-semibold")}>{item.name}</Text>
+                  <Text style={tw("w-full text-sm font-semibold")}>{item.name}</Text>
                   <Text style={tw("text-xs font-normal text-neutral-600")}>{item.description}</Text>
                 </View>
-                <Text style={tw("w-[10%] text-center font-geistmono tracking-tighter font-semibold")}>
-                  {item.quantity}
-                </Text>
-                <Text style={tw("w-[15%] text-right font-geistmono tracking-tighter font-semibold")}>
+                <Text style={tw("w-[10%] text-sm text-center font-geistmono tracking-tighter")}>{item.quantity}</Text>
+                <Text style={tw("w-[15%] text-sm text-right font-geistmono tracking-tighter")}>
                   {formatCurrencyText(data.invoiceDetails.currency, item.unitPrice)}
                 </Text>
-                <Text style={tw("w-[15%] text-right font-geistmono tracking-tighter font-semibold")}>
+                <Text style={tw("w-[15%] text-sm text-right font-geistmono tracking-tighter")}>
                   {formatCurrencyText(data.invoiceDetails.currency, item.quantity * item.unitPrice)}
                 </Text>
               </View>
@@ -309,7 +307,7 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
             ></View>
             <View style={tw("flex flex-row items-center justify-between")}>
               <Text style={tw("text-xs font-semibold")}>Total</Text>
-              <Text style={tw("text-lg font-semibold font-geistmono tracking-tight")}>
+              <Text style={tw("text-lg font-geistmono tracking-tight")}>
                 {formatCurrencyText(data.invoiceDetails.currency, total)}
               </Text>
             </View>
