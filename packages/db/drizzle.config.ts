@@ -12,4 +12,5 @@ export default {
   dbCredentials: {
     url: process.env.DATABASE_URL,
   },
+  verbose: false,
 } satisfies Config;
