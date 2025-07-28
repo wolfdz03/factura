@@ -84,7 +84,7 @@ export const invoiceDetails = pgTable("invoice_details", {
   prefix: text("prefix").notNull(),
   serialNumber: text("serial_number").notNull(),
   date: timestamp("date").notNull(),
-  dueDate: timestamp("due_date").notNull(),
+  dueDate: timestamp("due_date"),
   paymentTerms: text("payment_terms").notNull().default(""),
   invoiceFieldId: uuid("invoice_field_id")
     .references(() => invoiceFields.id, { onDelete: "cascade" })
