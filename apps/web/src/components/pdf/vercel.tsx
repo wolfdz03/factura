@@ -76,16 +76,20 @@ const VercelPdf: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
                 {format(data.invoiceDetails.date, "dd/MM/yyyy")}
               </Text>
             </View>
-            <View style={tw("flex flex-row items-center gap-1")}>
-              <Text style={tw("text-2xs min-w-[100px] text-neutral-700")}>Due Date</Text>
-              <Text style={tw("text-2xs font-normal text-neutral-300")}>
-                {format(data.invoiceDetails.dueDate, "dd/MM/yyyy")}
-              </Text>
-            </View>
-            <View style={tw("flex flex-row items-center gap-1")}>
-              <Text style={tw("text-2xs min-w-[100px] text-neutral-700")}>Payment Terms</Text>
-              <Text style={tw("text-2xs font-normal text-neutral-300")}>{data.invoiceDetails.paymentTerms}</Text>
-            </View>
+            {data.invoiceDetails.dueDate && (
+              <View style={tw("flex flex-row items-center gap-1")}>
+                <Text style={tw("text-2xs min-w-[100px] text-neutral-700")}>Due Date</Text>
+                <Text style={tw("text-2xs font-normal text-neutral-300")}>
+                  {format(data.invoiceDetails.dueDate, "dd/MM/yyyy")}
+                </Text>
+              </View>
+            )}
+            {data.invoiceDetails.paymentTerms && (
+              <View style={tw("flex flex-row items-center gap-1")}>
+                <Text style={tw("text-2xs min-w-[100px] text-neutral-700")}>Payment Terms</Text>
+                <Text style={tw("text-2xs font-normal text-neutral-300")}>{data.invoiceDetails.paymentTerms}</Text>
+              </View>
+            )}
             <View style={tw("flex flex-row items-center gap-1")}>
               <Text style={tw("text-2xs min-w-[100px] text-neutral-700")}>Currency</Text>
               <Text style={tw("text-2xs font-normal text-neutral-300")}>{data.invoiceDetails.currency}</Text>

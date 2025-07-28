@@ -122,7 +122,7 @@ export const createInvoiceSchema = z.object({
         .string({ invalid_type_error: "Serial number must be a string" })
         .min(1, { message: "Serial number cannot be empty" }),
       date: z.date({ invalid_type_error: "Date must be a valid date" }),
-      dueDate: z.date({ invalid_type_error: "Due date must be a valid date" }),
+      dueDate: z.date({ invalid_type_error: "Due date must be a valid date" }).optional().nullable(),
       paymentTerms: z.string({
         invalid_type_error: "Payment terms must be a string",
       }),
@@ -164,7 +164,6 @@ export const createInvoiceSchemaDefaultValues: ZodCreateInvoiceSchema = {
     prefix: "Invoice INV-",
     serialNumber: "0001",
     date: new Date(), // now
-    dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day from now
     paymentTerms: "",
     billingDetails: [],
   },
