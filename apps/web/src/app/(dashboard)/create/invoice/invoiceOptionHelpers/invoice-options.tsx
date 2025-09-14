@@ -17,6 +17,7 @@ import { useAnalytics } from "@/hooks/use-analytics";
 import InvoiceTabSwitch from "./invoice-tab-switch";
 import { Button } from "@/components/ui/button";
 import { UseFormReturn } from "react-hook-form";
+import ImportInvoice from "../import-invoice";
 import { AnalyticsEventGroup } from "@/types";
 import { useParams } from "next/navigation";
 import { useUser } from "@/hooks/use-user";
@@ -77,7 +78,10 @@ const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
 
   return (
     <div className="flex h-12 shrink-0 flex-row items-center justify-between gap-2 border-b px-2">
-      <InvoiceErrorsModal />
+      <div className="flex flex-row items-center gap-2">
+        <InvoiceErrorsModal />
+        <ImportInvoice form={form} />
+      </div>
       <div className="flex flex-row items-center gap-2">
         <InvoiceTabSwitch />
 

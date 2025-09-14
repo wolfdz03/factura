@@ -155,6 +155,61 @@ export const columns = [
   }),
 ];
 
+export const invoiceSelectorColumns = [
+  columnHelper.accessor(
+    (row) => `${row.invoiceFields.invoiceDetails.prefix}${row.invoiceFields.invoiceDetails.serialNumber}`,
+    {
+      id: "serialNumber",
+      header: ({ column }) => <HeaderColumnButton column={column}>Serial No</HeaderColumnButton>,
+      cell: ({ row }) => (
+        <div className="text-xs">{`${row.original.invoiceFields.invoiceDetails.prefix}${row.original.invoiceFields.invoiceDetails.serialNumber}`}</div>
+      ),
+      enableSorting: false,
+    },
+  ),
+
+  columnHelper.accessor((row) => row.invoiceFields.clientDetails.name, {
+    id: "clientDetails.name",
+    header: ({ column }) => <HeaderColumnButton column={column}>Client</HeaderColumnButton>,
+    cell: ({ row }) => <div className="text-xs">{row.original.invoiceFields.clientDetails.name}</div>,
+    enableSorting: false,
+  }),
+
+  columnHelper.accessor((row) => getTotalValue(row.invoiceFields), {
+    id: "total",
+    header: ({ column }) => <HeaderColumnButton column={column}>Total</HeaderColumnButton>,
+    cell: ({ row }) => (
+      <div className="text-xs">{`${getSymbolFromCurrency(row.original.invoiceFields.invoiceDetails.currency)}${getTotalValue(row.original.invoiceFields)}`}</div>
+    ),
+  }),
+
+  columnHelper.accessor((row) => row.invoiceFields.items.length, {
+    id: "items",
+    header: ({ column }) => <HeaderColumnButton column={column}>Items</HeaderColumnButton>,
+    cell: ({ row }) => (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Badge variant="gray" icon>
+              <BoxIcon />
+              <span>{row.original.invoiceFields.items.length}</span>
+            </Badge>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{row.original.invoiceFields.items.length} items in this invoice</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    ),
+  }),
+
+  columnHelper.accessor((row) => row.createdAt, {
+    id: "createdAt",
+    header: ({ column }) => <HeaderColumnButton column={column}>Created At</HeaderColumnButton>,
+    cell: ({ row }) => <FormatTableDateObject date={row.original.createdAt} />,
+  }),
+];
+
 export const columnConfig = [
   // Storage
   columnConfigHelper
