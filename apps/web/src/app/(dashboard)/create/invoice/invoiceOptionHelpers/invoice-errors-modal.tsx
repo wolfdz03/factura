@@ -53,7 +53,7 @@ const InvoiceErrorsModal = () => {
             variant={invoiceErrors.length > 0 ? "destructive" : "secondary"}
           >
             <FileAlertIcon />
-            {!isMobile && "Errors"}
+            <span className="hidden md:flex">Errors</span>
           </Button>
         </DialogTrigger>
         <DialogContent>
