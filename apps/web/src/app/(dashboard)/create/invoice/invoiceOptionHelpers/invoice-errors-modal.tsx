@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/dialog";
 import { invoiceErrorAtom } from "@/global/atoms/invoice-atom";
 import { animate, AnimatePresence } from "motion/react";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { FileAlertIcon } from "@/assets/icons";
 import React, { useEffect } from "react";
@@ -25,7 +24,6 @@ const shakeAnimation = [300, -300, 300, -300, 300, -300, 0];
 
 const InvoiceErrorsModal = () => {
   const invoiceErrors = useAtomValue(invoiceErrorAtom);
-  const isMobile = useIsMobile();
 
   useEffect(() => {
     // Animating a button shake when there are errors
