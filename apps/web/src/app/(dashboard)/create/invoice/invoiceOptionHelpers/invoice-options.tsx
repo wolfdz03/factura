@@ -17,7 +17,7 @@ import { useAnalytics } from "@/hooks/use-analytics";
 import InvoiceTabSwitch from "./invoice-tab-switch";
 import { Button } from "@/components/ui/button";
 import { UseFormReturn } from "react-hook-form";
-import ImportInvoice from "../import-invoice";
+import ImportInvoice from "./import-invoice";
 import { AnalyticsEventGroup } from "@/types";
 import { useParams } from "next/navigation";
 import { useUser } from "@/hooks/use-user";
