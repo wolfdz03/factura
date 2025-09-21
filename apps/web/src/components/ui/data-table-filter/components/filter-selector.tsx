@@ -90,6 +90,7 @@ function __FilterSelector<TData>({ filters, columns, actions, strategy, locale =
 
   return (
     <Popover
+      modal={true}
       open={open}
       onOpenChange={async (value) => {
         setOpen(value);

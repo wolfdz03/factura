@@ -34,6 +34,7 @@ interface DataTableProps<TData, TValue> {
   columnConfig: ColumnConfig<TData, ColumnDataType, any, string>[];
   isLoading?: boolean;
   defaultSorting?: SortingState;
+  onRowClick?: (row: TData) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -42,6 +43,7 @@ export function DataTable<TData, TValue>({
   columnConfig,
   isLoading = false,
   defaultSorting = [],
+  onRowClick,
 }: DataTableProps<TData, TValue>) {
   const [filtersState, setFiltersState] = useState<FiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>(defaultSorting);
@@ -124,7 +126,12 @@ export function DataTable<TData, TValue>({
               ))
             ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className={cn(onRowClick && "cursor-pointer")}
+                  onClick={() => onRowClick?.(row.original)}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                   ))}
