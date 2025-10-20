@@ -5,22 +5,21 @@ const Features = () => {
   return (
     <div className="grid grid-flow-row sm:h-[150px] sm:grid-cols-3">
       <div className="flex h-40 flex-col gap-3 border-b border-dashed p-4 sm:h-auto">
-        <ModernCardTitle>Beautiful</ModernCardTitle>
+        <ModernCardTitle>Magnifique</ModernCardTitle>
         <ModernCardDescription>
-          Professionally designed and visually appealing invoices can increase the chances of clients paying promptly.
+          Des factures conçues professionnellement et visuellement attrayantes peuvent augmenter les chances que les clients paient rapidement.
         </ModernCardDescription>
       </div>
       <div className="flex h-40 flex-col gap-3 border-b border-dashed p-4 sm:h-auto sm:border-l">
-        <ModernCardTitle>Free & Unlimited</ModernCardTitle>
+        <ModernCardTitle>Gratuit et illimité</ModernCardTitle>
         <ModernCardDescription>
-          Create and send as many invoices as you need — no limits, no hidden costs, just seamless billing freedom.
+          Créez et envoyez autant de factures que nécessaire — aucune limite, aucun coût caché, juste une liberté de facturation fluide.
         </ModernCardDescription>
       </div>
       <div className="flex h-40 flex-col gap-3 border-b border-dashed p-4 sm:h-auto sm:border-l">
-        <ModernCardTitle>Safe & Open Source</ModernCardTitle>
+        <ModernCardTitle>Sécurisé et Open Source</ModernCardTitle>
         <ModernCardDescription>
-          Your data stays yours — we never track, sell, or share it. Store everything locally or securely on our server
-          — the choice is yours.
+          Vos données restent les vôtres — nous ne les suivons, ne les vendons ou ne les partageons jamais. Stockez tout localement ou en toute sécurité sur notre serveur — le choix vous appartient.
         </ModernCardDescription>
       </div>
     </div>

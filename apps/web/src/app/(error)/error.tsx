@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
     <div className="flex flex-row items-center justify-center gap-4">
-      <PDFError message={parseCatchError(error)} title="Unexpected Error" />
-      <Button onClick={() => reset()}>Try again</Button>
+      <PDFError message={parseCatchError(error)} title="Erreur inattendue" />
+      <Button onClick={() => reset()}>Réessayer</Button>
     </div>
   );
 }

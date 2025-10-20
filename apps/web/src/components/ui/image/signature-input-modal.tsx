@@ -41,7 +41,7 @@ interface SignatureInputModalProps {
 }
 
 export default function SignatureInputModal({
-  title = "Click here to draw your signature",
+  title = "Cliquez ici pour dessiner votre signature",
   //   className,
   defaultUrl,
   isDarkMode = false,
@@ -102,8 +102,8 @@ export default function SignatureInputModal({
     const signatureCanvasUri = signaturePadRef.current?.toDataURL("image/png");
 
     if (!signatureCanvasUri) {
-      toast.error("No signature found", {
-        description: "Please draw your signature and try again",
+      toast.error("Aucune signature trouvée", {
+        description: "Veuillez dessiner votre signature et réessayer",
       });
       return;
     }
@@ -117,8 +117,8 @@ export default function SignatureInputModal({
     const signatureBlob = CreatePngFromBase64(signatureCanvasUri);
 
     if (!signatureBlob) {
-      toast.error("No signature found", {
-        description: "Please draw your signature and try again",
+      toast.error("Aucune signature trouvée", {
+        description: "Veuillez dessiner votre signature et réessayer",
       });
       return;
     }
@@ -155,7 +155,7 @@ export default function SignatureInputModal({
         <div className="border-input relative flex aspect-square flex-col items-center justify-center overflow-hidden rounded-md border border-dashed transition-colors has-disabled:pointer-events-none has-disabled:opacity-50 has-[img]:border-none">
           {previewUrl && allowPreview && !isLoading ? (
             <div className="absolute inset-0">
-              <img src={previewUrl} alt="user signature" className="size-full object-cover" />
+              <img src={previewUrl} alt="signature utilisateur" className="size-full object-cover" />
             </div>
           ) : isLoading ? (
             <div className="flex flex-col items-center justify-center gap-2">
@@ -198,7 +198,7 @@ export default function SignatureInputModal({
                 data-dragging={isDragging || undefined}
                 className="hover:bg-accent/50 data-[dragging=true]:bg-accent/50 flex h-full flex-col items-center justify-center text-center"
               >
-                <input {...getInputProps()} className="sr-only" aria-label="Upload file" />
+                <input {...getInputProps()} className="sr-only" aria-label="Téléverser un fichier" />
                 {!disableIcon && (
                   <div
                     className="bg-muted mb-2 flex size-7 shrink-0 items-center justify-center rounded-full sm:size-9"
@@ -237,7 +237,7 @@ export default function SignatureInputModal({
                   onBase64Change(undefined);
                 }
               }}
-              aria-label="Remove image"
+              aria-label="Supprimer l'image"
             >
               <XIcon className="size-3" aria-hidden="true" />
             </button>

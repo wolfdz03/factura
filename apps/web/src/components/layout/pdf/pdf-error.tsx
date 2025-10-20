@@ -9,7 +9,7 @@ const PDFError = ({ message, title }: { message: string; title?: string }) => {
           <FileAlertIcon />
         </div>
         <div className="flex flex-col">
-          <p className="text-destructive font-semibold">{title || "Error While Generating PDF"}</p>
+          <p className="text-destructive font-semibold">{title || "Erreur lors de la génération du PDF"}</p>
           <p className="text-muted-foreground max-w-md text-xs">{message}</p>
         </div>
       </div>

@@ -1,4 +1,3 @@
-import ThemeSwitch from "@/components/table-columns/theme-switch";
 import { Button } from "@/components/ui/button";
 import { CircleOpenArrowRight } from "@/icons";
 import { LINKS } from "@/constants/links";
@@ -14,10 +13,9 @@ const Header = () => {
         <span className="instrument-serif text-xl font-semibold">Invoicely</span>
       </Link>
       <div className="flex flex-row items-center gap-3">
-        <ThemeSwitch />
         <Link href={LINKS.CREATE.INVOICE}>
           <Button variant="secondary">
-            <span>Invoice It</span>
+            <span>Facturer</span>
             <CircleOpenArrowRight className="text-muted-foreground -rotate-45" />
           </Button>
         </Link>

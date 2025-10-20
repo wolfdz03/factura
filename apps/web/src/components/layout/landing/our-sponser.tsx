@@ -19,7 +19,7 @@ interface Sponser {
 const sponsers: Sponser[] = [
   {
     name: "Vercel",
-    label: "Open Source Program",
+    label: "Programme Open Source",
     invert: true,
     imageClass: "h-20 w-40",
     image: "https://assets.invoicely.gg/vercel-logo.png",
@@ -28,7 +28,7 @@ const sponsers: Sponser[] = [
   },
   {
     name: "NeonDB",
-    label: "Best Database Service",
+    label: "Meilleur service de base de données",
     imageClass: "h-20 w-40",
     image: "/social/neondb.svg",
     description:
@@ -36,7 +36,7 @@ const sponsers: Sponser[] = [
   },
   {
     name: "Supabase",
-    label: "Open Source Program",
+    label: "Programme Open Source",
     imageClass: "h-20 w-40",
     image: "https://supabase.com/images/brand/supabase-logo-wordmark--dark.svg",
     description:
@@ -53,8 +53,8 @@ const sponsers: Sponser[] = [
   // },
   // Add Company Here
   {
-    name: "Your Company Here",
-    label: "Free Sponser",
+    name: "Votre entreprise ici",
+    label: "Sponsor gratuit",
     imageClass: "h-20 w-40",
     image: null,
     description:
@@ -67,7 +67,7 @@ const OurSponser = () => {
   return (
     <div className="flex w-full flex-col">
       <div className="flex flex-col items-center border-b border-dashed py-4">
-        <FancyBadgeWithBorders>Our Sponsers</FancyBadgeWithBorders>
+        <FancyBadgeWithBorders>Nos Sponsors</FancyBadgeWithBorders>
       </div>
       <div className="flex flex-col">
         {sponsers.map((sponser, index) => (
@@ -81,7 +81,7 @@ const OurSponser = () => {
               {sponser.link && (
                 <Link className="mt-1" href={sponser.link}>
                   <Button variant="white" size="xs">
-                    Contact Us
+                    Nous contacter
                   </Button>
                 </Link>
               )}
@@ -95,7 +95,7 @@ const OurSponser = () => {
             >
               {sponser.image ? (
                 <Image
-                  className={cn("object-contain", sponser.invert && "invert dark:invert-0", sponser.imageClass)}
+                  className={cn("object-contain", sponser.invert && "invert", sponser.imageClass)}
                   src={sponser.image}
                   alt={sponser.name}
                   width={254}
@@ -104,7 +104,7 @@ const OurSponser = () => {
               ) : (
                 <div className="bg-dashed flex h-full w-full items-center justify-center rounded-md px-10 py-5">
                   <span className="jetbrains-mono bg-background text-muted-foreground rounded-sm px-2 py-1 text-center text-xs">
-                    Your Image Here
+                    Votre image ici
                   </span>
                 </div>
               )}

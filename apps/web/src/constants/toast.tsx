@@ -14,9 +14,9 @@ export const TOAST_OPTIONS = {
       "group toast !bg-background !p-4 !rounded-xl border !border-border/70 flex flex-row gap-2 !items-start w-full shadow-md select-none",
     description: "!text-secondary-foreground/50 text-xs",
     actionButton:
-      "bg-black text-white dark:text-[currentColor] dark:bg-[currentColor]/10 hover:dark:bg-[currentColor]/20 min-w-max px-2 py-0.5 !text-[11px] h-fit !rounded-sm cursor-pointer duration-200",
+      "bg-black text-white min-w-max px-2 py-0.5 !text-[11px] h-fit !rounded-sm cursor-pointer duration-200",
     cancelButton:
-      "!text-black dark:!text-white !text-[11px] h-fit !rounded-sm min-w-max px-2 py-0.5 bg-zinc-200 dark:bg-zinc-900/80 hover:dark:bg-zinc-800/80 cursor-pointer duration-200",
+      "!text-black !text-[11px] h-fit !rounded-sm min-w-max px-2 py-0.5 bg-zinc-200 cursor-pointer duration-200",
   },
 } satisfies ToasterProps["toastOptions"];
 

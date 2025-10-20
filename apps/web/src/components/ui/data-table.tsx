@@ -142,8 +142,8 @@ export function DataTable<TData, TValue>({
                 <TableCell colSpan={columns.length} className="text-muted-foreground/70 h-[400px] text-center">
                   <EmptySection
                     icon={FileAlertIcon}
-                    title="No Data Found"
-                    description="No data found for the selected filters. Please try different filters or clear all filters to see all data."
+                    title="Aucune donnée trouvée"
+                    description="Aucune donnée trouvée pour les filtres sélectionnés. Veuillez essayer d'autres filtres ou effacer tous les filtres pour voir toutes les données."
                   />
                 </TableCell>
               </TableRow>
@@ -154,8 +154,8 @@ export function DataTable<TData, TValue>({
       {/* Pagination */}
       <div className="flex flex-row items-center justify-between gap-4">
         <div className="text-muted-foreground text-xs">
-          Page <span className="text-secondary-foreground">{table.getState().pagination.pageIndex + 1}</span> of{" "}
-          <span className="text-secondary-foreground">{table.getPageCount()}</span> Page
+          Page <span className="text-secondary-foreground">{table.getState().pagination.pageIndex + 1}</span> sur{" "}
+          <span className="text-secondary-foreground">{table.getPageCount()}</span>
         </div>
         <div className="flex items-center justify-end space-x-2">
           <Button
@@ -164,10 +164,10 @@ export function DataTable<TData, TValue>({
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            Précédent
           </Button>
           <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-            Next
+            Suivant
           </Button>
         </div>
       </div>

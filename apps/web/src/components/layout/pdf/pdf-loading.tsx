@@ -2,8 +2,8 @@ import { FileAlertIcon } from "@/assets/icons";
 import React from "react";
 
 const PDFLoading = ({
-  message = "Generating PDF",
-  description = "Please wait while we generate the PDF",
+  message = "Génération du PDF",
+  description = "Veuillez patienter pendant que nous générons le PDF",
 }: {
   message?: string;
   description?: string;

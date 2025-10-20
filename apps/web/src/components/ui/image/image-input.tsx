@@ -85,10 +85,10 @@ export default function ImageInput({
           data-dragging={isDragging || undefined}
           className="border-input hover:bg-accent/50 data-[dragging=true]:bg-accent/50 relative flex aspect-square flex-col items-center justify-center overflow-hidden rounded-md border border-dashed p-4 transition-colors has-disabled:pointer-events-none has-disabled:opacity-50 has-[img]:border-none"
         >
-          <input {...getInputProps()} className="sr-only" aria-label="Upload file" />
+          <input {...getInputProps()} className="sr-only" aria-label="Téléverser un fichier" />
           {previewUrl && allowPreview && !isLoading ? (
             <div className="absolute inset-0">
-              <img src={previewUrl} alt={files[0]?.file?.name || "Uploaded image"} className="size-full object-cover" />
+              <img src={previewUrl} alt={files[0]?.file?.name || "Image téléversée"} className="size-full object-cover" />
             </div>
           ) : isLoading ? (
             <div className="flex flex-col items-center justify-center gap-2">
@@ -131,7 +131,7 @@ export default function ImageInput({
                   onBase64Change(undefined);
                 }
               }}
-              aria-label="Remove image"
+              aria-label="Supprimer l'image"
             >
               <XIcon className="size-3" aria-hidden="true" />
             </button>

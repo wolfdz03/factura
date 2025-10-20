@@ -96,7 +96,8 @@ export default function RootLayout({
               <OneDollarStatsProvider>
                 <JotaiProvider>
                   <ThemeProvider
-                    defaultTheme="system"
+                    defaultTheme="light"
+                    forcedTheme="light"
                     attribute="class"
                     scriptProps={{
                       "data-cfasync": "false",

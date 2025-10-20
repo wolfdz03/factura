@@ -63,13 +63,13 @@ const UpdateStatusModal = ({ invoiceId, type, currentStatus }: UpdateStatusModal
   const updateServerInvoiceStatusMutation = useMutation(
     trpc.invoice.updateStatus.mutationOptions({
       onSuccess: () => {
-        toast.success("Status updated successfully!", {
-          description: "The status of the invoice has been updated successfully.",
+        toast.success("Statut mis à jour avec succès !", {
+          description: "Le statut de la facture a été mis à jour avec succès.",
         });
         queryClient.invalidateQueries({ queryKey: trpc.invoice.list.queryKey() });
       },
       onError: (error) => {
-        toast.error("Failed to update status!", {
+        toast.error("Échec de la mise à jour du statut !", {
           description: parseCatchError(error),
         });
       },
@@ -82,13 +82,13 @@ const UpdateStatusModal = ({ invoiceId, type, currentStatus }: UpdateStatusModal
       await updateInvoiceStatus(data.id, data.status);
     },
     onSuccess: () => {
-      toast.success("Status updated successfully!", {
-        description: "The status of the invoice has been updated successfully.",
+      toast.success("Statut mis à jour avec succès !", {
+        description: "Le statut de la facture a été mis à jour avec succès.",
       });
       queryClient.invalidateQueries({ queryKey: ["idb-invoices"] });
     },
     onError: (error) => {
-      toast.error("Failed to update status!", {
+      toast.error("Échec de la mise à jour du statut !", {
         description: parseCatchError(error),
       });
     },
@@ -126,7 +126,7 @@ const UpdateStatusModal = ({ invoiceId, type, currentStatus }: UpdateStatusModal
       <DialogTrigger asChild>
         <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
           <PriorityMediumIcon />
-          <span>Update Status</span>
+          <span>Mettre à jour le statut</span>
         </DropdownMenuItem>
       </DialogTrigger>
       <DialogContent>
@@ -137,46 +137,46 @@ const UpdateStatusModal = ({ invoiceId, type, currentStatus }: UpdateStatusModal
                 <PriorityMediumIcon />
               </DialogIcon>
               <DialogHeader>
-                <DialogTitle>Update Invoice Status</DialogTitle>
-                <DialogDescription>Update the status of the invoice to the new status.</DialogDescription>
+                <DialogTitle>Mettre à jour le statut de la facture</DialogTitle>
+                <DialogDescription>Mettre à jour le statut de la facture vers le nouveau statut.</DialogDescription>
               </DialogHeader>
             </DialogHeaderContainer>
             <DialogContentContainer>
               <div className="flex flex-col gap-1.5">
-                <Label>Invoice ID</Label>
+                <Label>ID de la facture</Label>
                 <Input disabled value={invoiceId} />
               </div>
               <div className="flex flex-col gap-1.5">
-                <Label>Change Status</Label>
+                <Label>Changer le statut</Label>
                 <FormSelect name="status" reactform={form}>
                   <SelectItem value="pending">
                     <HourglassStartIcon />
-                    <span>Pending</span>
+                    <span>En attente</span>
                   </SelectItem>
                   <SelectItem value="success">
                     <FileCheckIcon />
-                    <span>Success</span>
+                    <span>Succès</span>
                   </SelectItem>
                   <SelectItem value="error">
                     <FileBanIcon />
-                    <span>Error</span>
+                    <span>Erreur</span>
                   </SelectItem>
                   <SelectItem value="expired">
                     <FileAlertIcon />
-                    <span>Expired</span>
+                    <span>Expiré</span>
                   </SelectItem>
                   <SelectItem value="refunded">
                     <FileRefreshIcon />
-                    <span>Refunded</span>
+                    <span>Remboursé</span>
                   </SelectItem>
                 </FormSelect>
               </div>
             </DialogContentContainer>
             <DialogFooter>
               <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
+                <Button variant="outline">Annuler</Button>
               </DialogClose>
-              <FormButton>Update</FormButton>
+              <FormButton>Mettre à jour</FormButton>
             </DialogFooter>
           </form>
         </Form>

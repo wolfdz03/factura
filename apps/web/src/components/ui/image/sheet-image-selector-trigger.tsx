@@ -34,7 +34,7 @@ const SheetImageSelectorTrigger = ({
             <div className="absolute inset-0">
               <Image
                 src={previewUrl}
-                alt="Uploaded image"
+                alt="Image téléversée"
                 className="size-full object-cover"
                 width={200}
                 height={200}
@@ -63,7 +63,7 @@ const SheetImageSelectorTrigger = ({
                 e.stopPropagation();
                 onRemove();
               }}
-              aria-label="Remove image"
+              aria-label="Supprimer l'image"
             >
               <XIcon className="size-3" aria-hidden="true" />
             </div>

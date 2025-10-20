@@ -52,13 +52,13 @@ const DeleteInvoiceModal = ({ invoiceId, type }: DeleteInvoiceModalProps) => {
   const deleteServerInvoiceMutation = useMutation(
     trpc.invoice.delete.mutationOptions({
       onSuccess: () => {
-        toast.success("Invoice deleted successfully!", {
-          description: "The invoice has been deleted from the database.",
+        toast.success("Facture supprimée avec succès !", {
+          description: "La facture a été supprimée de la base de données.",
         });
         queryClient.invalidateQueries({ queryKey: trpc.invoice.list.queryKey() });
       },
       onError: (error) => {
-        toast.error("Failed to delete invoice!", {
+        toast.error("Échec de la suppression de la facture !", {
           description: parseCatchError(error),
         });
       },
@@ -71,13 +71,13 @@ const DeleteInvoiceModal = ({ invoiceId, type }: DeleteInvoiceModalProps) => {
       await deleteInvoiceFromIDB(data.id);
     },
     onSuccess: () => {
-      toast.success("Invoice deleted successfully!", {
-        description: "The invoice has been deleted from local storage.",
+      toast.success("Facture supprimée avec succès !", {
+        description: "La facture a été supprimée du stockage local.",
       });
       queryClient.invalidateQueries({ queryKey: ["idb-invoices"] });
     },
     onError: (error) => {
-      toast.error("Failed to delete invoice!", {
+      toast.error("Échec de la suppression de la facture !", {
         description: parseCatchError(error),
       });
     },
@@ -108,7 +108,7 @@ const DeleteInvoiceModal = ({ invoiceId, type }: DeleteInvoiceModalProps) => {
       <DialogTrigger asChild>
         <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
           <TrashIcon />
-          <span>Delete Invoice</span>
+          <span>Supprimer la facture</span>
         </DropdownMenuItem>
       </DialogTrigger>
       <DialogContent>
@@ -119,29 +119,28 @@ const DeleteInvoiceModal = ({ invoiceId, type }: DeleteInvoiceModalProps) => {
                 <TrashIcon />
               </DialogIcon>
               <DialogHeader>
-                <DialogTitle>Delete Invoice</DialogTitle>
-                <DialogDescription>This action cannot be undone.</DialogDescription>
+                <DialogTitle>Supprimer la facture</DialogTitle>
+                <DialogDescription>Cette action ne peut pas être annulée.</DialogDescription>
               </DialogHeader>
             </DialogHeaderContainer>
             <DialogContentContainer>
               <Alert variant="destructive">
-                <AlertTitle>Proceed with caution!</AlertTitle>
+                <AlertTitle>Procédez avec prudence !</AlertTitle>
                 <AlertDescription>
-                  This action cannot be undone. It will remove the invoice permanently from the database. You will not
-                  be able to recover it.
+                  Cette action ne peut pas être annulée. Elle supprimera définitivement la facture de la base de données. Vous ne pourrez pas la récupérer.
                 </AlertDescription>
               </Alert>
               <div className="flex flex-col gap-1.5">
-                <Label>Invoice ID</Label>
+                <Label>ID de la facture</Label>
                 <Input disabled value={invoiceId} />
               </div>
             </DialogContentContainer>
             <DialogFooter>
               <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
+                <Button variant="outline">Annuler</Button>
               </DialogClose>
               <FormButton variant="destructive" type="submit">
-                Delete
+                Supprimer
               </FormButton>
             </DialogFooter>
           </form>

@@ -31,14 +31,14 @@ const typeOfImages: ImageType[] = [
     icon: <ImageSparkleIcon />,
     title: "Logos",
     description:
-      "Manage the logos that will be used in the invoices. You can upload a new logo or delete the existing one.",
+      "Gérez les logos qui seront utilisés dans les factures. Vous pouvez téléverser un nouveau logo ou supprimer celui existant.",
   },
   {
     key: "signature",
     icon: <SignatureIcon />,
     title: "Signatures",
     description:
-      "Manage the signatures that will be used in the invoices. You can upload a new signature or delete the existing one.",
+      "Gérez les signatures qui seront utilisées dans les factures. Vous pouvez téléverser une nouvelle signature ou supprimer celle existante.",
   },
 ];
 
@@ -146,9 +146,9 @@ const AssetsPage = () => {
                 (getImagesWithKey(images.data?.images, type.key).length > 0 || session.allowedSavingData) && (
                   <>
                     <div>
-                      <div className="instrument-serif text-xl font-bold">Server {type.title}</div>
+                      <div className="instrument-serif text-xl font-bold">Serveur {type.title}</div>
                       <p className="text-muted-foreground text-xs">
-                        Manage the {type.key}s that are stored on the server.
+                        Gérez les {type.key}s qui sont stockés sur le serveur.
                       </p>
                     </div>
                     {/* List Images */}
@@ -183,7 +183,7 @@ const AssetsPage = () => {
                 )}
               <div>
                 <div className="instrument-serif text-xl font-bold">Local {type.title}</div>
-                <p className="text-muted-foreground text-xs">Manage the {type.key}s that are stored on your device.</p>
+                <p className="text-muted-foreground text-xs">Gérez les {type.key}s qui sont stockés sur votre appareil.</p>
               </div>
               {/* List Images */}
               <div className="mt-2 grid grid-cols-2 gap-4 md:grid-cols-5">
