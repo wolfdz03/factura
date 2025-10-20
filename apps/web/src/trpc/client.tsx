@@ -38,7 +38,7 @@ export function TRPCProvider(props: Readonly<TRPCProviderProps>) {
     createTRPCClient<AppRouter>({
       links: [
         httpBatchLink({
-          url: env.NEXT_PUBLIC_TRPC_BASE_URL,
+          url: env.NEXT_PUBLIC_TRPC_BASE_URL || (typeof window !== 'undefined' ? `${window.location.origin}/api/trpc` : '/api/trpc'),
           transformer: superjsonTransformer,
         }),
       ],
@@ -55,5 +55,8 @@ export function TRPCProvider(props: Readonly<TRPCProviderProps>) {
 
 // Trpc Proxy Client
 export const trpcProxyClient = createTRPCClient<AppRouter>({
-  links: [httpBatchLink({ url: env.NEXT_PUBLIC_TRPC_BASE_URL, transformer: superjsonTransformer })],
+  links: [httpBatchLink({ 
+    url: env.NEXT_PUBLIC_TRPC_BASE_URL || '/api/trpc', 
+    transformer: superjsonTransformer 
+  })],
 });

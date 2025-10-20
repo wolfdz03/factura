@@ -9,10 +9,10 @@ export const defaultWebsiteViewport: Viewport = {
 };
 
 export const defaultWebsiteMetadata: Metadata = {
-  metadataBase: new URL("https://invoicely.gg"),
-  title: "Invoicely - Create Beautiful & Professional Invoices",
+  metadataBase: new URL("https://suzali-facture.onrender.com"),
+  title: "Facturation - Suzali",
   description:
-    "Invoicely is a simple and easy to use invoice generator where you can create beautiful and professional invoices in minutes. ~ Proudly OSS - Backed by Cloudflare OSS",
+    "Facturation - Suzali est un générateur de factures simple et professionnel pour créer des factures françaises conformes à la législation.",
   icons: {
     icon: "/official/invoicely-logo.png",
   },

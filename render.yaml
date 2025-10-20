@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: suzali-facture
+    env: node
+    plan: free
+    buildCommand: yarn install && yarn build
+    startCommand: yarn start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_BASE_URL
+        value: https://suzali-facture.onrender.com
+      - key: NEXT_PUBLIC_TRPC_BASE_URL
+        value: https://suzali-facture.onrender.com/api/trpc
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        value: ${SUPABASE_URL}
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        value: ${SUPABASE_ANON_KEY}

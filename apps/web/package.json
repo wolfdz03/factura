@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "NEXT_PUBLIC_BASE_URL=https://suzali-facture.onrender.com NEXT_PUBLIC_TRPC_BASE_URL=https://suzali-facture.onrender.com/api/trpc next build",
     "start": "next start",
     "lint": "next lint"
   },

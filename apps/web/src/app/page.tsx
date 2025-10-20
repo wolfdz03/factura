@@ -16,14 +16,14 @@ export default async function Home() {
       <div className="flex flex-col items-center gap-6">
         <Image
           src="/official/logoentry.svg"
-          alt="Invoicely Logo"
+          alt="Facturation - Suzali Logo"
           width={200}
           height={80}
           priority
           className="mb-4"
         />
         <h1 className="instrument-serif text-emerald-700 text-4xl font-normal tracking-tight text-foreground sm:text-6xl">
-          Facturation simplifiée
+          Facturation - Suzali
         </h1>
         <Button 
           size="lg" 
