@@ -6,18 +6,18 @@ import { getAllInvoices } from "@/lib/indexdb-queries/invoice";
 import { DataTable } from "@/components/ui/data-table";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { useSession } from "@/lib/client-auth";
+import { useSimpleAuth } from "@/lib/client-simple-auth";
 import { useTRPC } from "@/trpc/client";
 import React from "react";
 
 const InvoicesPage = () => {
   const trpc = useTRPC();
-  const { data: session } = useSession();
+  const { user: session } = useSimpleAuth();
 
   // Fetching Invoices from the Postgres (Server)
   const trpcData = useQuery({
     ...trpc.invoice.list.queryOptions(),
-    enabled: !!session?.user, // Only fetch if user is logged in
+    enabled: !!session, // Only fetch if user is logged in
   });
 
   // Fetching Invoices from the LocalDB
@@ -35,13 +35,13 @@ const InvoicesPage = () => {
     <div className="dash-page gap-4 p-4">
       {trpcData.isError && (
         <Alert variant="destructive">
-          <AlertTitle>Server Fetch Failed!</AlertTitle>
+          <AlertTitle>Échec de la récupération du serveur !</AlertTitle>
           <AlertDescription>
-            We were unable to fetch your invoices from the server. Please try again later.
+            Nous n&apos;avons pas pu récupérer vos factures depuis le serveur. Veuillez réessayer plus tard.
           </AlertDescription>
           <AlertButtonGroup>
             <Button onClick={() => trpcData.refetch()} variant="destructive" size="xs">
-              Retry
+              Réessayer
             </Button>
           </AlertButtonGroup>
         </Alert>

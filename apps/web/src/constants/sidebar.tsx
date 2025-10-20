@@ -5,19 +5,19 @@ import { LINKS } from "./links";
 export const SIDEBAR_ITEMS: ISidebar = {
   Navigation: [
     {
-      name: "Invoices",
+      name: "Factures",
       url: LINKS.INVOICES,
       icon: <VersionsIcon />,
     },
     {
-      name: "Manage Assets",
+      name: "Gérer les actifs",
       url: LINKS.ASSETS,
       icon: <FolderFeatherIcon />,
     },
   ],
   Create: [
     {
-      name: "Create Invoice",
+      name: "Créer une facture",
       url: LINKS.CREATE.INVOICE,
       icon: <ReceiptIcon />,
     },

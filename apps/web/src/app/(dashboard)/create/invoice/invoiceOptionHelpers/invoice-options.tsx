@@ -13,11 +13,9 @@ import { InvoiceTypeType } from "@invoicely/db/schema/invoice";
 import { editInvoice } from "@/lib/invoice/edit-invoice";
 import InvoiceErrorsModal from "./invoice-errors-modal";
 import { useQueryClient } from "@tanstack/react-query";
-import { useAnalytics } from "@/hooks/use-analytics";
 import InvoiceTabSwitch from "./invoice-tab-switch";
 import { Button } from "@/components/ui/button";
 import { UseFormReturn } from "react-hook-form";
-import { AnalyticsEventGroup } from "@/types";
 import ImportInvoice from "./import-invoice";
 import { useParams } from "next/navigation";
 import { useUser } from "@/hooks/use-user";
@@ -36,7 +34,6 @@ const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
   const params = useParams() satisfies Params;
   const formValues = form.getValues();
   const user = useUser();
-  const analytics = useAnalytics();
 
   const handleDropDownAction = async (action: InvoiceOptionsProps) => {
     await InvoiceDownloadManagerInstance.initialize(formValues);
@@ -46,10 +43,7 @@ const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
       id: params.id,
     });
 
-    // track the action
-    analytics.capture("download-invoice-action", {
-      elementGroup: "create-invoice-page" satisfies AnalyticsEventGroup,
-    });
+    // Analytics tracking removed
 
     switch (action) {
       case "save-invoice-to-database":

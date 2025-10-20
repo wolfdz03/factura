@@ -6,7 +6,7 @@ const LogoIcon = ({ className }: { className?: string }) => {
   return (
     <Image
       className={cn("h-12 w-12 object-contain", className)}
-      src="/official/logo-icon.png"
+      src="/official/icon.png"
       alt="logo"
       width={500}
       height={500}

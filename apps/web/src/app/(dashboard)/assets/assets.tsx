@@ -11,7 +11,7 @@ import EmptySection from "@/components/ui/icon-placeholder";
 import UploadSignatureAsset from "./upload-signature.asset";
 import UploadLogoAsset from "./upload-logo-asset";
 import { Button } from "@/components/ui/button";
-import { useSession } from "@/lib/client-auth";
+import { useSimpleAuth } from "@/lib/client-simple-auth";
 import { R2_PUBLIC_URL } from "@/constants";
 import { useTRPC } from "@/trpc/client";
 import Image from "next/image";
@@ -45,12 +45,12 @@ const typeOfImages: ImageType[] = [
 const AssetsPage = () => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
-  const { data: session } = useSession();
+  const { user: session } = useSimpleAuth();
 
   //   Fetch images from server
   const images = useQuery({
-    ...trpc.cloudflare.listImages.queryOptions(),
-    enabled: !!session?.user,
+    ...trpc.storage.listImages.queryOptions(),
+    enabled: !!session,
   });
 
   //   Fetch images from indexedDB
@@ -61,14 +61,14 @@ const AssetsPage = () => {
 
   //   Delete image from server
   const deleteServerImageMutation = useMutation({
-    ...trpc.cloudflare.deleteImageFile.mutationOptions(),
+    ...trpc.storage.deleteImageFile.mutationOptions(),
     onSuccess: () => {
       toast.success(SUCCESS_MESSAGES.TOAST_DEFAULT_TITLE, {
         description: SUCCESS_MESSAGES.IMAGE_DELETED,
       });
 
       // Invalidate queries
-      queryClient.invalidateQueries({ queryKey: trpc.cloudflare.listImages.queryKey() });
+      queryClient.invalidateQueries({ queryKey: trpc.storage.listImages.queryKey() });
     },
     onError: (error) => {
       toast.error(ERROR_MESSAGES.TOAST_DEFAULT_TITLE, {
@@ -118,7 +118,7 @@ const AssetsPage = () => {
   }
 
   const handleDeleteImage = async (imageId: string, type: "server" | "local") => {
-    if (session?.user && type === "server") {
+    if (session && type === "server") {
       // Delete image from  server
       deleteServerImageMutation.mutate({ key: imageId });
     } else {
@@ -142,8 +142,8 @@ const AssetsPage = () => {
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              {session?.user &&
-                (getImagesWithKey(images.data?.images, type.key).length > 0 || session.user.allowedSavingData) && (
+              {session &&
+                (getImagesWithKey(images.data?.images, type.key).length > 0 || session.allowedSavingData) && (
                   <>
                     <div>
                       <div className="instrument-serif text-xl font-bold">Server {type.title}</div>
@@ -153,8 +153,8 @@ const AssetsPage = () => {
                     </div>
                     {/* List Images */}
                     <div className="mt-2 grid grid-cols-2 gap-4 md:grid-cols-5">
-                      {type.key === "logo" && session.user.allowedSavingData && <UploadLogoAsset type="server" />}
-                      {type.key === "signature" && session.user.allowedSavingData && (
+                      {type.key === "logo" && session.allowedSavingData && <UploadLogoAsset type="server" />}
+                      {type.key === "signature" && session.allowedSavingData && (
                         <UploadSignatureAsset type="server" />
                       )}
                       {getImagesWithKey(images.data?.images, type.key).map((image) => (

@@ -35,12 +35,12 @@ const sponsers: Sponser[] = [
       "NeonDB is a modern, open-source database that provides a seamless database. The database developers trust, on a serverless platform designed to help you build reliable and scalable applications faster.",
   },
   {
-    name: "Cloudflare",
+    name: "Supabase",
     label: "Open Source Program",
     imageClass: "h-20 w-40",
-    image: "https://assets.invoicely.gg/cloudflare-logo.png",
+    image: "https://supabase.com/images/brand/supabase-logo-wordmark--dark.svg",
     description:
-      "Cloudflare is a global CDN that provides a secure and fast way to deliver content to your users. Cloudflare make websites, apps, and networks faster and more secure. Our developer platform is the best place to build modern apps and deliver AI initiatives.",
+      "Supabase is an open source Firebase alternative. We're building the features of Firebase using enterprise-grade, open source tools. Supabase provides a complete backend as a service with real-time subscriptions, authentication, and storage.",
   },
   // {
   //   name: "v0.Dev",

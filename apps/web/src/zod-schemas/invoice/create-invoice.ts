@@ -86,6 +86,9 @@ export const createInvoiceSchema = z.object({
         message: "Company name cannot be empty",
       }),
       address: z.string({ invalid_type_error: "Address must be a string" }),
+      legalForm: z.string({ invalid_type_error: "Legal form must be a string" }).optional(),
+      siret: z.string({ invalid_type_error: "SIRET must be a string" }).optional(),
+      rcs: z.string({ invalid_type_error: "RCS must be a string" }).optional(),
       metadata: z.array(createInvoiceFieldKeyStringValuesSchema),
     },
     { invalid_type_error: "Company details must be an object" },
@@ -96,6 +99,8 @@ export const createInvoiceSchema = z.object({
         .string({ invalid_type_error: "Client name must be a string" })
         .min(1, { message: "Client name cannot be empty" }),
       address: z.string({ invalid_type_error: "Address must be a string" }),
+      siret: z.string({ invalid_type_error: "SIRET must be a string" }).optional(),
+      tva: z.string({ invalid_type_error: "TVA must be a string" }).optional(),
       metadata: z.array(createInvoiceFieldKeyStringValuesSchema),
     },
     { invalid_type_error: "Client details must be an object" },
@@ -126,6 +131,8 @@ export const createInvoiceSchema = z.object({
       paymentTerms: z.string({
         invalid_type_error: "Payment terms must be a string",
       }),
+      vatRate: z.number({ invalid_type_error: "VAT rate must be a number" }).min(0).max(100).default(20),
+      isVatExempt: z.boolean({ invalid_type_error: "VAT exempt must be a boolean" }).default(false),
       billingDetails: z.array(createInvoiceFieldKeyNumberValuesSchema),
     },
     { invalid_type_error: "Invoice details must be an object" },
@@ -145,32 +152,53 @@ export type ZodCreateInvoiceSchema = z.infer<typeof createInvoiceSchema>;
 
 export const createInvoiceSchemaDefaultValues: ZodCreateInvoiceSchema = {
   companyDetails: {
-    name: "Invoicely Ltd",
-    address: "123 Main St, Anytown, USA",
+    name: "SUZALI CONSEIL",
+    address: "10 rue de la Paix, 75002 Paris",
+    legalForm: "SASU",
+    siret: "992 281 097 00012",
+    rcs: "R.C.S Paris",
     metadata: [],
   },
   clientDetails: {
-    name: "John Doe",
-    address: "456 Second St, Anytown, USA",
+    name: "Client Exemple",
+    address: "123 Avenue des Champs-Élysées, 75008 Paris",
+    siret: "",
+    tva: "",
     metadata: [],
   },
   invoiceDetails: {
     theme: {
       template: "default",
-      baseColor: "#635CFF",
+      baseColor: "#005e56",
       mode: "light",
     },
-    currency: "USD",
-    prefix: "Invoice INV-",
+    currency: "EUR",
+    prefix: "Facture F-",
     serialNumber: "0001",
     date: new Date(), // now
-    paymentTerms: "",
+    paymentTerms: "Paiement à 30 jours fin de mois",
+    vatRate: 20,
+    isVatExempt: false,
     billingDetails: [],
   },
   items: [],
   metadata: {
     notes: "",
     terms: "",
-    paymentInformation: [],
+    paymentInformation: [
+
+      {
+        label: "IBAN",
+        value: "FR7616958000017330073781223"
+      },
+      {
+        label: "BIC",
+        value: "QNTOFRP1XXX"
+      },
+      {
+        label: "Titulaire",
+        value: "Mr. Hichem Issam Hammouche"
+      }
+    ],
   },
 };

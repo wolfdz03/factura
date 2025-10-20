@@ -36,6 +36,15 @@ const InvoiceFieldKeyStringValuesSection: React.FC<InvoiceFieldKeyStringValuesSe
     });
   };
 
+  // Remove empty fields when they lose focus
+  const handleFieldBlur = (index: number) => {
+    const currentFields = reactform.getValues(name);
+    const field = currentFields[index];
+    if (field && (!field.label.trim() && !field.value.trim())) {
+      remove(index);
+    }
+  };
+
   return (
     <div className={cn(className, "flex flex-col gap-2")}>
       <div className="flex flex-row items-center gap-2">
@@ -49,6 +58,7 @@ const InvoiceFieldKeyStringValuesSection: React.FC<InvoiceFieldKeyStringValuesSe
             label="Label"
             placeholder="Label"
             description="Enter the label for the field"
+            onBlur={() => handleFieldBlur(index)}
           />
           <FormInput
             name={`${name}.${index}.value`}
@@ -56,6 +66,7 @@ const InvoiceFieldKeyStringValuesSection: React.FC<InvoiceFieldKeyStringValuesSe
             label="Value"
             placeholder="Value"
             description="Enter the value for the field"
+            onBlur={() => handleFieldBlur(index)}
           />
           <Button className="mb-4.5" variant="destructive" size="icon" onClick={() => remove(index)} type="button">
             <TrashIcon />

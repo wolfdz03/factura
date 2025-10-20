@@ -1,11 +1,7 @@
-import { useSession } from "@/lib/client-auth";
+import { useSimpleAuth } from "@/lib/client-simple-auth";
 
 export const useUser = () => {
-  const { data: session } = useSession();
+  const { user } = useSimpleAuth();
 
-  if (!session) {
-    return;
-  }
-
-  return session.user;
+  return user;
 };

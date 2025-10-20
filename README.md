@@ -90,7 +90,7 @@ Modern, open-source invoice generation platform built with Next.js, tRPC, and Ty
 
 ### File Storage & PDF
 
-- **Cloudflare R2** - Object storage
+- **Supabase Storage** - Object storage
 - **React PDF 9.2.1** - PDF generation
 
 ### Development Tools
@@ -102,7 +102,6 @@ Modern, open-source invoice generation platform built with Next.js, tRPC, and Ty
 
 ### Analytics & Monitoring
 
-- **PostHog** - Product analytics
 - **OpenPanel** - Privacy-focused analytics
 - **React Scan** - Performance debugging
 
@@ -166,20 +165,16 @@ BETTER_AUTH_URL="http://localhost:3000"
 GOOGLE_CLIENT_ID="your-google-client-id"
 GOOGLE_CLIENT_SECRET="your-google-client-secret"
 
-# Cloudflare R2 Storage
-CF_R2_ENDPOINT="your-r2-endpoint"
-CF_R2_ACCESS_KEY_ID="your-access-key"
-CF_R2_SECRET_ACCESS_KEY="your-secret-key"
-CF_R2_BUCKET_NAME="your-bucket-name"
-CF_R2_PUBLIC_DOMAIN="your-public-domain"
-
-# Analytics
-NEXT_PUBLIC_POSTHOG_HOST="your-posthog-host"
-NEXT_PUBLIC_POSTHOG_KEY="your-posthog-key"
+# Supabase Storage
+SUPABASE_URL="your-supabase-url"
+SUPABASE_ANON_KEY="your-supabase-anon-key"
+SUPABASE_SERVICE_ROLE_KEY="your-supabase-service-role-key"
 
 # Public URLs
 NEXT_PUBLIC_BASE_URL="http://localhost:3000"
 NEXT_PUBLIC_TRPC_BASE_URL="http://localhost:3000/api/trpc"
+NEXT_PUBLIC_SUPABASE_URL="your-supabase-url"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="your-supabase-anon-key"
 ```
 
 ### Environment Management

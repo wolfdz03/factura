@@ -1,7 +1,6 @@
 "use client";
 
 import { CircleOpenArrowRight, GithubIcon, Star } from "@/assets/icons";
-import { PostHogAnalytics } from "@/components/ui/posthog-analytics";
 import { useGithubStars } from "@/hooks/use-github-stars";
 import { ScribbledArrowToRight } from "@/assets/svgs";
 import { Button } from "@/components/ui/button";
@@ -54,19 +53,12 @@ const Hero = () => {
             </Button>
           </Link>
           <div className="relative">
-            <PostHogAnalytics
-              analytics={{
-                name: "github-open-source-click",
-                group: "landing-page",
-              }}
-            >
-              <Link target="_blank" href={LINKS.SOCIALS.GITHUB}>
-                <Button variant="secondary">
-                  <span>Open Source</span>
-                  <GithubIcon />
-                </Button>
-              </Link>
-            </PostHogAnalytics>
+            <Link target="_blank" href={LINKS.SOCIALS.GITHUB}>
+              <Button variant="secondary">
+                <span>Open Source</span>
+                <GithubIcon />
+              </Button>
+            </Link>
             <span className="jetbrains-mono text-muted-foreground/20 pointer-events-none absolute -top-10 left-40 size-full -rotate-[34deg] text-[10px]">
               Give Star <br /> please :3 <br /> for cookie
             </span>

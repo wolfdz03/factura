@@ -40,11 +40,11 @@ const columnConfigHelper = createColumnConfigHelper<Invoice>();
 export const columns = [
   columnHelper.accessor((row) => row.type, {
     id: "type",
-    header: ({ column }) => <HeaderColumnButton column={column}>Storage</HeaderColumnButton>,
+    header: ({ column }) => <HeaderColumnButton column={column}>Stockage</HeaderColumnButton>,
     cell: ({ row }) => (
       <Badge variant={row.original.type === "local" ? "default" : "rose"} icon>
         {row.original.type === "local" ? <HardDriveIcon /> : <DatabaseIcon />}
-        {row.original.type === "local" ? "Local" : "Server"}
+        {row.original.type === "local" ? "Local" : "Serveur"}
       </Badge>
     ),
     enableSorting: false,
@@ -61,7 +61,7 @@ export const columns = [
     (row) => `${row.invoiceFields.invoiceDetails.prefix}${row.invoiceFields.invoiceDetails.serialNumber}`,
     {
       id: "serialNumber",
-      header: ({ column }) => <HeaderColumnButton column={column}>Serial No</HeaderColumnButton>,
+      header: ({ column }) => <HeaderColumnButton column={column}>N° de série</HeaderColumnButton>,
       cell: ({ row }) => (
         <div className="text-xs">{`${row.original.invoiceFields.invoiceDetails.prefix}${row.original.invoiceFields.invoiceDetails.serialNumber}`}</div>
       ),
@@ -79,7 +79,7 @@ export const columns = [
 
   columnHelper.accessor((row) => row.invoiceFields.items.length, {
     id: "items",
-    header: ({ column }) => <HeaderColumnButton column={column}>Items</HeaderColumnButton>,
+    header: ({ column }) => <HeaderColumnButton column={column}>Articles</HeaderColumnButton>,
     cell: ({ row }) => (
       <TooltipProvider>
         <Tooltip>
@@ -90,7 +90,7 @@ export const columns = [
             </Badge>
           </TooltipTrigger>
           <TooltipContent>
-            <p>{row.original.invoiceFields.items.length} items in this invoice</p>
+            <p>{row.original.invoiceFields.items.length} articles dans cette facture</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -99,7 +99,7 @@ export const columns = [
 
   columnHelper.accessor((row) => row.status, {
     id: "status",
-    header: ({ column }) => <HeaderColumnButton column={column}>Status</HeaderColumnButton>,
+    header: ({ column }) => <HeaderColumnButton column={column}>Statut</HeaderColumnButton>,
     cell: ({ row }) => (
       <Badge className="capitalize" variant={getStatusBadgeVariant(row.original.status)} icon>
         {getStatusIcon(row.original.status)}
@@ -111,15 +111,15 @@ export const columns = [
 
   columnHelper.accessor((row) => row.createdAt, {
     id: "createdAt",
-    header: ({ column }) => <HeaderColumnButton column={column}>Created At</HeaderColumnButton>,
+    header: ({ column }) => <HeaderColumnButton column={column}>Créé le</HeaderColumnButton>,
     cell: ({ row }) => <FormatTableDateObject date={row.original.createdAt} />,
   }),
 
   columnHelper.accessor((row) => row.paidAt, {
     id: "paidAt",
-    header: ({ column }) => <HeaderColumnButton column={column}>Paid At</HeaderColumnButton>,
+    header: ({ column }) => <HeaderColumnButton column={column}>Payé le</HeaderColumnButton>,
     cell: ({ row }) =>
-      row.original.paidAt ? <FormatTableDateObject date={row.original.paidAt} /> : <Badge variant="gray">Unpaid</Badge>,
+      row.original.paidAt ? <FormatTableDateObject date={row.original.paidAt} /> : <Badge variant="gray">Impayé</Badge>,
   }),
 
   // Actions
@@ -134,7 +134,7 @@ export const columns = [
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="xs">
-                View
+                Voir
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -142,7 +142,7 @@ export const columns = [
               <Link href={`/edit/${type}/${id}`}>
                 <DropdownMenuItem>
                   <FilePenIcon />
-                  <span>Edit</span>
+                  <span>Modifier</span>
                 </DropdownMenuItem>
               </Link>
               <DeleteInvoiceModal invoiceId={id} type={type} />
@@ -160,7 +160,7 @@ export const importInvoiceColumns = [
     (row) => `${row.invoiceFields.invoiceDetails.prefix}${row.invoiceFields.invoiceDetails.serialNumber}`,
     {
       id: "serialNumber",
-      header: ({ column }) => <HeaderColumnButton column={column}>Serial No</HeaderColumnButton>,
+      header: ({ column }) => <HeaderColumnButton column={column}>N° de série</HeaderColumnButton>,
       cell: ({ row }) => (
         <div className="text-xs">{`${row.original.invoiceFields.invoiceDetails.prefix}${row.original.invoiceFields.invoiceDetails.serialNumber}`}</div>
       ),
@@ -185,7 +185,7 @@ export const importInvoiceColumns = [
 
   columnHelper.accessor((row) => row.invoiceFields.items.length, {
     id: "items",
-    header: ({ column }) => <HeaderColumnButton column={column}>Items</HeaderColumnButton>,
+    header: ({ column }) => <HeaderColumnButton column={column}>Articles</HeaderColumnButton>,
     cell: ({ row }) => (
       <TooltipProvider>
         <Tooltip>
@@ -196,7 +196,7 @@ export const importInvoiceColumns = [
             </Badge>
           </TooltipTrigger>
           <TooltipContent>
-            <p>{row.original.invoiceFields.items.length} items in this invoice</p>
+            <p>{row.original.invoiceFields.items.length} articles dans cette facture</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -205,7 +205,7 @@ export const importInvoiceColumns = [
 
   columnHelper.accessor((row) => row.createdAt, {
     id: "createdAt",
-    header: ({ column }) => <HeaderColumnButton column={column}>Created At</HeaderColumnButton>,
+    header: ({ column }) => <HeaderColumnButton column={column}>Créé le</HeaderColumnButton>,
     cell: ({ row }) => <FormatTableDateObject date={row.original.createdAt} />,
   }),
 ];
@@ -215,12 +215,12 @@ export const columnConfig = [
   columnConfigHelper
     .option()
     .id("type")
-    .displayName("Storage")
+    .displayName("Stockage")
     .accessor((row) => row.type)
     .icon(DatabaseIcon)
     .options([
       { label: "", value: "local", icon: <Badge variant="default">Local</Badge> },
-      { label: "", value: "server", icon: <Badge variant="rose">Server</Badge> },
+      { label: "", value: "server", icon: <Badge variant="rose">Serveur</Badge> },
     ])
     .build(),
   // Id
@@ -235,7 +235,7 @@ export const columnConfig = [
   columnConfigHelper
     .date()
     .id("createdAt")
-    .displayName("Created At")
+    .displayName("Créé le")
     .accessor((row) => row.createdAt)
     .icon(CalendarPenIcon)
     .build(),
@@ -243,7 +243,7 @@ export const columnConfig = [
   columnConfigHelper
     .date()
     .id("paidAt")
-    .displayName("Paid At")
+    .displayName("Payé le")
     .accessor((row) => row.paidAt)
     .icon(CalendarCheckIcon)
     .build(),
@@ -251,7 +251,7 @@ export const columnConfig = [
   columnConfigHelper
     .text()
     .id("serialNumber")
-    .displayName("Serial No")
+    .displayName("N° de série")
     .accessor((row) => `${row.invoiceFields.invoiceDetails.prefix}${row.invoiceFields.invoiceDetails.serialNumber}`)
     .icon(SortNumDescendingIcon)
     .build(),
@@ -259,15 +259,15 @@ export const columnConfig = [
   columnConfigHelper
     .option()
     .id("status")
-    .displayName("Status")
+    .displayName("Statut")
     .accessor((row) => row.status)
     .icon(PriorityMediumIcon)
     .options([
-      { label: "", value: "pending", icon: <Badge variant="yellow">Pending</Badge> },
-      { label: "", value: "success", icon: <Badge variant="green">Success</Badge> },
-      { label: "", value: "error", icon: <Badge variant="destructive">Error</Badge> },
-      { label: "", value: "expired", icon: <Badge variant="gray">Expired</Badge> },
-      { label: "", value: "refunded", icon: <Badge variant="purple">Refunded</Badge> },
+      { label: "", value: "pending", icon: <Badge variant="yellow">En attente</Badge> },
+      { label: "", value: "success", icon: <Badge variant="green">Succès</Badge> },
+      { label: "", value: "error", icon: <Badge variant="destructive">Erreur</Badge> },
+      { label: "", value: "expired", icon: <Badge variant="gray">Expiré</Badge> },
+      { label: "", value: "refunded", icon: <Badge variant="purple">Remboursé</Badge> },
     ])
     .build(),
 ];
@@ -277,12 +277,12 @@ export const importInvoiceColumnConfig = [
   columnConfigHelper
     .option()
     .id("type")
-    .displayName("Storage")
+    .displayName("Stockage")
     .accessor((row) => row.type)
     .icon(DatabaseIcon)
     .options([
       { label: "", value: "local", icon: <Badge variant="default">Local</Badge> },
-      { label: "", value: "server", icon: <Badge variant="rose">Server</Badge> },
+      { label: "", value: "server", icon: <Badge variant="rose">Serveur</Badge> },
     ])
     .build(),
   // Id
@@ -297,7 +297,7 @@ export const importInvoiceColumnConfig = [
   columnConfigHelper
     .date()
     .id("createdAt")
-    .displayName("Created At")
+    .displayName("Créé le")
     .accessor((row) => row.createdAt)
     .icon(CalendarPenIcon)
     .build(),
@@ -305,7 +305,7 @@ export const importInvoiceColumnConfig = [
   columnConfigHelper
     .date()
     .id("paidAt")
-    .displayName("Paid At")
+    .displayName("Payé le")
     .accessor((row) => row.paidAt)
     .icon(CalendarCheckIcon)
     .build(),
@@ -313,7 +313,7 @@ export const importInvoiceColumnConfig = [
   columnConfigHelper
     .text()
     .id("serialNumber")
-    .displayName("Serial No")
+    .displayName("N° de série")
     .accessor((row) => `${row.invoiceFields.invoiceDetails.prefix}${row.invoiceFields.invoiceDetails.serialNumber}`)
     .icon(SortNumDescendingIcon)
     .build(),
@@ -321,15 +321,15 @@ export const importInvoiceColumnConfig = [
   columnConfigHelper
     .option()
     .id("status")
-    .displayName("Status")
+    .displayName("Statut")
     .accessor((row) => row.status)
     .icon(PriorityMediumIcon)
     .options([
-      { label: "", value: "pending", icon: <Badge variant="yellow">Pending</Badge> },
-      { label: "", value: "success", icon: <Badge variant="green">Success</Badge> },
-      { label: "", value: "error", icon: <Badge variant="destructive">Error</Badge> },
-      { label: "", value: "expired", icon: <Badge variant="gray">Expired</Badge> },
-      { label: "", value: "refunded", icon: <Badge variant="purple">Refunded</Badge> },
+      { label: "", value: "pending", icon: <Badge variant="yellow">En attente</Badge> },
+      { label: "", value: "success", icon: <Badge variant="green">Succès</Badge> },
+      { label: "", value: "error", icon: <Badge variant="destructive">Erreur</Badge> },
+      { label: "", value: "expired", icon: <Badge variant="gray">Expiré</Badge> },
+      { label: "", value: "refunded", icon: <Badge variant="purple">Remboursé</Badge> },
     ])
     .build(),
 ];

@@ -26,7 +26,7 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
             <SidebarMenuButton className="text-secondary-foreground select-none" variant="default" size="lg" asChild>
               <div className="flex items-center gap-2">
                 <LogoIcon className="h-8 w-8" />
-                <div className="instrument-serif text-xl font-semibold">Invoicely</div>
+                <div className="instrument-serif text-xl font-semibold">Factures</div>
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>

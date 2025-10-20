@@ -1,7 +1,6 @@
 import {
   ReactScanProvider,
   JotaiProvider,
-  PostHogProvider,
   OneDollarStatsProvider,
   OpenPanelProvider,
   TanstackProvider,
@@ -16,7 +15,6 @@ import {
   Bricolage_Grotesque,
 } from "next/font/google";
 import { defaultWebsiteMetadata, defaultWebsiteViewport } from "@/constants/meta-data";
-import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
 import { TOAST_ICONS, TOAST_OPTIONS } from "@/constants/toast";
 import { TRPCProvider } from "@/trpc/client";
 import { ThemeProvider } from "next-themes";
@@ -79,7 +77,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="fr" suppressHydrationWarning>
       <body
         className={cn(
           geistSans.variable,
@@ -94,33 +92,29 @@ export default function RootLayout({
       >
         <TanstackProvider>
           <TRPCProvider>
-            <PostHogProvider>
-              <OpenPanelProvider>
-                <OneDollarStatsProvider>
-                  <JotaiProvider>
-                    <ThemeProvider
-                      defaultTheme="system"
-                      attribute="class"
-                      scriptProps={{
-                        "data-cfasync": "false",
-                      }}
-                    >
-                      <ReactScanProvider />
-                      <ReactScanProvider />
-                      <VercelAnalytics />
-                      <Toaster
-                        richColors
-                        position="top-center"
-                        toastOptions={TOAST_OPTIONS}
-                        icons={TOAST_ICONS}
-                        visibleToasts={4}
-                      />
-                      {children}
-                    </ThemeProvider>
-                  </JotaiProvider>
-                </OneDollarStatsProvider>
-              </OpenPanelProvider>
-            </PostHogProvider>
+            <OpenPanelProvider>
+              <OneDollarStatsProvider>
+                <JotaiProvider>
+                  <ThemeProvider
+                    defaultTheme="system"
+                    attribute="class"
+                    scriptProps={{
+                      "data-cfasync": "false",
+                    }}
+                  >
+                    <ReactScanProvider />
+                    <Toaster
+                      richColors
+                      position="top-center"
+                      toastOptions={TOAST_OPTIONS}
+                      icons={TOAST_ICONS}
+                      visibleToasts={4}
+                    />
+                    {children}
+                  </ThemeProvider>
+                </JotaiProvider>
+              </OneDollarStatsProvider>
+            </OpenPanelProvider>
           </TRPCProvider>
         </TanstackProvider>
       </body>

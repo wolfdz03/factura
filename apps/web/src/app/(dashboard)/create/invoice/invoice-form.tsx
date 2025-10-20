@@ -1,29 +1,22 @@
 "use client";
 
 import InvoiceFieldKeyStringValuesSection from "./invoiceHelpers/invoice-field-key-string-value-section";
-import InvoiceFieldKeyNumberValuesSection from "./invoiceHelpers/invoice-field-key-number-value-section";
 import { Accordion, AccordionItem, AccordionContent, AccordionTrigger } from "@/components/ui/accordion";
-import SheetImageSelectorTrigger from "@/components/ui/image/sheet-image-selector-trigger";
-import { InvoiceImageSelectorSheet } from "./invoiceHelpers/invoice-image-selector-sheet";
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
 import { InvoiceTemplateSelector } from "./invoiceHelpers/invoice-templates";
 import { FormColorPicker } from "@/components/ui/form/form-color-picker";
 import InvoiceItemsSection from "./invoiceHelpers/invoice-items-section";
 import { FormDatePicker } from "@/components/ui/form/form-date-picker";
-import { getAllImages } from "@/lib/indexdb-queries/getAllImages";
 import { FormTextarea } from "@/components/ui/form/form-textarea";
 import { FormSelect } from "@/components/ui/form/form-select";
 import { currenciesWithSymbols } from "@/constants/currency";
 import { FormInput } from "@/components/ui/form/form-input";
 import FormRow from "@/components/ui/form/form-row";
 import { SelectItem } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 import { useResizeObserver } from "@mantine/hooks";
 import { Form } from "@/components/ui/form/form";
-import { useQuery } from "@tanstack/react-query";
 import { UseFormReturn } from "react-hook-form";
-import { useSession } from "@/lib/client-auth";
-import { Badge } from "@/components/ui/badge";
-import { useTRPC } from "@/trpc/client";
 import { cn } from "@/lib/utils";
 import React from "react";
 
@@ -32,28 +25,15 @@ interface InvoiceFormProps {
 }
 
 const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
-  const trpc = useTRPC();
   const [resizeRef, container] = useResizeObserver();
 
-  const { data: session } = useSession();
-
-  // fetching images from indexedDB
-  const idbImages = useQuery({
-    queryKey: ["idb-images"],
-    queryFn: () => getAllImages(),
-  });
-  // Fetching Server Images
-  const serverImages = useQuery({
-    ...trpc.cloudflare.listImages.queryOptions(),
-    enabled: !!session?.user,
-  });
 
   return (
     <div className="scroll-bar-hidden flex h-full flex-col overflow-y-scroll">
       <Form {...form}>
         <form>
           <div className="flex h-14 flex-row items-center justify-between border-b px-4">
-            <span className="text-sm font-medium">Invoice Template</span>
+            <span className="text-sm font-medium">Modèle de facture</span>
             <div className="">
               <InvoiceTemplateSelector form={form} />
             </div>
@@ -61,108 +41,62 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
           <Accordion type="single" collapsible defaultValue="company-details" className="w-full divide-y border-b">
             {/* Company Details */}
             <AccordionItem value="company-details">
-              <AccordionTrigger>Company Details</AccordionTrigger>
+              <AccordionTrigger>Détails de l&apos;entreprise</AccordionTrigger>
               <AccordionContent ref={resizeRef} className={cn(container.width > 1200 ? "flex-row gap-4" : "flex-col")}>
                 <div className={cn(container.width > 1200 ? "w-fit" : "w-full [&>*]:w-full", "flex flex-row gap-4")}>
-                  <InvoiceImageSelectorSheet
-                    type="logo"
-                    isLoading={idbImages.isLoading || serverImages.isLoading}
-                    idbImages={idbImages.data || []}
-                    serverImages={serverImages.data?.images || []}
-                    user={session?.user}
-                    onUrlChange={(url) => {
-                      form.setValue("companyDetails.logo", url);
-                    }}
-                    onBase64Change={(base64) => {
-                      form.setValue("companyDetails.logoBase64", base64);
-                    }}
-                  >
-                    <SheetImageSelectorTrigger
-                      type="logo"
-                      previewUrl={form.watch("companyDetails.logo") ?? undefined}
-                      onRemove={() => {
-                        form.setValue("companyDetails.logo", "");
-                        form.setValue("companyDetails.logoBase64", undefined);
-                      }}
-                      label="Company Logo"
-                    />
-                  </InvoiceImageSelectorSheet>
-                  <InvoiceImageSelectorSheet
-                    type="signature"
-                    isLoading={idbImages.isLoading || serverImages.isLoading}
-                    idbImages={idbImages.data || []}
-                    serverImages={serverImages.data?.images || []}
-                    user={session?.user}
-                    onUrlChange={(url) => {
-                      form.setValue("companyDetails.signature", url);
-                    }}
-                    onBase64Change={(base64) => {
-                      form.setValue("companyDetails.signatureBase64", base64);
-                    }}
-                  >
-                    <SheetImageSelectorTrigger
-                      type="signature"
-                      previewUrl={form.watch("companyDetails.signature") ?? undefined}
-                      onRemove={() => {
-                        form.setValue("companyDetails.signature", "");
-                        form.setValue("companyDetails.signatureBase64", undefined);
-                      }}
-                      label="Company Signature"
-                    />
-                  </InvoiceImageSelectorSheet>
                 </div>
                 <div className="flex w-full flex-col gap-2">
                   <FormInput
                     name="companyDetails.name"
-                    label="Company Name"
+                    label="Nom de l'entreprise"
                     reactform={form}
-                    placeholder="John Doe ltd."
-                    description="Name of your company"
+                    placeholder="Entreprise Dupont SARL"
+                    description="Nom de votre entreprise"
                   />
                   <FormTextarea
                     className="h-20"
                     name="companyDetails.address"
-                    label="Company Address"
+                    label="Adresse de l'entreprise"
                     reactform={form}
-                    placeholder="123 Business St, City, Country"
+                    placeholder="123 Rue des Affaires, Ville, Pays"
                   />
                   <InvoiceFieldKeyStringValuesSection
                     reactform={form}
                     name="companyDetails.metadata"
-                    label="Company Fields"
+                    label="Champs de l'entreprise"
                   />
                 </div>
               </AccordionContent>
             </AccordionItem>
             {/* Client Details */}
             <AccordionItem value="client-details">
-              <AccordionTrigger>Client Details</AccordionTrigger>
+              <AccordionTrigger>Détails du client</AccordionTrigger>
               <AccordionContent>
-                <FormInput name="clientDetails.name" label="Client Name" reactform={form} placeholder="John Doe" />
+                <FormInput name="clientDetails.name" label="Nom du client" reactform={form} placeholder="Jean Dupont" />
                 <FormTextarea
                   className="h-20"
                   name="clientDetails.address"
-                  label="Client Address"
+                  label="Adresse du client"
                   reactform={form}
-                  placeholder="456 Client St, City, Country"
+                  placeholder="456 Rue du Client, Ville, Pays"
                 />
                 <InvoiceFieldKeyStringValuesSection
                   reactform={form}
                   name="clientDetails.metadata"
-                  label="Client Fields"
+                  label="Champs du client"
                 />
               </AccordionContent>
             </AccordionItem>
             {/* Invoice Details */}
             <AccordionItem value="invoice-details">
-              <AccordionTrigger>Invoice Details</AccordionTrigger>
+              <AccordionTrigger>Détails de la facture</AccordionTrigger>
               <AccordionContent>
                 <FormRow>
                   <FormSelect
                     name="invoiceDetails.currency"
-                    description="Currency code for the invoice"
+                    description="Code de devise pour la facture"
                     defaultValue="USD"
-                    label="Currency"
+                    label="Devise"
                     reactform={form}
                   >
                     {Object.entries(currenciesWithSymbols).map(([key, value]) => (
@@ -178,23 +112,23 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                     <>
                       <FormSelect
                         name="invoiceDetails.theme.mode"
-                        description="Dark mode for the invoice"
+                        description="Mode sombre pour la facture"
                         defaultValue="dark"
-                        label="Dark Mode"
+                        label="Mode sombre"
                         reactform={form}
                       >
                         <SelectItem value="dark">
-                          <span>Dark</span>
+                          <span>Sombre</span>
                         </SelectItem>
                         <SelectItem value="light">
-                          <span>Light</span>
+                          <span>Clair</span>
                         </SelectItem>
                       </FormSelect>
                       <FormColorPicker
                         name="invoiceDetails.theme.baseColor"
-                        label="Theme Color"
+                        label="Couleur du thème"
                         reactform={form}
-                        description="Works in white mode only"
+                        description="Fonctionne uniquement en mode clair"
                       />
                     </>
                   )}
@@ -202,80 +136,67 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                 <FormRow>
                   <FormInput
                     name="invoiceDetails.prefix"
-                    label="Invoice Prefix"
+                    label="Préfixe de facture"
                     reactform={form}
-                    placeholder="INV-"
-                    description="Prefix for invoice number"
+                    placeholder="F-"
+                    description="Préfixe pour le numéro de facture"
                     isOptional={true}
                   />
                   <FormInput
                     name="invoiceDetails.serialNumber"
-                    label="Serial Number"
+                    label="Numéro de série"
                     reactform={form}
                     placeholder="0001"
-                    description="Invoice serial number"
+                    description="Numéro de série de la facture"
                   />
                 </FormRow>
                 <FormRow>
                   <FormDatePicker
                     name="invoiceDetails.date"
-                    label="Invoice Date"
+                    label="Date de facture"
                     reactform={form}
-                    description="Date when invoice is issued"
+                    description="Date d'émission de la facture"
                   />
                   <FormDatePicker
                     name="invoiceDetails.dueDate"
-                    label="Due Date"
+                    label="Date d'échéance"
                     reactform={form}
-                    description="Date when payment is due"
+                    description="Date d'échéance du paiement"
                   />
                 </FormRow>
-                <FormInput
-                  name="invoiceDetails.paymentTerms"
-                  label="Payment Terms"
-                  reactform={form}
-                  placeholder="50% of total amount upfront"
-                  description="Terms of payment"
-                  isOptional={true}
-                />
-                <InvoiceFieldKeyNumberValuesSection
-                  reactform={form}
-                  name="invoiceDetails.billingDetails"
-                  label="Billing Details"
-                />
               </AccordionContent>
             </AccordionItem>
             {/* Invoice Items */}
             <AccordionItem value="invoice-items">
-              <AccordionTrigger>Invoice Items</AccordionTrigger>
+              <AccordionTrigger>Articles de la facture</AccordionTrigger>
               <AccordionContent>
                 <InvoiceItemsSection form={form} />
               </AccordionContent>
             </AccordionItem>
             {/* Additional Information */}
             <AccordionItem value="additional-info">
-              <AccordionTrigger>Additional Information</AccordionTrigger>
+              <AccordionTrigger>Informations supplémentaires</AccordionTrigger>
               <AccordionContent>
                 <FormTextarea
                   name="metadata.notes"
                   label="Notes"
                   reactform={form}
-                  placeholder="Notes - any relevant information not already covered"
-                  description="Additional notes for the invoice"
+                  placeholder="Notes - toute information pertinente non déjà couverte"
+                  description="Notes supplémentaires pour la facture"
                   isOptional={true}
                 />
                 <FormTextarea
                   name="metadata.terms"
-                  label="Terms"
+                  label="Conditions"
                   reactform={form}
-                  placeholder="Terms & Conditions - late fees, payment methods, delivery terms, etc."
-                  description="Terms and conditions for the invoice"
+                  placeholder="Conditions générales - frais de retard, méthodes de paiement, conditions de livraison, etc."
+                  description="Conditions générales pour la facture"
                   isOptional={true}
                 />
                 <InvoiceFieldKeyStringValuesSection
                   reactform={form}
                   name="metadata.paymentInformation"
-                  label="Payment Information"
+                  label="Informations de paiement"
                 />
               </AccordionContent>
             </AccordionItem>

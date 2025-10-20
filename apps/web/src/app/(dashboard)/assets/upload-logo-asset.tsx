@@ -6,7 +6,7 @@ import type { InvoiceTypeType } from "@invoicely/db/schema/invoice";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ImageInput from "@/components/ui/image/image-input";
 import { asyncTryCatch } from "@/lib/neverthrow/tryCatch";
-import { useSession } from "@/lib/client-auth";
+import { useSimpleAuth } from "@/lib/client-simple-auth";
 import { useTRPC } from "@/trpc/client";
 import { toast } from "sonner";
 import React from "react";
@@ -14,16 +14,16 @@ import React from "react";
 const UploadLogoAsset = ({ disableIcon = false, type }: { disableIcon?: boolean; type: InvoiceTypeType }) => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
-  const { data: session } = useSession();
+  const { user: session } = useSimpleAuth();
 
   const uploadImage = useMutation({
-    ...trpc.cloudflare.uploadImageFile.mutationOptions(),
+    ...trpc.storage.uploadImageFile.mutationOptions(),
     onSuccess: () => {
       toast.success(SUCCESS_MESSAGES.TOAST_DEFAULT_TITLE, {
         description: SUCCESS_MESSAGES.IMAGE_UPLOADED,
       });
 
-      queryClient.invalidateQueries({ queryKey: trpc.cloudflare.listImages.queryKey() });
+      queryClient.invalidateQueries({ queryKey: trpc.storage.listImages.queryKey() });
     },
     onError: (error) => {
       toast.error(ERROR_MESSAGES.TOAST_DEFAULT_TITLE, {
@@ -35,7 +35,7 @@ const UploadLogoAsset = ({ disableIcon = false, type }: { disableIcon?: boolean;
   const handleBase64Change = async (base64: string | undefined) => {
     if (!base64) return;
 
-    if (type === "server" && session && session.user.allowedSavingData) {
+    if (type === "server" && session && session.allowedSavingData) {
       uploadImage.mutate({
         type: "logo",
         base64: base64,

@@ -12,11 +12,11 @@
         "DATABASE_URL",
         "GOOGLE_CLIENT_ID",
         "GOOGLE_CLIENT_SECRET",
-        "CF_R2_BUCKET_NAME",
-        "CF_R2_PUBLIC_DOMAIN",
-        "CF_R2_ENDPOINT",
-        "CF_R2_ACCESS_KEY_ID",
-        "CF_R2_SECRET_ACCESS_KEY",
+        "SUPABASE_URL",
+        "SUPABASE_ANON_KEY",
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
         "SENTRY_AUTH_TOKEN"
       ]
     },

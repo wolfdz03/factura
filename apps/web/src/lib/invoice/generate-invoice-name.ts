@@ -6,5 +6,5 @@ interface GenerateInvoiceNameProps {
 }
 
 export const generateInvoiceName = ({ invoiceData, extension }: GenerateInvoiceNameProps) => {
-  return `Invoice-${invoiceData.invoiceDetails.prefix}${invoiceData.invoiceDetails.serialNumber}.${extension}`;
+  return `Facture-${invoiceData.invoiceDetails.prefix}${invoiceData.invoiceDetails.serialNumber}.${extension}`;
 };

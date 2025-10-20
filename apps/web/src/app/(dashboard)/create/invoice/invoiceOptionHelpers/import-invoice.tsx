@@ -20,19 +20,19 @@ import { DataTable } from "@/components/ui/data-table";
 import { InboxArrowDownIcon } from "@/assets/icons";
 import { Invoice } from "@/types/common/invoice";
 import { useQuery } from "@tanstack/react-query";
-import { useSession } from "@/lib/client-auth";
+import { useSimpleAuth } from "@/lib/client-simple-auth";
 import { useTRPC } from "@/trpc/client";
 
 const ImportInvoice = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> }) => {
   const [open, setOpen] = React.useState(false);
 
   const trpc = useTRPC();
-  const { data: session } = useSession();
+  const { user: session } = useSimpleAuth();
 
   // Fetching Invoices from the Postgres (Server)
   const trpcData = useQuery({
     ...trpc.invoice.list.queryOptions(),
-    enabled: !!session?.user, // Only fetch if user is logged in
+    enabled: !!session, // Only fetch if user is logged in
   });
 
   // Fetching Invoices from the LocalDB
