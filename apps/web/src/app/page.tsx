@@ -8,7 +8,7 @@ export default async function Home() {
   const session = await getServerSession();
   
   if (session.isAuthenticated) {
-    redirect("/invoices");
+    redirect("/create/invoice");
   }
 
   return (

@@ -14,7 +14,7 @@ export const defaultWebsiteMetadata: Metadata = {
   description:
     "Facturation - Suzali est un générateur de factures simple et professionnel pour créer des factures françaises conformes à la législation.",
   icons: {
-    icon: "/official/invoicely-logo.png",
+    icon: "/official/icon.png",
   },
   openGraph: {
     images: "/official/og-banner.png",
