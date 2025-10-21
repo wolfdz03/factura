@@ -37,10 +37,12 @@ export function TRPCProvider(props: Readonly<TRPCProviderProps>) {
   const [trpcClient] = useState(() => {
     // For same domain, use relative URL
     const trpcUrl = '/api/trpc';
-    console.log('TRPC URL:', trpcUrl);
-    console.log('Environment NEXT_PUBLIC_TRPC_BASE_URL:', env.NEXT_PUBLIC_TRPC_BASE_URL);
+    console.log('🌐 TRPC CLIENT: Creating TRPC client');
+    console.log('🌐 TRPC CLIENT: URL:', trpcUrl);
+    console.log('🌐 TRPC CLIENT: Environment NEXT_PUBLIC_TRPC_BASE_URL:', env.NEXT_PUBLIC_TRPC_BASE_URL);
+    console.log('🌐 TRPC CLIENT: Window location:', typeof window !== 'undefined' ? window.location.origin : 'Server side');
     
-    return createTRPCClient<AppRouter>({
+    const client = createTRPCClient<AppRouter>({
       links: [
         httpBatchLink({
           url: trpcUrl,
@@ -48,6 +50,9 @@ export function TRPCProvider(props: Readonly<TRPCProviderProps>) {
         }),
       ],
     });
+    
+    console.log('🌐 TRPC CLIENT: Client created successfully');
+    return client;
   });
   return (
     <QueryClientProvider client={queryClient}>

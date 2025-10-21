@@ -17,17 +17,26 @@ export function useSimpleAuth() {
   }, []);
 
   const checkAuth = async () => {
+    console.log("🔐 AUTH CHECK: Starting authentication check");
     try {
+      console.log("🔐 AUTH CHECK: Fetching /api/auth/me");
       const response = await fetch("/api/auth/me");
+      console.log("🔐 AUTH CHECK: Response status:", response.status);
+      console.log("🔐 AUTH CHECK: Response ok:", response.ok);
+      
       if (response.ok) {
         const user = await response.json();
+        console.log("🔐 AUTH CHECK: User data received:", user);
         setSession({ user, isAuthenticated: true });
       } else {
+        console.log("🔐 AUTH CHECK: Authentication failed, status:", response.status);
         setSession({ user: null, isAuthenticated: false });
       }
-    } catch {
+    } catch (error) {
+      console.log("🔐 AUTH CHECK: Error occurred:", error);
       setSession({ user: null, isAuthenticated: false });
     } finally {
+      console.log("🔐 AUTH CHECK: Setting loading to false");
       setIsLoading(false);
     }
   };
