@@ -88,7 +88,7 @@ const PDFViewer = ({ url, width }: { url: string | null; width: number }) => {
           <button
             onClick={handleZoomOut}
             disabled={zoomLevel <= 0.5}
-            title="Zoom Out (Ctrl + -)"
+            title="Zoom arrière (Ctrl + -)"
             className="rounded-md border border-input bg-background px-3 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground disabled:opacity-50 disabled:cursor-not-allowed"
           >
             -
@@ -99,21 +99,21 @@ const PDFViewer = ({ url, width }: { url: string | null; width: number }) => {
           <button
             onClick={handleZoomIn}
             disabled={zoomLevel >= 3}
-            title="Zoom In (Ctrl + +)"
+            title="Zoom avant (Ctrl + +)"
             className="rounded-md border border-input bg-background px-3 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground disabled:opacity-50 disabled:cursor-not-allowed"
           >
             +
           </button>
           <button
             onClick={handleZoomReset}
-            title="Reset Zoom (Ctrl + 0)"
+            title="Réinitialiser le zoom (Ctrl + 0)"
             className="rounded-md border border-input bg-background px-3 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground"
           >
-            Reset
+            Réinitialiser
           </button>
         </div>
         <div className="text-xs text-muted-foreground">
-          Zoom: {Math.round(zoomLevel * 100)}%
+          Zoom : {Math.round(zoomLevel * 100)}%
         </div>
       </div>
 

@@ -80,7 +80,7 @@ const InvoiceItemsSection: React.FC<InvoiceItemsSectionProps> = ({ form }) => {
                   </div>
                   <div className="flex flex-row items-center gap-1">
                     <p className="space-x-1 text-[10px] whitespace-nowrap">
-                      <span>Total:</span>
+                      <span>Total :</span>
                       <span>
                         {formatCurrencyText(form.watch("invoiceDetails.currency"), field.unitPrice * field.quantity)}
                       </span>
@@ -96,7 +96,7 @@ const InvoiceItemsSection: React.FC<InvoiceItemsSectionProps> = ({ form }) => {
       <HandleItemModal type="add" append={append} update={update}>
         <Button type="button" className="w-full border-dashed" variant="outline">
           <BoxPlusIcon />
-          Add Item
+          Ajouter un article
         </Button>
       </HandleItemModal>
     </div>
@@ -150,40 +150,40 @@ const HandleItemModal = ({ type, append, update, editingIndex, data, children }:
                 <BoxPlusIcon />
               </DialogIcon>
               <DialogHeader>
-                <DialogTitle>Add Item</DialogTitle>
-                <DialogDescription>Add an item to the invoice</DialogDescription>
+                <DialogTitle>Ajouter un article</DialogTitle>
+                <DialogDescription>Ajouter un article à la facture</DialogDescription>
               </DialogHeader>
             </DialogHeaderContainer>
             <DialogContentContainer>
-              <FormInput label="Item Name" name="name" placeholder="Item Name" reactform={invoiceItemForm} />
+              <FormInput label="Nom de l'article" name="name" placeholder="Nom de l'article" reactform={invoiceItemForm} />
               <FormInput
-                label="Item Description"
+                label="Description de l'article"
                 name="description"
-                placeholder="Item Description"
+                placeholder="Description de l'article"
                 reactform={invoiceItemForm}
               />
               <FormRow>
                 <FormInput
                   type="number"
-                  label="Quantity"
+                  label="Quantité"
                   name="quantity"
-                  placeholder="Quantity"
+                  placeholder="Quantité"
                   reactform={invoiceItemForm}
                 />
                 <FormInput
                   type="number"
-                  label="Unit Price"
+                  label="Prix unitaire"
                   name="unitPrice"
-                  placeholder="Unit Price"
+                  placeholder="Prix unitaire"
                   reactform={invoiceItemForm}
                 />
               </FormRow>
             </DialogContentContainer>
             <DialogFooter>
               <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
+                <Button variant="outline">Annuler</Button>
               </DialogClose>
-              <Button type="submit">Add Item</Button>
+              <Button type="submit">Ajouter l'article</Button>
             </DialogFooter>
           </form>
         </Form>

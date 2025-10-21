@@ -60,6 +60,22 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                     reactform={form}
                     placeholder="123 Rue des Affaires, Ville, Pays"
                   />
+                  <FormInput
+                    name="companyDetails.legalForm"
+                    label="Forme juridique"
+                    reactform={form}
+                    placeholder="SARL, SAS, SASU, etc."
+                    description="Forme juridique de l'entreprise"
+                    isOptional={true}
+                  />
+                  <FormInput
+                    name="companyDetails.rcs"
+                    label="R.C.S"
+                    reactform={form}
+                    placeholder="R.C.S Paris B 123 456 789"
+                    description="Registre du Commerce et des Sociétés"
+                    isOptional={true}
+                  />
                   <InvoiceFieldKeyStringValuesSection
                     reactform={form}
                     name="companyDetails.metadata"
@@ -193,6 +209,12 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ form }) => {
                   description="Conditions générales pour la facture"
                   isOptional={true}
                 />
+              </AccordionContent>
+            </AccordionItem>
+            {/* Payment Information */}
+            <AccordionItem value="payment-info">
+              <AccordionTrigger>Informations de paiement</AccordionTrigger>
+              <AccordionContent>
                 <InvoiceFieldKeyStringValuesSection
                   reactform={form}
                   name="metadata.paymentInformation"

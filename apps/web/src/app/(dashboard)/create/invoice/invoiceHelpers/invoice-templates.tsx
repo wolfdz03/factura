@@ -19,7 +19,7 @@ interface PdfTemplate {
 export const availablePdfTemplates: PdfTemplate[] = [
   {
     name: "default",
-    label: "Default",
+    label: "Par défaut",
     component: DefaultPDF,
     icon: <BoxIcon />,
   },
@@ -37,7 +37,7 @@ export const InvoiceTemplateSelector = ({ form }: { form: UseFormReturn<ZodCreat
       name="invoiceDetails.theme.template"
       reactform={form}
       defaultValue="default"
-      placeholder="Select template"
+      placeholder="Sélectionner un modèle"
       alingContent="end"
       className="min-w-34"
     >

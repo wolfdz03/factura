@@ -51,7 +51,7 @@ const InvoiceErrorsModal = () => {
             variant={invoiceErrors.length > 0 ? "destructive" : "secondary"}
           >
             <FileAlertIcon />
-            <span className="hidden md:flex">Errors</span>
+            <span className="hidden md:flex">Erreurs</span>
           </Button>
         </DialogTrigger>
         <DialogContent>
@@ -60,8 +60,8 @@ const InvoiceErrorsModal = () => {
               <FileAlertIcon />
             </DialogIcon>
             <DialogHeader>
-              <DialogTitle>Your Invoice has errors</DialogTitle>
-              <DialogDescription>Please fix the errors to continue to view the invoice</DialogDescription>
+              <DialogTitle>Votre facture contient des erreurs</DialogTitle>
+              <DialogDescription>Veuillez corriger les erreurs pour continuer à voir la facture</DialogDescription>
             </DialogHeader>
           </DialogHeaderContainer>
           <DialogContentContainer className="scroll-bar-hidden max-h-80 divide-y overflow-y-scroll p-0">
@@ -80,7 +80,7 @@ const InvoiceErrorsModal = () => {
           </DialogContentContainer>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline">Close</Button>
+              <Button variant="outline">Fermer</Button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>

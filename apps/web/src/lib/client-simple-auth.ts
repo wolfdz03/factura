@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Session } from "./simple-auth";
 
 export function useSimpleAuth() {
+  const router = useRouter();
   const [session, setSession] = useState<Session>({
     user: null,
     isAuthenticated: false,
@@ -57,8 +59,13 @@ export function useSimpleAuth() {
     try {
       await fetch("/api/auth/signout", { method: "POST" });
       setSession({ user: null, isAuthenticated: false });
+      // Use Next.js router for better integration
+      router.replace("/login");
     } catch {
       console.error("Sign out failed");
+      // Even if the API call fails, redirect to login
+      setSession({ user: null, isAuthenticated: false });
+      router.replace("/login");
     }
   };
 

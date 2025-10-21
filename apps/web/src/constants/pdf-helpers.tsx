@@ -23,5 +23,12 @@ export const getTotalValue = (data: ZodCreateInvoiceSchema) => {
     }
   });
 
+  // Add VAT to the total if not exempt
+  if (!data.invoiceDetails.isVatExempt) {
+    const vatRate = data.invoiceDetails.vatRate || 20;
+    const vatAmount = subtotal * vatRate / 100;
+    total += vatAmount;
+  }
+
   return total;
 };

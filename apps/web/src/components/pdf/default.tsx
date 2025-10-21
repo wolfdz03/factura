@@ -8,7 +8,7 @@ import { Document, Page, Text, View, Image, Font } from "@react-pdf/renderer";
 import { getSubTotalValue, getTotalValue } from "@/constants/pdf-helpers";
 import { formatCurrencyText } from "@/constants/currency";
 import { createTw } from "react-pdf-tailwind";
-import { toWords } from "number-to-words";
+import { currencyToFrenchWords } from "@/lib/french-number-to-words";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import React from "react";
@@ -91,14 +91,14 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
         </View>
         {/* Content with padding */}
         <View style={tw("p-6 pb-20")}>
-        <View style={tw("flex flex-row justify-center mb-4")}>
+        <View style={tw("flex flex-row justify-center mb-2")}>
           <View style={tw("text-3xl font-bold font-dmsans")}>
             <Text style={tw("text-black font-dmsans font-bold")}>
               FACTURE
             </Text>
           </View>
         </View>
-        <View style={tw("flex flex-row justify-between mt-2")}>
+        <View style={tw("flex flex-row justify-between mb-1")}>
           {/* Invoice Details */}
           <View style={tw("flex flex-col gap-1")}>
             <View style={tw("flex flex-row items-center gap-1")}>
@@ -125,7 +125,7 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
           </View>
         </View>
         {/* Invoice billing details */}
-        <View style={tw("flex flex-row mt-[18px] w-full gap-2.5")}>
+        <View style={tw("flex flex-row mt-1 w-full gap-2.5")}>
           <View
             style={tw(cn("flex flex-col gap-1.5 p-2.5 w-1/2 rounded", darkMode ? "bg-neutral-800" : "bg-neutral-100"))}
           >
@@ -138,9 +138,6 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
             <Text style={tw("text-2xs font-normal text-neutral-500")}>{data.companyDetails.address}</Text>
             {data.companyDetails.legalForm && (
               <Text style={tw("text-2xs font-normal text-neutral-500")}>{data.companyDetails.legalForm}</Text>
-            )}
-            {data.companyDetails.siret && (
-              <Text style={tw("text-2xs font-normal text-neutral-500")}>SIRET: {data.companyDetails.siret}</Text>
             )}
             {data.companyDetails.rcs && (
               <Text style={tw("text-2xs font-normal text-neutral-500")}>{data.companyDetails.rcs}</Text>
@@ -177,7 +174,7 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
           </View>
         </View>
         {/* Items Table */}
-        <View style={tw("mt-5 grow")}>
+        <View style={tw("mt-8 grow")}>
           <View
             style={[
               tw(
@@ -237,33 +234,13 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
             ))}
           </View>
         </View>
+        
+        {/* Spacing between articles and totals */}
+        <View style={tw("h-8")}></View>
+        
         {/* Invoice meta data and pricing */}
         <View style={tw("flex flex-row gap-[50px]")}>
           <View style={tw("flex flex-col gap-[15px] justify-end w-1/2")}>
-            {/* Payment Information */}
-            {data.metadata.paymentInformation.length ? (
-              <View style={tw("flex flex-col gap-0.5 pr-2.5")}>
-                <Text
-                  style={tw(
-                    cn("font-semibold", darkMode ? "text-white" : `text-[${data.invoiceDetails.theme.baseColor}]`),
-                  )}
-                >
-                  Informations de paiement
-                </Text>
-                <View style={tw("flex flex-col gap-0.5 mt-1")}>
-                  {data.metadata.paymentInformation.map((paymentInformation, index) => {
-                    return (
-                      <View key={index} style={tw("flex flex-row items-center gap-2")}>
-                        <Text style={tw("text-2xs font-semibold min-w-[80px]")}>{paymentInformation.label}:</Text>
-                        <Text style={tw("text-2xs font-normal text-neutral-500")}>
-                          {paymentInformation.value}
-                        </Text>
-                      </View>
-                    );
-                  })}
-                </View>
-              </View>
-            ) : null}
             {/* Terms and conditions */}
             {data.metadata.terms && (
               <View style={tw("flex flex-col gap-0.5 pr-2.5")}>
@@ -348,11 +325,36 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
             </View>
             <View style={tw("flex flex-col gap-0.5 mt-1")}>
               <Text style={tw("text-3xs font-normal text-neutral-500")}>Total de la facture (en toutes lettres)</Text>
-              <Text style={tw("text-2xs font-normal")}>{toWords(total)}</Text>
+              <Text style={tw("text-2xs font-normal")}>{currencyToFrenchWords(total, data.invoiceDetails.currency)}</Text>
             </View>
           </View>
         </View>
         </View>
+        
+        {/* Payment Information - Positioned very close to footer */}
+        {data.metadata.paymentInformation.length > 0 && (
+          <View style={tw("absolute bottom-16 left-0 right-0 flex flex-col gap-2 px-6")}>
+            <Text
+              style={tw(
+                cn("text-sm font-semibold", darkMode ? "text-white" : `text-[${data.invoiceDetails.theme.baseColor}]`),
+              )}
+            >
+              Informations de paiement
+            </Text>
+            <View style={tw("flex flex-col gap-1")}>
+              {data.metadata.paymentInformation.map((paymentInformation, index) => {
+                return (
+                  <View key={index} style={tw("flex flex-row items-center gap-2")}>
+                    <Text style={tw("text-xs font-semibold min-w-[100px]")}>{paymentInformation.label}:</Text>
+                    <Text style={tw("text-xs font-normal text-neutral-500")}>
+                      {paymentInformation.value}
+                    </Text>
+                  </View>
+                );
+              })}
+            </View>
+          </View>
+        )}
         
         {/* Green Footer Strip - Positioned at bottom of page */}
         <View style={tw("absolute bottom-0 left-0 right-0 w-full h-12 bg-[#005e56] flex flex-row items-center justify-center px-6")}>

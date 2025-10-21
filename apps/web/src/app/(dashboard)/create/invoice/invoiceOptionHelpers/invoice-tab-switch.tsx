@@ -26,21 +26,21 @@ const InvoiceTabSwitch = () => {
   return (
     <Select onValueChange={handleTabChange} value={tab} defaultValue={tab}>
       <SelectTrigger className="w-32">
-        <SelectValue placeholder="Select a tab" />
+        <SelectValue placeholder="Sélectionner un onglet" />
       </SelectTrigger>
       <SelectContent align="end">
         <SelectGroup>
           <SelectItem value="form">
             <FileFeatherIcon />
-            <span>Form</span>
+            <span>Formulaire</span>
           </SelectItem>
           <SelectItem value="preview">
             <EyeScannerIcon />
-            <span>Preview</span>
+            <span>Aperçu</span>
           </SelectItem>
           <SelectItem className="hidden md:flex" value="both">
             <FileTreeIcon />
-            <span>Both</span>
+            <span>Les deux</span>
           </SelectItem>
         </SelectGroup>
       </SelectContent>

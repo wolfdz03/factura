@@ -71,7 +71,7 @@ const ImportInvoice = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> }
       <DialogTrigger asChild>
         <Button variant="outline">
           <InboxArrowDownIcon className="text-muted-foreground" />
-          <span>Import</span>
+          <span>Importer</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-full">
@@ -80,8 +80,8 @@ const ImportInvoice = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> }
             <InboxArrowDownIcon />
           </DialogIcon>
           <DialogHeader>
-            <DialogTitle>Import Invoice</DialogTitle>
-            <DialogDescription>Click on an invoice to import the data</DialogDescription>
+            <DialogTitle>Importer une facture</DialogTitle>
+            <DialogDescription>Cliquez sur une facture pour importer les données</DialogDescription>
           </DialogHeader>
         </DialogHeaderContainer>
         <DialogContentContainer>

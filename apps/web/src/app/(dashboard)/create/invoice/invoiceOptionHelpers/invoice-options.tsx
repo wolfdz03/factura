@@ -83,25 +83,25 @@ const InvoiceOptions = ({ form }: { form: UseFormReturn<ZodCreateInvoiceSchema> 
           <DropdownMenuTrigger asChild>
             <Button variant="default">
               <InboxArrowDownIcon />
-              Download
+              Télécharger
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem onClick={() => handleDropDownAction("save-invoice-to-database")}>
               <InboxArrowDownIcon />
-              <span>Save Invoice</span>
+              <span>Enregistrer la facture</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleDropDownAction("view-pdf")}>
               <EyeScannerIcon />
-              <span>View PDF</span>
+              <span>Voir le PDF</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleDropDownAction("download-pdf")}>
               <FileDownloadIcon />
-              <span>Download PDF</span>
+              <span>Télécharger le PDF</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleDropDownAction("download-png")}>
               <ImageSparkleIcon />
-              <span>Download PNG</span>
+              <span>Télécharger le PNG</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
