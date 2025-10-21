@@ -35,7 +35,8 @@ export function TRPCProvider(props: Readonly<TRPCProviderProps>) {
   const queryClient = getQueryClient();
 
   const [trpcClient] = useState(() => {
-    const trpcUrl = env.NEXT_PUBLIC_TRPC_BASE_URL || (typeof window !== 'undefined' ? `${window.location.origin}/api/trpc` : '/api/trpc');
+    // For same domain, use relative URL
+    const trpcUrl = '/api/trpc';
     console.log('TRPC URL:', trpcUrl);
     console.log('Environment NEXT_PUBLIC_TRPC_BASE_URL:', env.NEXT_PUBLIC_TRPC_BASE_URL);
     
@@ -60,7 +61,7 @@ export function TRPCProvider(props: Readonly<TRPCProviderProps>) {
 // Trpc Proxy Client
 export const trpcProxyClient = createTRPCClient<AppRouter>({
   links: [httpBatchLink({ 
-    url: env.NEXT_PUBLIC_TRPC_BASE_URL || '/api/trpc', 
+    url: '/api/trpc', 
     transformer: superjsonTransformer 
   })],
 });
