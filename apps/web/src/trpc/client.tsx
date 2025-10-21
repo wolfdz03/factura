@@ -34,16 +34,20 @@ export function TRPCProvider(props: Readonly<TRPCProviderProps>) {
   //       render if it suspends and there is no boundary
   const queryClient = getQueryClient();
 
-  const [trpcClient] = useState(() =>
-    createTRPCClient<AppRouter>({
+  const [trpcClient] = useState(() => {
+    const trpcUrl = env.NEXT_PUBLIC_TRPC_BASE_URL || (typeof window !== 'undefined' ? `${window.location.origin}/api/trpc` : '/api/trpc');
+    console.log('TRPC URL:', trpcUrl);
+    console.log('Environment NEXT_PUBLIC_TRPC_BASE_URL:', env.NEXT_PUBLIC_TRPC_BASE_URL);
+    
+    return createTRPCClient<AppRouter>({
       links: [
         httpBatchLink({
-          url: env.NEXT_PUBLIC_TRPC_BASE_URL || (typeof window !== 'undefined' ? `${window.location.origin}/api/trpc` : '/api/trpc'),
+          url: trpcUrl,
           transformer: superjsonTransformer,
         }),
       ],
-    }),
-  );
+    });
+  });
   return (
     <QueryClientProvider client={queryClient}>
       <TanstackTRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
