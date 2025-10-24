@@ -134,6 +134,26 @@ export const insertInvoiceQuery = async (invoice: ZodCreateInvoiceSchema, userId
     );
   }
 
+  // Inserting invoice item categories in db
+  const categoryMap = new Map<string, string>(); // Maps category ID to database ID
+  if (invoice.itemCategories.length > 0) {
+    const insertedCategories = await db.insert(schema.invoiceItemCategories).values(
+      invoice.itemCategories.map((category) => ({
+        id: uuidv4(),
+        name: category.name,
+        description: category.description || null,
+        invoiceFieldId: insertedInvoiceField.id,
+      }))
+    ).returning({ id: schema.invoiceItemCategories.id, name: schema.invoiceItemCategories.name });
+    
+    // Create mapping from original category ID to database ID
+    invoice.itemCategories.forEach((category, index) => {
+      if (category.id) {
+        categoryMap.set(category.id, insertedCategories[index].id);
+      }
+    });
+  }
+
   // Inserting invoice items in db
   if (invoice.items.length > 0) {
     await db.insert(schema.invoiceItems).values(
@@ -143,6 +163,9 @@ export const insertInvoiceQuery = async (invoice: ZodCreateInvoiceSchema, userId
         name: item.name,
         quantity: item.quantity,
         unitPrice: new Decimal(item.unitPrice),
+        isVatExempt: item.isVatExempt || false,
+        vatRate: item.vatRate ? new Decimal(item.vatRate) : null,
+        categoryId: item.categoryId ? categoryMap.get(item.categoryId) : null,
         invoiceFieldId: insertedInvoiceField.id,
       })),
     );

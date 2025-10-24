@@ -33,7 +33,12 @@ export const getInvoiceQuery = async (id: string, userId: string) => {
               paymentInformation: true,
             },
           },
-          items: true,
+          items: {
+            with: {
+              category: true,
+            },
+          },
+          categories: true,
         },
       },
     },

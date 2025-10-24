@@ -5,7 +5,7 @@ import { GEIST_MONO_FONT, JETBRAINS_MONO_FONT, QUICKSAND_FONT } from "@/constant
 import { DM_SANS_FONT } from "@/constants/dm-sans-font";
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
 import { Document, Page, Text, View, Image, Font } from "@react-pdf/renderer";
-import { getSubTotalValue, getTotalValue } from "@/constants/pdf-helpers";
+import { getSubTotalValue, getTotalValue, getItemTtcAmount, getTotalVatAmount } from "@/constants/pdf-helpers";
 import { formatCurrencyText } from "@/constants/currency";
 import { createTw } from "react-pdf-tailwind";
 import { currencyToFrenchWords } from "@/lib/french-number-to-words";
@@ -185,53 +185,144 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
               ),
             ]}
           >
-            <Text style={tw("w-[35%]")}>Description</Text>
+            <Text style={tw("w-[30%]")}>Description</Text>
             <Text style={tw("w-[8%] text-center")}>Qté</Text>
             <Text style={tw("w-[12%] text-right")}>Prix unitaire HT</Text>
             <Text style={tw("w-[8%] text-center")}>Taux TVA</Text>
             <Text style={tw("w-[12%] text-right")}>Montant HT</Text>
-            <Text style={tw("w-[12%] text-right")}>Montant TTC</Text>
+            <Text style={tw("w-[17%] text-right")}>Montant TTC</Text>
           </View>
           <View style={tw("flex flex-col mt-1")}>
-            {data.items.map((item, index) => (
-              <View
-                key={index}
-                style={tw(
-                  cn(
-                    "flex-row p-2 text-2xs rounded",
-                    index % 2 === 0
-                      ? darkMode
-                        ? "bg-darkmode"
-                        : "bg-white"
-                      : darkMode
-                        ? "bg-neutral-800"
-                        : "bg-neutral-100",
-                  ),
-                )}
-              >
-                <View style={tw("flex flex-col w-[35%]")}>
-                  <Text style={tw("w-full text-sm font-semibold")}>{item.name}</Text>
-                  <Text style={tw("text-xs font-normal text-neutral-600")}>{item.description}</Text>
-                </View>
-                <Text style={tw("w-[8%] text-sm text-center font-geistmono tracking-tighter")}>{item.quantity}</Text>
-                <Text style={tw("w-[12%] text-sm text-right font-geistmono tracking-tighter")}>
-                  {formatCurrencyText(data.invoiceDetails.currency, item.unitPrice)}
-                </Text>
-                <Text style={tw("w-[8%] text-sm text-center font-geistmono tracking-tighter")}>
-                  {data.invoiceDetails.isVatExempt ? "N/A" : `${data.invoiceDetails.vatRate || 20}%`}
-                </Text>
-                <Text style={tw("w-[12%] text-sm text-right font-geistmono tracking-tighter")}>
-                  {formatCurrencyText(data.invoiceDetails.currency, item.quantity * item.unitPrice)}
-                </Text>
-                <Text style={tw("w-[12%] text-sm text-right font-geistmono tracking-tighter")}>
-                  {formatCurrencyText(data.invoiceDetails.currency, 
-                    data.invoiceDetails.isVatExempt 
-                      ? item.quantity * item.unitPrice 
-                      : item.quantity * item.unitPrice * (1 + (data.invoiceDetails.vatRate || 20) / 100)
+            {/* Render categorized items */}
+            {data.itemCategories.map((category, categoryIndex) => (
+              <View key={category.id || `category-${categoryIndex}`} style={tw("mb-4")}>
+                {/* Category Header */}
+                <View style={tw("bg-gray-100 p-3 rounded-t")}>
+                  <Text style={tw("text-sm font-bold text-gray-800")} wrap={true}>
+                    {category.name}
+                  </Text>
+                  {category.description && (
+                    <Text style={tw("text-xs text-gray-600 mt-1")} wrap={true}>
+                      {category.description}
+                    </Text>
                   )}
-                </Text>
+                </View>
+                
+                {/* Items in this category */}
+                <View style={tw("border border-gray-200 rounded-b")}>
+                  {data.items
+                    .filter(item => {
+                      // Try multiple matching strategies
+                      const matchesById = item.categoryId === category.id;
+                      const matchesByName = item.categoryId === category.name;
+                      
+                      // If category has no ID but items have categoryId, match by position
+                      const categoryIndex = data.itemCategories.indexOf(category);
+                      const hasItemsWithCategoryId = data.items.some(item => item.categoryId);
+                      
+                      // If this is the first category and it has no ID, but items have categoryId, match them
+                      const isFirstCategoryWithoutId = !category.id && categoryIndex === 0 && hasItemsWithCategoryId;
+                      
+                      // Also check if any category has the same ID as the item's categoryId
+                      const categoryExistsWithItemId = data.itemCategories.some(cat => cat.id === item.categoryId);
+                      const matchesByExistingCategory = !category.id && !categoryExistsWithItemId && categoryIndex === 0;
+                      
+                      // Return true if any match is found
+                      return matchesById || matchesByName || isFirstCategoryWithoutId || matchesByExistingCategory;
+                    })
+                    .map((item, itemIndex) => (
+                      <View
+                        key={item.id || `category-${category.id}-item-${itemIndex}`}
+                        style={tw(
+                          cn(
+                            "flex-row p-2 text-2xs",
+                            itemIndex % 2 === 0
+                              ? darkMode
+                                ? "bg-darkmode"
+                                : "bg-white"
+                              : darkMode
+                                ? "bg-neutral-800"
+                                : "bg-neutral-100",
+                          ),
+                        )}
+                      >
+                        <View style={tw("flex flex-col w-[30%]")}>
+                          <Text style={tw("w-full text-sm font-semibold")} wrap={true}>{item.name}</Text>
+                          <Text style={tw("text-xs font-normal text-neutral-600")} wrap={true}>{item.description}</Text>
+                        </View>
+                        <Text style={tw("w-[8%] text-sm text-center font-geistmono tracking-tighter")}>
+                          {item.quantity}
+                        </Text>
+                        <Text style={tw("w-[12%] text-sm text-right font-geistmono tracking-tighter")}>
+                          {formatCurrencyText(data.invoiceDetails.currency, item.unitPrice)}
+                        </Text>
+                        <Text style={tw("w-[8%] text-sm text-center font-geistmono tracking-tighter")}>
+                          {item.isVatExempt ? "N/A" : `${item.vatRate || data.invoiceDetails.vatRate || 20}%`}
+                        </Text>
+                        <Text style={tw("w-[12%] text-sm text-right font-geistmono tracking-tighter")}>
+                          {formatCurrencyText(data.invoiceDetails.currency, item.quantity * item.unitPrice)}
+                        </Text>
+                        <Text style={tw("w-[17%] text-sm text-right font-geistmono tracking-tighter")}>
+                          {formatCurrencyText(data.invoiceDetails.currency, 
+                            getItemTtcAmount(item, data.invoiceDetails.vatRate || 20)
+                          )}
+                        </Text>
+                      </View>
+                    ))}
+                  {data.items.filter(item => {
+                      const matchesById = item.categoryId === category.id;
+                      const matchesByName = item.categoryId === category.name;
+                      const matchesByIndex = data.itemCategories.indexOf(category) === data.itemCategories.findIndex(cat => cat.id === item.categoryId);
+                      return matchesById || matchesByName || matchesByIndex;
+                    }).length === 0 && (
+                    <View style={tw("p-4 text-center")}>
+                      <Text style={tw("text-xs text-gray-500")}>Aucun article dans cette catégorie</Text>
+                    </View>
+                  )}
+                </View>
               </View>
             ))}
+
+            {/* Render standalone items */}
+            {data.items
+              .filter(item => !item.categoryId)
+              .map((item, index) => (
+                <View
+                  key={item.id || `standalone-item-${index}`}
+                  style={tw(
+                    cn(
+                      "flex-row p-2 text-2xs rounded",
+                      index % 2 === 0
+                        ? darkMode
+                          ? "bg-darkmode"
+                          : "bg-white"
+                        : darkMode
+                          ? "bg-neutral-800"
+                          : "bg-neutral-100",
+                    ),
+                  )}
+                >
+                  <View style={tw("flex flex-col w-[35%]")}>
+                    <Text style={tw("w-full text-sm font-semibold")} wrap={true}>{item.name}</Text>
+                    <Text style={tw("text-xs font-normal text-neutral-600")} wrap={true}>{item.description}</Text>
+                  </View>
+                  <Text style={tw("w-[8%] text-sm text-center font-geistmono tracking-tighter")}>{item.quantity}</Text>
+                  <Text style={tw("w-[12%] text-sm text-right font-geistmono tracking-tighter")}>
+                    {formatCurrencyText(data.invoiceDetails.currency, item.unitPrice)}
+                  </Text>
+                  <Text style={tw("w-[8%] text-sm text-center font-geistmono tracking-tighter")}>
+                    {item.isVatExempt ? "N/A" : `${item.vatRate || data.invoiceDetails.vatRate || 20}%`}
+                  </Text>
+                  <Text style={tw("w-[12%] text-sm text-right font-geistmono tracking-tighter")}>
+                    {formatCurrencyText(data.invoiceDetails.currency, item.quantity * item.unitPrice)}
+                  </Text>
+                  <Text style={tw("w-[12%] text-sm text-right font-geistmono tracking-tighter")}>
+                    {formatCurrencyText(data.invoiceDetails.currency, 
+                      getItemTtcAmount(item, data.invoiceDetails.vatRate || 20)
+                    )}
+                  </Text>
+                </View>
+              ))}
           </View>
         </View>
         
@@ -296,7 +387,7 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
             {data.invoiceDetails.billingDetails.map((billingDetail, index) => {
               if (billingDetail.type === "percentage") {
                 return (
-                  <View key={index} style={tw("flex flex-row items-center justify-between")}>
+                  <View key={`billing-${billingDetail.label}-${index}`} style={tw("flex flex-row items-center justify-between")}>
                     <Text style={tw("text-2xs font-semibold")}>{billingDetail.label}</Text>
                     <Text style={tw("text-2xs font-geistmono tracking-tight text-neutral-500")}>
                       {billingDetail.value} %
@@ -306,7 +397,7 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
               }
 
               return (
-                <View key={index} style={tw("flex flex-row items-center justify-between")}>
+                <View key={`billing-${billingDetail.label}-${index}`} style={tw("flex flex-row items-center justify-between")}>
                   <Text style={tw("text-2xs font-semibold")}>{billingDetail.label}</Text>
                   <Text style={tw("text-2xs font-geistmono tracking-tight text-neutral-500")}>
                     {formatCurrencyText(data.invoiceDetails.currency, billingDetail.value)}
@@ -344,7 +435,7 @@ const DefaultPDF: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
             <View style={tw("flex flex-col gap-1")}>
               {data.metadata.paymentInformation.map((paymentInformation, index) => {
                 return (
-                  <View key={index} style={tw("flex flex-row items-center gap-2")}>
+                  <View key={`payment-${paymentInformation.label}-${index}`} style={tw("flex flex-row items-center gap-2")}>
                     <Text style={tw("text-xs font-semibold min-w-[100px]")}>{paymentInformation.label}:</Text>
                     <Text style={tw("text-xs font-normal text-neutral-500")}>
                       {paymentInformation.value}

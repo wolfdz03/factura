@@ -6,8 +6,20 @@ export const valueType = z.enum(["percentage", "fixed"], {
   }),
 });
 
+export const createInvoiceItemCategorySchema = z.object({
+  id: z.string().optional(), // For editing existing categories
+  name: z
+    .string({ invalid_type_error: "Category name must be a string" })
+    .min(1, { message: "Category name cannot be empty" })
+    .max(100, { message: "Category name must be less than 100 characters" }),
+  description: z.string({
+    invalid_type_error: "Category description must be a string",
+  }).max(500, { message: "Category description must be less than 500 characters" }).optional(),
+});
+
 export const createInvoiceItemSchema = z.object(
   {
+    id: z.string().optional(), // For editing existing items
     name: z
       .string({ invalid_type_error: "Item name must be a string" })
       .min(1, { message: "Item name cannot be empty" }),
@@ -20,6 +32,13 @@ export const createInvoiceItemSchema = z.object(
     unitPrice: z.coerce
       .number({ invalid_type_error: "Unit price must be a number" })
       .positive({ message: "Unit price must be positive" }),
+    categoryId: z.string().optional(), // Reference to category
+    isVatExempt: z.boolean({ invalid_type_error: "VAT exempt must be a boolean" }).default(false),
+    vatRate: z.coerce
+      .number({ invalid_type_error: "VAT rate must be a number" })
+      .min(0, { message: "VAT rate cannot be negative" })
+      .max(100, { message: "VAT rate cannot exceed 100%" })
+      .optional(),
   },
   { invalid_type_error: "Item must be an object" },
 );
@@ -137,6 +156,7 @@ export const createInvoiceSchema = z.object({
     },
     { invalid_type_error: "Invoice details must be an object" },
   ),
+  itemCategories: z.array(createInvoiceItemCategorySchema),
   items: z.array(createInvoiceItemSchema),
   metadata: z.object(
     {
@@ -181,7 +201,17 @@ export const createInvoiceSchemaDefaultValues: ZodCreateInvoiceSchema = {
     isVatExempt: false,
     billingDetails: [],
   },
-  items: [],
+  itemCategories: [],
+  items: [
+    {
+      name: "Article exemple",
+      description: "Description de l'article exemple",
+      quantity: 1,
+      unitPrice: 100,
+      isVatExempt: false,
+      vatRate: 20
+    }
+  ],
   metadata: {
     notes: "",
     terms: "",

@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@babel/runtime": "^7.28.4",
+    "@floating-ui/react-dom": "^2.1.6",
     "@hookform/resolvers": "^5.0.1",
     "@invoicely/utilities": "workspace:*",
     "@mantine/hooks": "^8.0.1",

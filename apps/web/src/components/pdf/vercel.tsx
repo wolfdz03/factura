@@ -3,7 +3,7 @@
 
 import { ZodCreateInvoiceSchema } from "@/zod-schemas/invoice/create-invoice";
 import { Document, Page, Text, View, Image, Font } from "@react-pdf/renderer";
-import { getSubTotalValue, getTotalValue } from "@/constants/pdf-helpers";
+import { getSubTotalValue, getTotalValue, getItemTtcAmount, getTotalVatAmount } from "@/constants/pdf-helpers";
 import { GEIST_FONT, GEIST_MONO_FONT } from "@/constants/pdf-fonts";
 import { DM_SANS_FONT } from "@/constants/dm-sans-font";
 import { formatCurrencyText } from "@/constants/currency";
@@ -151,51 +151,108 @@ const VercelPdf: React.FC<{ data: ZodCreateInvoiceSchema }> = ({ data }) => {
               tw(cn("flex-row flex items-center px-4 py-2.5 text-sm text-neutral-100 border-b border-borderColor")),
             ]}
           >
-            <Text style={tw("w-[35%]")}>Description</Text>
+            <Text style={tw("w-[30%]")}>Description</Text>
             <Text style={tw("w-[8%] text-center")}>Qté</Text>
             <Text style={tw("w-[12%] text-right")}>Prix unitaire HT</Text>
             <Text style={tw("w-[8%] text-center")}>Taux TVA</Text>
             <Text style={tw("w-[12%] text-right")}>Montant HT</Text>
-            <Text style={tw("w-[12%] text-right")}>Montant TTC</Text>
+            <Text style={tw("w-[17%] text-right")}>Montant TTC</Text>
           </View>
           <View style={tw("flex flex-col")}>
-            {data.items.map((item, index) => (
-              <View
-                key={index}
-                style={tw(
-                  cn(
-                    "flex-row px-4 py-3 text-2xs border-b border-borderColor",
-                    index % 2 === 0 ? "bg-[#111111]" : "bg-background",
-                  ),
-                )}
-              >
-                <View style={tw("flex flex-col w-[35%]")}>
-                  <Text style={tw("w-full text-xs leading-[12px] text-neutral-100")}>{item.name}</Text>
-                  <Text style={tw("text-2xs leading-[10px] mt-1 font-normal text-neutral-700")}>
-                    {item.description}
+            {/* Render categorized items */}
+            {data.itemCategories.map((category, categoryIndex) => (
+              <View key={category.id} style={tw("mb-4")}>
+                {/* Category Header */}
+                <View style={tw("bg-[#1a1a1a] px-4 py-3 border-b border-borderColor")}>
+                  <Text style={tw("text-sm font-bold text-neutral-100")}>
+                    {category.name}
                   </Text>
-                </View>
-                <Text style={tw("w-[8%] text-center font-geistmono tracking-tighter text-neutral-100")}>
-                  {item.quantity}
-                </Text>
-                <Text style={tw("w-[12%] text-right font-geistmono tracking-tighter text-neutral-100")}>
-                  {formatCurrencyText(data.invoiceDetails.currency, item.unitPrice)}
-                </Text>
-                <Text style={tw("w-[8%] text-center font-geistmono tracking-tighter text-neutral-100")}>
-                  {data.invoiceDetails.isVatExempt ? "N/A" : `${data.invoiceDetails.vatRate || 20}%`}
-                </Text>
-                <Text style={tw("w-[12%] text-right font-geistmono tracking-tighter text-neutral-100")}>
-                  {formatCurrencyText(data.invoiceDetails.currency, item.quantity * item.unitPrice)}
-                </Text>
-                <Text style={tw("w-[12%] text-right font-geistmono tracking-tighter text-neutral-100")}>
-                  {formatCurrencyText(data.invoiceDetails.currency, 
-                    data.invoiceDetails.isVatExempt 
-                      ? item.quantity * item.unitPrice 
-                      : item.quantity * item.unitPrice * (1 + (data.invoiceDetails.vatRate || 20) / 100)
+                  {category.description && (
+                    <Text style={tw("text-xs text-neutral-400 mt-1")}>
+                      {category.description}
+                    </Text>
                   )}
-                </Text>
+                </View>
+                
+                {/* Items in this category */}
+                {data.items
+                  .filter(item => item.categoryId === category.id)
+                  .map((item, itemIndex) => (
+                    <View
+                      key={item.id}
+                      style={tw(
+                        cn(
+                          "flex-row px-4 py-3 text-2xs border-b border-borderColor",
+                          itemIndex % 2 === 0 ? "bg-[#111111]" : "bg-background",
+                        ),
+                      )}
+                    >
+                      <View style={tw("flex flex-col w-[35%]")}>
+                        <Text style={tw("w-full text-xs leading-[12px] text-neutral-100")}>{item.name}</Text>
+                        <Text style={tw("text-2xs leading-[10px] mt-1 font-normal text-neutral-700")}>
+                          {item.description}
+                        </Text>
+                      </View>
+                      <Text style={tw("w-[8%] text-center font-geistmono tracking-tighter text-neutral-100")}>
+                        {item.quantity}
+                      </Text>
+                      <Text style={tw("w-[12%] text-right font-geistmono tracking-tighter text-neutral-100")}>
+                        {formatCurrencyText(data.invoiceDetails.currency, item.unitPrice)}
+                      </Text>
+                      <Text style={tw("w-[8%] text-center font-geistmono tracking-tighter text-neutral-100")}>
+                        {item.isVatExempt ? "N/A" : `${item.vatRate || data.invoiceDetails.vatRate || 20}%`}
+                      </Text>
+                      <Text style={tw("w-[12%] text-right font-geistmono tracking-tighter text-neutral-100")}>
+                        {formatCurrencyText(data.invoiceDetails.currency, item.quantity * item.unitPrice)}
+                      </Text>
+                      <Text style={tw("w-[12%] text-right font-geistmono tracking-tighter text-neutral-100")}>
+                        {formatCurrencyText(data.invoiceDetails.currency, 
+                          getItemTtcAmount(item, data.invoiceDetails.vatRate || 20)
+                        )}
+                      </Text>
+                    </View>
+                  ))}
               </View>
             ))}
+
+            {/* Render standalone items */}
+            {data.items
+              .filter(item => !item.categoryId)
+              .map((item, index) => (
+                <View
+                  key={item.id}
+                  style={tw(
+                    cn(
+                      "flex-row px-4 py-3 text-2xs border-b border-borderColor",
+                      index % 2 === 0 ? "bg-[#111111]" : "bg-background",
+                    ),
+                  )}
+                >
+                  <View style={tw("flex flex-col w-[30%]")}>
+                    <Text style={tw("w-full text-xs leading-[12px] text-neutral-100")}>{item.name}</Text>
+                    <Text style={tw("text-2xs leading-[10px] mt-1 font-normal text-neutral-700")}>
+                      {item.description}
+                    </Text>
+                  </View>
+                  <Text style={tw("w-[8%] text-center font-geistmono tracking-tighter text-neutral-100")}>
+                    {item.quantity}
+                  </Text>
+                  <Text style={tw("w-[12%] text-right font-geistmono tracking-tighter text-neutral-100")}>
+                    {formatCurrencyText(data.invoiceDetails.currency, item.unitPrice)}
+                  </Text>
+                  <Text style={tw("w-[8%] text-center font-geistmono tracking-tighter text-neutral-100")}>
+                    {item.isVatExempt ? "N/A" : `${item.vatRate || data.invoiceDetails.vatRate || 20}%`}
+                  </Text>
+                  <Text style={tw("w-[12%] text-right font-geistmono tracking-tighter text-neutral-100")}>
+                    {formatCurrencyText(data.invoiceDetails.currency, item.quantity * item.unitPrice)}
+                  </Text>
+                  <Text style={tw("w-[17%] text-right font-geistmono tracking-tighter text-neutral-100")}>
+                    {formatCurrencyText(data.invoiceDetails.currency, 
+                      getItemTtcAmount(item, data.invoiceDetails.vatRate || 20)
+                    )}
+                  </Text>
+                </View>
+              ))}
           </View>
         </View>
         {/* Invoice meta data and pricing */}
